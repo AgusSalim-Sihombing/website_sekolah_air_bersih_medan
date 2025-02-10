@@ -74,11 +74,11 @@ const Sidebar = () => {
             <NavLink to="/admin/user-admin" className="nav-link">
               <CDBSidebarMenuItem icon="user">User Admin</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink to="/admin/manajemenkonten" className="nav-link">
-              <CDBSidebarMenuItem icon="user">Profile page</CDBSidebarMenuItem>
+            <NavLink to="/admin/manajemen-konten" className="nav-link">
+              <CDBSidebarMenuItem icon="film">Manajemen Konten</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink to="/admin/profil" className="nav-link">
-              <CDBSidebarMenuItem icon="chart-line">Analytics</CDBSidebarMenuItem>
+            <NavLink to="/admin/manajemen-data" className="nav-link">
+              <CDBSidebarMenuItem icon="chart-line">Manajemen Data</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink to="/admin/hero404" target="_blank" className="nav-link">
@@ -97,7 +97,7 @@ const Sidebar = () => {
               padding: '20px 5px',
             }}
           >
-            Sidebar Footer
+            SEKOLAH ADVENT AIR BERSIH
           </div>
         </CDBSidebarFooter>
         

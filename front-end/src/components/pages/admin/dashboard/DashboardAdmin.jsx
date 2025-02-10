@@ -4,7 +4,7 @@ import PerkembanganSiswa from "./charts/PerkembanganSiswa";
 const Dashboard = () => {
     return(
         <div>
-            <h1>This is Dashbooard admin</h1>
+            <h1>DASHBOARD ADMIN</h1>
             <PerkembanganSiswa/>
             <AdminVisiMisiTujuan/>
         </div>

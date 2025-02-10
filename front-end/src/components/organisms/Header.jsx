@@ -56,7 +56,7 @@ const Header = () => {
                                 <NavDropdown.Item href="/sma" >SMA</NavDropdown.Item>
                                 <NavDropdown.Item href="/smk" >SMK</NavDropdown.Item>
                             </NavDropdown>
-                            <Nav.Link href="/informasi-pendaftaran" className="item">Informasi Pendaftaran</Nav.Link>
+                            <Nav.Link href="/informasi-pendaftaran" className={location.pathname === "/informasi-pendaftaran" ? "active" : ""}>Informasi Pendaftaran</Nav.Link>
 
                         </Nav>
                         <LoginButton className="button" />

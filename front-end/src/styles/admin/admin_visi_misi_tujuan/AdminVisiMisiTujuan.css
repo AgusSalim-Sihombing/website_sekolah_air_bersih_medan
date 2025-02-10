@@ -3,6 +3,8 @@
     justify-content: space-around;
     align-items: center;
     padding: 20px;
+    /* background-color: aqua; */
+    box-shadow: 10px;
 }
 
 .misi {
