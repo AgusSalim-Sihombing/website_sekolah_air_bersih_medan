@@ -1,0 +1,14 @@
+.btn-main {
+    background-color: #ffffff;
+    width: 100px;
+    color: black;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.btn-main:hover {
+    border-color: aliceblue;
+}

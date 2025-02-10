@@ -1,0 +1,42 @@
+.costum-navbar {
+    background-color: rgb(30, 66, 195);
+    font-size: 20px;
+
+}
+
+.header {
+    /* position: fixed; */
+    /* z-index: 1000; */
+    color: white;
+    width: 100%;
+
+}
+
+
+
+.header .navbar-nav .nav-link,
+.header .navbar-brand {
+    color: white !important;
+}
+
+.header .dropdown-item:hover{
+    background-color: #FFD700 ;
+    color: white !important;
+}
+
+.toogle {
+    background-color: white;
+    color: white;
+}
+
+.button {
+    right: 0;
+}
+
+
+.navbar-nav .nav-link.active,
+.navbar-nav .dropdown-item.active {
+    font-weight: bold;
+    color: #FFD700 !important; /* Warna kuning emas */
+    border-bottom: 2px solid #FFD700; /* Garis bawah */
+}
