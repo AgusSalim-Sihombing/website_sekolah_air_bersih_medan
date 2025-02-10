@@ -52,11 +52,11 @@ const Header = () => {
                         <Nav className="ms-auto">
                             <Nav.Link href="/" className={location.pathname === "/" ? "active" : ""}>Beranda</Nav.Link>
                             <NavDropdown title="Unit" id="basic-nav-dropdown" >
-                                <NavDropdown.Item href="https://mikroskil.ac.id/" className={location.pathname === "/smp" ? "active" : ""}>SMP</NavDropdown.Item>
+                                <NavDropdown.Item href="/sma" className={location.pathname === "/smp" ? "active" : ""}>SMP</NavDropdown.Item>
                                 <NavDropdown.Item href="/sma" >SMA</NavDropdown.Item>
                                 <NavDropdown.Item href="/smk" >SMK</NavDropdown.Item>
                             </NavDropdown>
-                            <Nav.Link href="#link" className="item">Informasi Pendaftaran</Nav.Link>
+                            <Nav.Link href="/informasi-pendaftaran" className="item">Informasi Pendaftaran</Nav.Link>
 
                         </Nav>
                         <LoginButton className="button" />
