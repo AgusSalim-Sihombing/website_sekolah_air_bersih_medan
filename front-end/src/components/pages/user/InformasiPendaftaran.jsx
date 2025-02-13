@@ -1,7 +1,15 @@
+import "../../../styles/user/InformasiPendaftaran.css"
+
 const InformasiPendaftaran = () => {
     return (
         <div>
-            <h1>INFORMASI PENDAFTARAN</h1>
+            <text className="title">INFORMASI PENDAFTARAN YAYASAN PERGURUAN ADVENT JALAN AIR BERSIH MEDAN</text>
+            <div>
+                <h6>Persyaratan :</h6>
+                <ul>
+                    <li>Sehat jasmani dan waras dikit</li>
+                </ul>
+            </div>
         </div>
     )
 }

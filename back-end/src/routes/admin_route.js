@@ -3,6 +3,8 @@ const adminControllers = require("../controllers/admin_controller");
 
 const VisiMisiTujuan = require("../controllers/visi_misi_tujuan_controller");
 const { getTotalSiswaTahunan } = require("../controllers/total_siswa_tahunan_controller");
+const UserAdmin = require("../controllers/user_admin_controller")
+
 const router = express.Router();
 
 
@@ -21,5 +23,9 @@ router.get("/tujuan", VisiMisiTujuan.getTujuan)
 
 
 router.get("/total-siswa-tahunan", getTotalSiswaTahunan)
+
+//Untuk Useradmin
+router.get("/user-admin",UserAdmin.getUserAdmin )
+
 
 module.exports = router;
