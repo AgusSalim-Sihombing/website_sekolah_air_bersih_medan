@@ -4,7 +4,7 @@ const SECRET_KEY = "your-secret-key"; // Ganti dengan secret key yang aman
 const pool = require("../database/database_connection")
 
 const loginAdmin = async (req, res) => {
-    try {
+    try { 
         const { username, password } = req.body;
         const [rows] = await pool.execute(
             "SELECT * FROM admin WHERE username = ?", [username]

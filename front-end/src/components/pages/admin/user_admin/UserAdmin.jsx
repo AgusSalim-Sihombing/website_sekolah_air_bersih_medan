@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ""
+import "../../../../styles/admin/user_admin/UserAdmin.css"
+
 const UserAdmin = () => {
     const [id, setId] = useState("")
     const [user, setUser] = useState("")
@@ -26,6 +27,7 @@ const UserAdmin = () => {
     }
     return (
         <div >
+            <h1>User Admin</h1>
             <div className="user-admin">
                 <p>{id ? id : "Memuat User id ..."}</p>
                 <p>{user ? user : "Memuat User Admin ..."}</p>
