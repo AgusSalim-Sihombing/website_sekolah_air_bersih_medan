@@ -2,12 +2,17 @@
 // const fs = require('fs');
 // const xlsx = require('xlsx');
 // const adminRoutes = require("./routes/admin_route.js");
+
+
 const express = require("express");
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const adminRoutes = require("./src/routes/admin_route");
-const PORT = process.env.PORT || 3001;
+
+require('dotenv').config();
+
+const PORT = process.env.PORT;
 
 
 app.use(bodyParser.json());
