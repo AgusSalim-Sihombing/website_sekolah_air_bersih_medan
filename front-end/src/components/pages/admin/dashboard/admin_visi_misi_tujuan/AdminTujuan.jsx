@@ -118,7 +118,7 @@ const AdminTujuan = () => {
             value={idTujuan}
             onChange={(e) => setIdTujuan(e.target.value)}
         />
-        <p style={{ marginTop: "10px", bottom: "0" }}>Edit Teks Misi</p>
+        <p style={{ marginTop: "10px", bottom: "0" }}>Edit Teks Tujuan</p>
         <textarea
             className="form-control costum-form"
             value={tujuan}

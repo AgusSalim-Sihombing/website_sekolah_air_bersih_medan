@@ -9,7 +9,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <UserRoutes />
-      <AdminRoutes/>
+      <AdminRoutes/>  
     </BrowserRouter>
   )
 }

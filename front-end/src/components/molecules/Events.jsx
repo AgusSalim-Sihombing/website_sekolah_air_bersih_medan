@@ -9,7 +9,7 @@ const Events = () => {
       <Row className="mt-5">
         <Col md={4}>
           <Card>
-            <Card.Img variant="top" src="https://i.pinimg.com/474x/af/d9/65/afd965fe8c6c2e56c3cc9109e0524fe3.jpg" style={{height:"400px"}}/>
+            <Card.Img variant="top" src="https://i.pinimg.com/474x/af/d9/65/afd965fe8c6c2e56c3cc9109e0524fe3.jpg" style={{ height: "400px" }} />
             <Card.Body>
               <Card.Title>Magnofestwo</Card.Title>
               <Card.Text>
@@ -24,7 +24,7 @@ const Events = () => {
         </Col>
         <Col md={4}>
           <Card>
-            <Card.Img variant="top" src="https://i.pinimg.com/236x/e8/2f/7f/e82f7f1f89f36445c0e01d45f91a37d2.jpg"  style={{height:"400px"}}/>
+            <Card.Img variant="top" src="https://i.pinimg.com/236x/e8/2f/7f/e82f7f1f89f36445c0e01d45f91a37d2.jpg" style={{ height: "400px" }} />
             <Card.Body>
               <Card.Title>Walesce Returns</Card.Title>
               <Card.Text>

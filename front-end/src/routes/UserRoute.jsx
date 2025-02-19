@@ -11,7 +11,7 @@ const UserRoutes = () => {
             
             <Route path="/" element={<UserLayout />}>
                 <Route index element={<Home />} />
-                <Route path="/informasi-pendaftaran" element={<InformasiPendaftaran />} />
+                <Route path="informasi-pendaftaran" element={<InformasiPendaftaran />} />
                 {/* <Route path="/contact" element={<Contact />} /> */}
             </Route>
         </Routes>

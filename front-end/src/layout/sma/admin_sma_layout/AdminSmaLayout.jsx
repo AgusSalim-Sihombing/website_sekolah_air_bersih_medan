@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from "react-router-dom";
 
-import "../../styles/admin/AdminLayout.css"
-import Sidebar from "../../components/pages/admin/SideBar";
+import "../../../styles/admin/AdminLayout.css"
+import Sidebar from "../../../components/pages/admin/SideBar";
 
 const AdminLayout = () => {
 
