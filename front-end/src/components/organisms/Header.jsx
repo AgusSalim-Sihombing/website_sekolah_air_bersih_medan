@@ -1,9 +1,6 @@
 import React from "react";
-// import LoginButton from "../molecules/LoginButton";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../../styles/organisms/Header.css"
-import logo from "../../assets/react.svg"
-
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -18,25 +15,7 @@ import { useLocation } from "react-router-dom";
 const Header = () => {
     const location = useLocation();
     return (
-        // <div classNameName="Header">
-        //     <Navbar expand="lg" collapseOnSelect classNameName="costum-navbar navbar-expand-md" bg="rgb(4, 16, 61)">
-        //         <Navbar.Brand href="/" style={{ color: "white"}}>LOGO</Navbar.Brand>
-        //         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        //         <Navbar.Collapse id="basic-navbar-nav">
-        //             <Navbar.Collapse classNameName="justify-content-end" style={{ gap: "10px" }}>
-        //                 <Nav.Link href="/" style={{ color: "white" }}>Beranda</Nav.Link>
-        //                 <NavDropdown title="Unit" style={{ color: "white" }}>
-        //                     <NavDropdown.Item href="/smp">SMP</NavDropdown.Item>
-        //                     <NavDropdown.Item href="/sma">SMA</NavDropdown.Item>
-        //                     <NavDropdown.Item href="/smk">SMK</NavDropdown.Item>
-        //                 </NavDropdown>
-        //                 <Nav.Link href="/infoPendaftaran" style={{ color: "white" }}>Informasi Pendaftaran</Nav.Link>
-        //                 <LoginButton />
-        //             </Navbar.Collapse>
-        //         </Navbar.Collapse>
-        //     </Navbar>
-        //     <TeksBerjalan/>
-        // </div>
+
         <header className="header">
             <Navbar expand="lg" className="costum-navbar" >
                 <Container >

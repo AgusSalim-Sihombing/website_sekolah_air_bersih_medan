@@ -7,7 +7,7 @@ import Header from "../components/organisms/Header";
 const PublicSmaLayout = () => {
 
     return (
-        <div className="dashboard-container">
+        <div >
             <Header />
             <main className="main-content">
                 <Outlet />
