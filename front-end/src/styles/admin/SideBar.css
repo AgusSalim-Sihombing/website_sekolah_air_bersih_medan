@@ -40,17 +40,9 @@
 
 
 /* Saat aktif, latar belakang berubah menjadi emas */
-.cdb-sidebar-menu-item .active {
-    /* background-color: gold !important; */
-    color: gold !important;
-    font-weight: bold;
-}
-.nav-link:hover{
-    color: rgb(222, 198, 62);
-}
-.logout:hover{
-    color: red;
-}
+
+
+
 /* .fa .fa-bars .fa-large{
     background-color: red;
 } */

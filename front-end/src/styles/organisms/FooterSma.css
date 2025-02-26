@@ -1,0 +1,14 @@
+.body-footer-sma{
+    background-color: rgba(3, 29, 68, 1);
+    color: white;
+    padding: 20px;
+}
+.footer-sma{
+    display: flex;
+    justify-content: space-between;
+}
+
+.costum-table-sma td{
+    background-color:rgba(3, 29, 68, 1);
+    color: white;
+}

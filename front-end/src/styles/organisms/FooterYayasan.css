@@ -1,0 +1,14 @@
+.body-footer{
+    background-color: rgba(79, 103, 136, 1);
+    color: white;
+    padding: 20px;
+}
+.footer{
+    display: flex;
+    justify-content: space-between;
+}
+
+.costum-table td{
+    background-color:rgba(79, 103, 136, 1);
+    color: white;
+}

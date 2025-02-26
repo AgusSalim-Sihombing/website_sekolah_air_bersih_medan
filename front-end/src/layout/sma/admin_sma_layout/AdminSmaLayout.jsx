@@ -1,18 +1,24 @@
 import { Outlet, useNavigate } from "react-router-dom";
 
 import "../../../styles/admin/AdminLayout.css"
-import Sidebar from "../../../components/pages/admin/SideBar";
+import SidebarAdminSma from "../../../components/pages/sma/admin_sma/SideBarAdminSma";
+import { useState } from "react";
+import HeaderAdminSma from "../../../components/pages/sma/admin_sma/HeaderAdminSma";
 
-const AdminLayout = () => {
-
+const AdminSmaLayout = () => {
+    const [pageTitle, setPageTitle] = useState("Dashboard");
     return (
+        
         <div className="dashboard-container">
-            <Sidebar />
-            <main className="main-content">
-                <Outlet />
-            </main>
+            <SidebarAdminSma setPageTitle={setPageTitle}/>
+            <div className="main-wrapper">
+                <HeaderAdminSma title={pageTitle} />
+                <main className="main-content">
+                    <Outlet />
+                </main>
+            </div>
         </div>
     );
 };
 
-export default AdminLayout;
+export default AdminSmaLayout;

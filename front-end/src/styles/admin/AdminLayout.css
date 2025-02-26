@@ -1,14 +1,134 @@
+/* Sidebar */
+
+.cdb-sidebar-menu-item .active {
+    /* background-color: gold !important; */
+    color: gold !important;
+    font-weight: bold;
+    background-color: rgba(0, 63, 114, 1);
+    border-radius: 5px;
+}
+
+.nav-link:hover {
+    color: rgb(222, 198, 62);
+}
+
+.logout:hover {
+    color: red;
+}
+
+.cdb-sidebar-menu-item .nav-link {
+    color: black;
+}
+
+.sidebar {
+    padding: 16px;
+    background-color: white !important;
+    color: black !important;
+    box-shadow: 1px 1px 5px 4px #c4c4c4bb;
+}
+
+
+
 .dashboard-container {
     display: flex;
     overflow: hidden;
 }
 
+.main-wrapper {
+    margin-left: 270px;
+    /* Sesuai dengan lebar sidebar */
+    width: calc(100% - 270px);
+}
+
+.sticky-header-admin {
+    display: flex;
+    position: fixed;
+    /* top: 0; */
+    height: 65px;
+    width: calc(100% - 270px);
+    background: white;
+    padding: 10px 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    justify-content: space-between;
+    overflow: hidden;
+    align-items: center;
+
+}
+
 .main-content {
-    /* flex: 1; */
+    margin-top: 65px;
+    padding: 20px;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease-in-out;
+    height: 100vh;
+}
+
+.circle-profile-admin {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgb(188, 188, 188);
+}
+
+.circle-profile-admin:hover{
+    background-color: gold;
+    cursor: pointer;
+}
+
+.circle-profile-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-dropdown {
+    position:fixed;
+    top: 65px;
+    left: calc(100% - 200px);
+    background: rgb(255, 255, 255);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    width: 180px;
+    z-index: 9999;
+    padding: 10px 0;
+}
+
+.profile-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.profile-dropdown ul li {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.profile-dropdown ul li:hover {
+    background: gold;
+    border-radius: 5px;
+}
+
+
+
+
+
+/* before */
+/* .main-content {
     padding: 20px;
     overflow-y: auto;
     margin-left: 260px;
     transition: margin-left 0.3s ease-in-out;
     width: calc(100% - 250px);
     height: 100vh;
-}
+} */

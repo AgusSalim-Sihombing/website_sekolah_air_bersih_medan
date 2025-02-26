@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
-// import Footer from "../../../components/organisms/Footer";
-import HeaderSma from "../../../components/organisms/HearderSma";
+import HeaderSma from "../../../components/organisms/sma/HearderSma";
+import FooterSma from "../../../components/organisms/sma/FooterSma";
+
 
 const PublicSmaLayout = () => {
     return (
@@ -10,7 +11,7 @@ const PublicSmaLayout = () => {
             <main>
                 <Outlet />
             </main>
-            {/* <Footer/> */}
+            <FooterSma/>
         </div>
     );
 };

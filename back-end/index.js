@@ -5,22 +5,59 @@
 
 
 const express = require("express");
+const socketIo = require("socket.io");
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const adminRoutes = require("./src/routes/admin_route");
-
+const adminSmaRoutes = require("./src/routes/sma/sma_route")
+const http = require("http");
+const db = require("./src/database/database_connection")
 require('dotenv').config();
 
 const PORT = process.env.PORT;
 
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cors({
-    origin: "http://localhost:3006",
-}))
+// app.use(cors({
+//     origin: "http://localhost:3006",
+// }))
+
+const server = http.createServer(app);
+const io = socketIo(server, {
+    cors: {
+        origin: "http://localhost:3006",
+        methods: ["GET", "POST", "PUT"],
+    },
+});
+
+//Total Siswa Tahunan
+let lastDataTotalSiswaTahunan = [];
+setInterval(async () => {
+    try {
+        const [rows] = await db.query("SELECT * FROM total_siswa_tahunan");
+
+        if (JSON.stringify(rows) !== JSON.stringify(lastDataTotalSiswaTahunan)) {
+            lastDataTotalSiswaTahunan = rows;
+            io.emit("updateData", rows); // Kirim data baru ke frontend
+        }
+    } catch (error) {
+        console.error("Gagal mengambil data:", error);
+    }
+}, 4000); // Cek setiap 4 detik
+
+
+
+// WebSocket Connection
+io.on("connection", (socket) => {
+    console.log("Client connected:", socket.id);
+
+    socket.on("disconnect", () => {
+        console.log("Client disconnected:", socket.id);
+    });
+});
 
 // //akses data
 // const path_data = "./data/data.json";
@@ -69,9 +106,11 @@ app.use(cors({
 //     xlsx.writeFile(workbook, filePath);
 // };
 
-app.use('/api/admin', adminRoutes)
+app.use("/api/admin", adminRoutes)
+app.use("/api/admin-sma", adminSmaRoutes)
 
-app.listen(PORT, () => {
+
+server.listen(PORT, () => {
     console.log(`Server berjalan pada http://localhost:${PORT}`)
 })
 
