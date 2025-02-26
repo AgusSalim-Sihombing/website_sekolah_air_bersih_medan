@@ -27,15 +27,15 @@ const PerkembanganSiswa = () => {
         };
     }, []);
 
-    const getTotalSiswa = async () => {
+    // const getTotalSiswa = async () => {
 
-        try {
-            const response = await axios.get("http://localhost:3001/api/admin/total-siswa-tahunan");
-            updateChartData(response.data);
-        } catch (error) {
-            console.error("Gagal mengambil data:", error);
-        }
-    };
+    //     try {
+    //         const response = await axios.get("http://localhost:3001/api/admin/total-siswa-tahunan");
+    //         updateChartData(response.data);
+    //     } catch (error) {
+    //         console.error("Gagal mengambil data:", error);
+    //     }
+    // };
 
     const updateChartData = (data) => {
         // Format untuk chartnya
