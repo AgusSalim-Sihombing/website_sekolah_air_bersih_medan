@@ -23,8 +23,18 @@ import AdminSmaLayout from './layout/sma/admin_sma_layout/AdminSmaLayout';
 import DashboardAdminSma from './components/pages/sma/admin_sma/dashboard_admin_sma/DashboardAdminSma';
 import UserAdminSma from './components/pages/sma/admin_sma/user_admin/UserAdminSma';
 import ManajemenKontenSma from './components/pages/sma/admin_sma/manajemen_konten/ManajemenKontenSma';
-import ManajemenDataSekolahSma from './components/pages/sma/admin_sma/manajemen_data_sekolah_sma/ManajemenDataSekolahSma';
 import AdminProfileSma from './components/pages/sma/admin_sma/profile/AdminProfileSma';
+import DataSiswaSma from './components/pages/sma/data_siswa/DataSiswaSma';
+import EventSma from './components/pages/sma/event_sma/EventSma';
+import EventDetailSma from './components/pages/sma/event_sma/EventDetailSma';
+import ManajemenDataSekolahSma from './components/pages/sma/admin_sma/manajemen_data_sekolah_sma/ManajemenDataSekolahSma';
+import PengumumanSma from './components/pages/sma/pengumuman_sma/PengumumanSma';
+import DetailPengumumanSma from './components/pages/sma/pengumuman_sma/PengumumanDetailSma';
+import DetailDataKelasSma from './components/pages/sma/data_siswa/data_kelas_sma/detail_kelas/DetailKelas';
+import DokumentasiKegiatan from './components/pages/sma/kegiatan_sma/DokumentasiKegiatan';
+import DataGuruTendik from './components/pages/sma/data_guru_tendik/DataGuruTendik';
+import DetailGuruTendik from './components/pages/sma/data_guru_tendik/detail_guru_tendik/DetailGuruTendik';
+
 
 
 const App = () => {
@@ -63,8 +73,8 @@ const App = () => {
             <Route element={<AdminSmaLayout />}>
               <Route path='dashboard-sma' element={<DashboardAdminSma />} />
               <Route path='user-admin-sma' element={<UserAdminSma />} />
-              <Route path='manajemen-konten-sma' element={<ManajemenKontenSma />} />
-              <Route path='manajemen-data-sma' element={<ManajemenDataSekolahSma />} />
+              <Route path='manajemen-konten-sma/*' element={<ManajemenKontenSma />} />
+              <Route path='manajemen-data-sma/*' element={<ManajemenDataSekolahSma />} />
               <Route path='profile-admin-sma' element={<AdminProfileSma />} />
             </Route>
           </Route>
@@ -78,6 +88,27 @@ const App = () => {
             <Route path='profile' element={<ProfileSma />} />
             <Route path='kata-sambutan' element={<DetailKataSambutan />} />
             <Route path='fasilitas' element={<Fasilitas />} />
+            <Route path='acara'>
+              <Route path='events'>
+                <Route index element={<EventSma />} />
+                <Route path="detail-events/:id" element={<EventDetailSma />} />
+              </Route>
+
+
+              <Route path='pengumuman'>
+                <Route index element={<PengumumanSma />} />
+                <Route path='detail-pengumuman/:id' element={<DetailPengumumanSma />} />
+              </Route>
+
+              <Route path='dokumentasi-kegiatan' element={<DokumentasiKegiatan />} />
+
+            </Route>
+            <Route path='database'>
+              <Route path='data-siswa-sma' element={<DataSiswaSma />} />
+              <Route path='data-siswa-sma/:kelas' element={<DetailDataKelasSma />} />
+              <Route path='data-guru-tendik' element={<DataGuruTendik />} />
+              <Route path='data-guru-tendik/:id' element={<DetailGuruTendik />} />
+            </Route>
           </Route>
         </Routes>
       </AuthProvider>

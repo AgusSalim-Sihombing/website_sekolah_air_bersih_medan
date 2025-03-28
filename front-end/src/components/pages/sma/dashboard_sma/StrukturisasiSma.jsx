@@ -229,11 +229,16 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import { Modal, Button } from "react-bootstrap";
 import DeskripsiTugas from "./data/DeskripsiTugas";
+import RingLoader from "react-spinners/RingLoader";
+
+// import Loader from "../../../molecules/Loader";
 
 
 const OrganizationalChart = () => {
   const [chartData, setChartData] = useState([]);
   const [dataAll, setDataAll] = useState([])
+  let [loading, setLoading] = useState(true);
+  let [color, setColor] = useState("rgba(3, 29, 68, 1)");
   const [selectedData, setSelectedData] = useState("");
   const [show, setShow] = useState(false);
 
@@ -248,7 +253,7 @@ const OrganizationalChart = () => {
       setDataAll(response.data);
 
       const formattedData = response.data.map((item) => {
-        const labelWidth = item.name.length < 10 ? 100 : 120; // Atur lebar label berdasarkan panjang teks
+        const labelWidth = item.name.length < 10 ? 100 : 120;
 
         return {
           x: item.name || "",
@@ -276,8 +281,8 @@ const OrganizationalChart = () => {
       debug: false,
       type: "organizational",
       defaultAnnotation: {
-        padding: [15, 5],
-        margin: [20, 5],
+        padding: [10, 5],
+        margin: [10, 0],
       },
       defaultTooltip_enabled: false,
 
@@ -307,20 +312,78 @@ const OrganizationalChart = () => {
       series: [{
         points: chartData,
       }],
+      // series: [
+      //   {
+
+      //     points: [
+      //       { x: "Ketua Yayasan GMAHK DSKU", id: "PM", label: { style: { fontSize: "16px" }, width: 300 }, },
+      //       { x: "Direktur Pendidikan GMAHK DSKU", id: "DPM", parent: "PM", label: { style: { fontSize: "16px" }, width: 300 }, },
+      //       { x: "Komite Sekolah", id: "KMS", parent: "DPM" },
+      //       { x: "Kepala Sekolah", id: "KS", parent: "KMS", label: { style: { fontSize: "16px" }, width: 300 }, },
+      //       { x: "Bendahara", id: "BD", parent: "KS" },
+      //       { x: "", id: "spacer1", parent: "KS", connectorLine: { color: "#424242", width: 1, caps: { end: { type: "", size: 0 } }, }, },  // Node kosong sebagai spacer
+      //       { x: "Wakasek Bid. Akademik", id: "WBA", parent: "spacer1", label: { width: 250 }, },
+      //       { x: "Wakasek Bid. Sarpas", id: "WBS", parent: "spacer1", label: { width: 250 }, },
+      //       { x: "", id: "spacer2", parent: "spacer1", connectorLine: { color: "#424242", width: 1, caps: { end: { type: "", size: 0 } }, }, },
+      //       { x: "Guru BP/BK", id: "GBPK", parent: "spacer2" },
+      //       { x: "Wakil Kelas X IPA", id: "WKXIPA", parent: "spacer2" },
+      //       { x: "Wakil Kelas X IPS", id: "WKXIPS", parent: "spacer2" },
+      //       { x: "Wakil Kelas XI IPA", id: "WKXIIPA", parent: "spacer2" },
+      //       { x: "Wakil Kelas XI IPS", id: "WKXIIPS", parent: "spacer2" },
+      //       { x: "", id: "spacer3", parent: "spacer2" },
+      //       { x: "Guru", id: "GURU", parent: "spacer3" },
+      //       { x: "", id: "spacer4", parent: "spacer3" },
+      //       { x: "Penjaga Sekolah", id: "PS", parent: "spacer4" },
+      //       { x: "", id: "spacer5", parent: "spacer4" },
+      //       { x: "Siswa/Siswi", id: "SIS", parent: "spacer5" },
+      //       { x: "Satpam Sekolah", id: "SS", parent: "spacer4" },
+      //       { x: "Operator Sekolah", id: "OS", parent: "spacer3" },
+      //       { x: "Wakil Kelas XII IPA", id: "WKXIIIPA", parent: "spacer2" },
+      //       { x: "Wakil Kelas XII IPS", id: "WKXIIIPS", parent: "spacer2" },
+      //       { x: "Koord Lab. IPA", id: "KLI", parent: "spacer2" },
+      //       { x: "Koord Lab. Komp", id: "KLK", parent: "spacer2" },
+      //       { x: "Koord Perpustakaan", id: "KP", parent: "spacer2" },
+      //       { x: "Wakasek Bid. Kesiswaan", id: "WBK", parent: "spacer1", label: { width: 250 }, }, {
+      //         x: "Wakasek Bid. Humas",
+      //         id: "WBH",
+      //         parent: "spacer1",
+      //         label: {
+      //           width: 250
+      //         },
+      //       },
+      //       { x: "Kepala Tata Usaha", id: "KPT", parent: "KS" },
+
+      //     ],
+      //   },
+      // ],
     });
   }, [chartData, dataAll]);
 
   return (
     <div>
-      <h1 className="text-center mb-4">STRUKTUR ORGANISASI</h1>
-      <div id="chartDiv1" style={
+      <h1 className="text-center mb-4">STRUKTUR ORGANISASI SMA</h1>
+      {dataAll.length > 0 ? <div id="chartDiv1" style={
         {
           width: "100%",
           height: "800px",
-          backgroundColor: "gold"
+          // backgroundColor: "gold"
         }
       }>
-      </div>
+      </div> : <div className="sweet-loading" style={{
+        alignItems: "center", justifyContent: "center", display: "flex", width: "100%",
+        height: "800px",
+      }} >
+
+        <RingLoader
+          color={color}
+          loading={loading}
+          size={50}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+
+        />
+      </div>}
+
 
       <div className="bg-gray-100 min-h-screen flex items-center justify-center" >
         <DeskripsiTugas />
@@ -353,7 +416,7 @@ const OrganizationalChart = () => {
               </tr>
             </tbody>
           </table>
-          
+
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>Close</Button>

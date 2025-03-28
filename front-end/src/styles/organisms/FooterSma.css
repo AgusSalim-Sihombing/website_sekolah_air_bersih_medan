@@ -12,3 +12,15 @@
     background-color:rgba(3, 29, 68, 1);
     color: white;
 }
+
+@media (max-width: 480px) {
+    .body-footer-sma{
+        background-color: rgba(3, 29, 68, 1);
+        color: white;
+        padding: 10px;
+        font-size: 12px;
+    }
+    h5{
+        font-size: 12px;
+    }
+}

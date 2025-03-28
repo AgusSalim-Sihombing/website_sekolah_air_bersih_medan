@@ -13,8 +13,12 @@ const loginAdminSma = async (req, res) => {
         if (rows.length === 0) {
             return res.status(404).json({ message: "User not found" });
         }
-
         const user = rows[0];
+
+        if (user.status !== "active") {
+            return res.status(403).json({ message: "Akun tidak aktif. Hubungi administrator." });
+        }
+
         const match = await bcrypt.compare(password, user.password);
 
         if (!match) {

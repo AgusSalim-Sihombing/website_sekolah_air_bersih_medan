@@ -24,7 +24,7 @@ const FooterSma = () => {
                         <h5>Unit Lainnya :</h5>
                         <ul className="list-unstyled">
                             <li>SMP</li>
-                            <li>SMA</li>
+                            <li><a href="/sma">SMA</a></li>
                             <li>SMK</li>
                         </ul>
                     </div>

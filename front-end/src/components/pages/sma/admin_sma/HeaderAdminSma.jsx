@@ -3,8 +3,10 @@ import "../../../../styles/admin/HeaderAdmin.css"
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import * as Icon from 'react-bootstrap-icons';
+import { useNavigate } from "react-router-dom";
 
 const HeaderAdminSma = ({ title }) => {
+    const navigate = useNavigate();
     const [id, setId] = useState("");
     const [user, setUser] = useState("");
     const [showDropdown, setShowDropdown] = useState(false); // State untuk menampilkan card
@@ -30,6 +32,11 @@ const HeaderAdminSma = ({ title }) => {
             setUser("")
         }
     };
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        navigate("/")
+    }
 
 
     // Fungsi untuk menangani klik di luar dropdown
@@ -65,8 +72,18 @@ const HeaderAdminSma = ({ title }) => {
                 {showDropdown && (
                     <div className="profile-dropdown">
                         <ul>
-                            <li><Icon.GearFill /> Setting Profile</li>
-                            <li><Icon.BoxArrowRight /> Logout</li>
+                            <li>
+                                <div style={{ gap: "10px", display: "flex", alignItems: "center" }}>
+                                    <><Icon.Gear /></>
+                                    <a href="/admin-sma/profile-admin-sma" style={{ color: 'inherit',textDecoration:"none" }}> Profile Setting</a>
+
+                                </div>
+                            </li>
+                            <li><div onClick={handleLogout} style={{ gap: "10px", display: "flex", alignItems: "center" }}>
+                                <Icon.BoxArrowRight />
+                                <>Logout</>
+                            </div>
+                            </li>
                         </ul>
                     </div>
                 )}

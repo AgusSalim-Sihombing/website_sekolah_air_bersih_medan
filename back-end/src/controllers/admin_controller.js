@@ -80,6 +80,8 @@ const getAdmin = async (req, res) => {
 
 };
 
+
+
 const getAdminPhoto = async (req, res) => {
     try {
         const { id } = req.params; // Ambil ID admin dari parameter URL

@@ -113,7 +113,7 @@ const TableAdminSma = () => {
 
     const handleToggleStatus = async (id) => {
         try {
-            await axios.put(`http://localhost:3001/api/admin-sma/toggle-status-admin-sma/${id}`);
+            await axios.put(`http://localhost:3001/api/admin-sma//toogle-status-admin-sma/${id}`);
             getAdmins();
         } catch (error) {
             console.error("Gagal mengubah status:", error);
@@ -134,9 +134,15 @@ const TableAdminSma = () => {
         <div className="container mt-4">
             <h5 className="mb-3">Tabel Admin</h5>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <Button variant="primary" onClick={() => setShowAddModal(true)} style={{ marginBottom: "10px" }}>
-                    <Icon.PersonAdd /> Tambah Admin
+
+                <Button
+                    variant="primary"
+                    onClick={() => setShowAddModal(true)}
+                    style={{ marginBottom: "20px" }}
+                >
+                    <Icon.PersonAdd /> Tambahkan Admin
                 </Button>
+
                 <div style={{ display: "flex", gap: "20px" }}>
 
                     <Icon.Filter size={24} style={{ cursor: "pointer", color: "#007bff" }} onClick={handleSortById} />

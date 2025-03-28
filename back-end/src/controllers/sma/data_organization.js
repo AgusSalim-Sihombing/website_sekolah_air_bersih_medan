@@ -15,4 +15,4 @@ const  getDataOrganization = async (req, res) => {
 
 module.exports = {
     getDataOrganization
-}
+} 

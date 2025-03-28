@@ -35,6 +35,8 @@ const io = socketIo(server, {
 
 //Total Siswa Tahunan
 let lastDataTotalSiswaTahunan = [];
+let lastDataTotalSiswaSmaBulanan = [];
+
 setInterval(async () => {
     try {
         const [rows] = await db.query("SELECT * FROM total_siswa_tahunan");
@@ -46,7 +48,20 @@ setInterval(async () => {
     } catch (error) {
         console.error("Gagal mengambil data:", error);
     }
-}, 4000); // Cek setiap 4 detik
+}, 1000); // Cek setiap 1 detik
+
+setInterval(async () => {
+    try {
+        const [rows] = await db.query("SELECT * FROM total_siswa_sma_bulanan");
+
+        if (JSON.stringify(rows) !== JSON.stringify(lastDataTotalSiswaTahunan)) {
+            lastDataTotalSiswaSmaBulanan = rows;
+            io.emit("updateDataSma", rows); // Kirim data baru ke frontend
+        }
+    } catch (error) {
+        console.error("Gagal mengambil data:", error);
+    }
+}, 2000); // Cek setiap 2 detik
 
 
 

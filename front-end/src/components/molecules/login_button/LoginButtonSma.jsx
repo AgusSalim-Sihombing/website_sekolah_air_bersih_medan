@@ -5,6 +5,8 @@ import axios from "axios";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import PulseLoader from "react-spinners/PulseLoader";
+
 
 const LoginButtonSma = ({ onClick }) => {
     const [id, setId] = useState("");
@@ -16,6 +18,8 @@ const LoginButtonSma = ({ onClick }) => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    let [color, setColor] = useState("#ffffff");
 
     useEffect(() => {
         function simulateNetworkRequest() {
@@ -63,7 +67,15 @@ const LoginButtonSma = ({ onClick }) => {
                 console.log("Login failed", response.data);
             }
         } catch (error) {
-            setErrorMessage({ username: "", password: "Username atau password salah" });
+            if (error.response) {
+                if (error.response.status === 403) {
+                    setErrorMessage({ username: "", password: "Akun tidak aktif. Hubungi administrator." });
+                } else {
+                    setErrorMessage({ username: "", password: "Username atau password salah" });
+                }
+            } else {
+                setErrorMessage({ username: "", password: "Terjadi kesalahan. Coba lagi nanti." });
+            }
         } finally {
             setLoading(false);
         }
@@ -72,7 +84,7 @@ const LoginButtonSma = ({ onClick }) => {
     return (
         <div>
             <ActionButton textButton="Login" onClick={handleShow} type="button" />
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} style={{zIndex:"9999"}}>
                 <Modal.Header closeButton>
                     <Modal.Title>User Admin Login</Modal.Title>
                 </Modal.Header>
@@ -109,7 +121,17 @@ const LoginButtonSma = ({ onClick }) => {
                         disabled={isLoading}
                         onClick={!isLoading ? handleLogin : null}
                     >
-                        {isLoading ? 'Loading…' : 'Login'}
+                        {isLoading ? <div className="sweet-loading" >
+
+                            <PulseLoader
+                                color={color}
+                                loading={isLoading}
+                                size={5}
+                                aria-label="Loading Spinner"
+                                data-testid="loader"
+
+                            />
+                        </div> : 'Login'}
                     </Button>
                 </Modal.Footer>
             </Modal>

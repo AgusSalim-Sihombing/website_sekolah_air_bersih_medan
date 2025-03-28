@@ -9,7 +9,7 @@ import "../../../../../../styles/admin/chart/PerkembanganSiswa.css"
 
 
 
-import TotalSiswaTable from './TableTotalSiswaTahunan';
+import TotalSiswaTable from '../../manajemen_data_sekolah_sma/data_siswa/grafik_siswa_sma/tabel/TableTotalSiswaTahunan';
 
 const socket = io("http://localhost:3001");
 
@@ -105,7 +105,6 @@ const PerkembanganTotalSiswa = () => {
                 </Row>
 
             </Container>
-            <TotalSiswaTable />
         </div>
 
     );

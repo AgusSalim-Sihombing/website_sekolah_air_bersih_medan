@@ -1,0 +1,100 @@
+.costum-navbar-sma {
+    background-color: rgba(3, 29, 68, 1);
+    font-size: 20px;
+
+}
+
+.header-sma {
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+    color: white;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* overflow: hidden; */
+}
+
+
+
+.header-sma .navbar-nav .nav-link,
+.header-sma .navbar-brand {
+    color: white !important;
+}
+
+
+.header-sma .dropdown-item:hover {
+    background-color: #FFD700;
+    color: white !important;
+
+}
+
+.toogle-sma {
+    background-color: white;
+    color: white;
+}
+
+.button {
+    right: 0;
+}
+
+
+.navbar-nav .nav-link.active,
+.navbar-nav .dropdown-item.active {
+    font-weight: bold;
+    color: #FFD700 !important;
+    border-bottom: 2px solid #FFD700;
+}
+
+@media screen and (max-width: 480px) {
+    .costum-navbar-sma {
+        font-size: 16px;
+        padding: 10px;
+
+        /* Font lebih kecil di layar kecil */
+    }
+
+    .header-sma {
+        flex-direction: column;
+        text-align: left;
+    }
+
+
+    /* .navbar-nav {
+        display: none;
+        
+        flex-direction: column;
+        width: 100%;
+        background-color: rgba(3, 29, 68, 1);
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        padding: 10px 0;
+    } */
+
+    /* .navbar-nav {
+        display: flex;
+        flex-direction: column;
+        width: 100px;
+        background-color: rgba(3, 29, 68, 1);
+        position: relative;
+        padding: 10px 0;
+        left: 0;
+    } */
+
+    .navbar-nav.active {
+        display: flex;
+        /* Tampilkan menu saat toggle diklik */
+    }
+
+    .header-sma .navbar-nav .nav-link {
+        padding: 12px;
+        display: block;
+        width: 100%;
+    }
+
+    .toogle-sma {
+        display: block;
+    }
+}

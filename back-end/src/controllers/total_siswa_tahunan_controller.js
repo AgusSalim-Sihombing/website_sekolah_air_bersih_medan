@@ -39,7 +39,7 @@ const updateTotalSiswaTahunan = async (req, res) => {
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: "Data tidak ditemukan" });
-        } 
+        }
 
         res.json({ message: "Data berhasil diperbarui!" });
     } catch (error) {
@@ -83,10 +83,14 @@ const disableToogleTotalSiswaTahunan = async (req, res) => {
 }
 
 
+
+
+
 module.exports = {
     getTotalSiswaTahunan,
     addTotalSiswaTahunan,
     updateTotalSiswaTahunan,
     deleteTotalSiswaTahunan,
-    disableToogleTotalSiswaTahunan
+    disableToogleTotalSiswaTahunan,
+   
 }

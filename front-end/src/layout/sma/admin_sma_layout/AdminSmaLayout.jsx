@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet} from "react-router-dom";
 
 import "../../../styles/admin/AdminLayout.css"
 import SidebarAdminSma from "../../../components/pages/sma/admin_sma/SideBarAdminSma";
@@ -7,6 +7,7 @@ import HeaderAdminSma from "../../../components/pages/sma/admin_sma/HeaderAdminS
 
 const AdminSmaLayout = () => {
     const [pageTitle, setPageTitle] = useState("Dashboard");
+    
     return (
         
         <div className="dashboard-container">

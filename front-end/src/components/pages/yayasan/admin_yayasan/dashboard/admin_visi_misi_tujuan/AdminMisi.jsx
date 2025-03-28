@@ -144,11 +144,7 @@ const AdminMisi = () => {
                     className="btn btn-update mt-3 "
                     onClick={updateMisi}
                 >
-                    {isLoading ? "Loading.." 
-                    :<div style={{display:"flex", alignItems:"center", gap:"5px", justifyContent:"center"}}>
-                        <text>Update Misi</text>
-                        <Icon.SendDashFill/>
-                        </div>}
+                    {isLoading ? "Loading.." : "Update Tujuan"}
                 </button>
 
             </div>

@@ -1,3 +1,182 @@
-.costum{
-    height: 450px;
+/* .vmt .card {
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.vmt .card:hover {
+    transform: scale(1.02);
+}
+
+.vmt .card-header {
+    background-color: rgba(3, 29, 68, 1);
+    color: white;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px 10px 10px 10px;
+}
+
+.vmt .card-body {
+    padding: 20px;
+    font-size: 16px;
+} */
+/* 
+.costum {
+    height: 250px;
+}
+
+.vmt .card-header {
+    background-color: rgb(0, 68, 170);
+    color: white;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px 10px 10px 10px;
+}
+
+
+
+
+@media (max-width: 768px) {
+
+    .vmt .card {
+        margin: 0 auto;
+        width: 300px;
+        padding: 10px;
+    }
+
+    .justify-content-center{
+        display: inline-block;
+    }
+
+    
+
+    .vmt .card-title {
+        font-size: 20px;
+    }
+
+    .vmt .card-body {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .vmt .card {
+        width: 100%;
+    }
+
+    .costum{
+        height: auto;
+    }
+
+    .vmt .card-title {
+        font-size: 20px;
+    }
+
+    .vmt .card-body {
+        font-size: 15px;
+    }
+} */
+
+/* Swiper Custom */
+.mySwiper {
+    width: 100%;
+    padding: 20px;
+
+}
+
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 320px;
+}
+
+
+
+/* Tablet Mode: 3D Carousel */
+.swiper-slide .card {
+    width: 100%;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile Mode: Full Screen */
+.mobile-card {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0px 10px 5px rgba(2, 2, 103, 0.1);
+    text-align: justify;
+    font-size: 14px;
+    /* background: red; */
+}
+
+
+/* .mobile-content {
+    font-size: 18px;
+} */
+
+/* Untuk Desktop */
+@media (min-width: 1025px) {
+    .vmt .row {
+        display: flex;
+        justify-content: center;
+
+    }
+
+    .desktop {
+        width: 100%;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+        height: 350px;
+    }
+}
+
+/* Untuk Tablet */
+@media (max-width: 1024px) {
+    .vmt .row {
+        display: none;
+        /* Sembunyikan grid normal di tablet */
+    }
+
+    .mySwiper {
+        background-color: gold;
+        padding: 30px;
+        border-radius: 10px;
+    }
+
+    .swiper-slide {
+        width: 100%;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Untuk Mobile */
+@media (max-width: 768px) {
+    .swiper-slide {
+        width: 100%;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .mySwiper {
+        background-color: gold;
+        padding: 20px;
+        border-radius: 10px;
+    }
 }

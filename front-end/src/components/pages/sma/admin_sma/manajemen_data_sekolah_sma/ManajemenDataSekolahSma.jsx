@@ -1,88 +1,73 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-// import * as XLSX from "xlsx";
+import DataGuru from "./data_guru/DataGuru";
+import DataSiswaSma from "./data_siswa/DataSiswaSma";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
+import GrafikSiswaSma from "./data_siswa/grafik_siswa_sma/GrafikSiswaSma";
+import DataKelasSma from "./data_siswa/DataKelas";
 
 const ManajemenDataSekolahSma = () => {
-    const [file, setFile] = useState(null);
-    const [data, setData] = useState([]);
-
-    useEffect(() => {
-        fetchExcelData();
-    }, []);
-
-    const fetchExcelData = async () => {
-        try {
-            const response = await axios.get("http://localhost:3001/api/admin-sma/get-excel-data");
-            setData(response.data);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
-
-    const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
-    };
-
-    const handleUpload = async () => {
-        if (!file) {
-            alert("Pilih file terlebih dahulu!");
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append("file", file);
-
-        try {
-            await axios.post("http://localhost:3001/api/admin-sma/upload-excel", formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
-            alert("Upload sukses!");
-            fetchExcelData();
-        } catch (error) {
-            console.error("Upload error:", error);
-        }
-    };
-
-    const handleDelete = async (id) => {
-        try {
-            await axios.delete(`http://localhost:3001/api/admin-sma/delete-excel-data/${id}`);
-            fetchExcelData();
-        } catch (error) {
-            console.error("Error deleting data:", error);
-        }
-    };
+    const location = useLocation();
 
     return (
         <div>
-            <h2>Manajemen Data Sekolah SMA</h2>
-            <input type="file" accept=".xlsx" onChange={handleFileChange} />
-            <button onClick={handleUpload}>Upload</button>
+            <div>
+                <div >
+                    {/* Header Kedua */}
+                    <div className="header-second" style={{
+                        backgroundColor: "rgba(242, 242, 300, 1)",
+                        width: "calc(100% - 320px)",
+                        display: "flex",
+                        gap: "20px",
+                        position: "fixed",
+                        zIndex: "1",
+                        // width:"100%",
+                        height:"50px",
+                        top:"65px",
+                        padding:"20px",
+                        alignItems:"center",
+                        justifyContent:"center",
+                        borderRadius:"3"
+                    }} >
+                        <div>
+                            <Link
+                                to="/admin-sma/manajemen-data-sma/grafik-siswa-sma"
+                                className="nav-link"
+                                style={{ color: location.pathname.includes("grafik-siswa-sma") ? "#FFA500" : "black" }}
+                            >
+                                Grafik Siswa/i SMA
+                            </Link>
+                        </div>
+                        <div>
+                            <Link
+                                to="/admin-sma/manajemen-data-sma/data-siswa-sma"
+                                className="nav-link"
+                                style={{ color: location.pathname.includes("data-siswa-sma") ? "#FFA500" : "black" }}
+                            >
+                                Data Siswa/i SMA
+                            </Link>
+                        </div>
+                        <div>
+                            <Link
+                                to="/admin-sma/manajemen-data-sma/data-guru"
+                                className="nav-link"
+                                style={{ color: location.pathname.includes("data-guru") ? "#FFA500" : "black" }}
+                            >
+                                Data Guru
+                            </Link>
+                        </div>
 
-            <h3>Data Siswa</h3>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>No Induk Siswa</th>
-                        <th>Nama</th>
-                        <th>Kelas</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((item) => (
-                        <tr key={item.id}>
-                            <td>{item.id}</td>
-                            <td>{item.no_induk_siswa}</td>
-                            <td>{item.nama}</td>
-                            <td>{item.kelas}</td>
-                            <td>
-                                <button onClick={() => handleDelete(item.id)}>Hapus</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </div>
+
+                    {/* Routing untuk sub-halaman Manajemen Konten */}
+                    <div className="content-area">
+                        <Routes>
+                            <Route path="data-siswa-sma" element={<DataSiswaSma />} />
+                            <Route path="data-siswa-sma/:kelas" element={<DataKelasSma />} />
+                            <Route path="data-guru" element={<DataGuru />} />
+                            <Route path="grafik-siswa-sma" element={<GrafikSiswaSma />} />
+                        </Routes>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

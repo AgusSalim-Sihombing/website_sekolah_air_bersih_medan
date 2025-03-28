@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, Rectangle, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { io } from "socket.io-client";
-import axios from 'axios';
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -81,6 +81,7 @@ const PerkembanganSiswa = () => {
                             </BarChart>
                         </div>
                     </Col>
+                    
                     <Col>
                         <div className="chart-aligment">
                             <BarChart

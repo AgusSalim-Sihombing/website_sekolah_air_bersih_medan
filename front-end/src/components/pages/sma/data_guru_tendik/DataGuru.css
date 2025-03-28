@@ -1,0 +1,35 @@
+
+.dokumentasi-card {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.dokumentasi-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+.dokumentasi-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+    transition: transform 0.3s ease;
+}
+.dokumentasi-card:hover .dokumentasi-img {
+    transform: scale(1.1);
+}
+.btn.active {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+.row-costum{
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    display: flex;
+    
+}
+.foto{
+    display: flex;
+    justify-content: center;
+}

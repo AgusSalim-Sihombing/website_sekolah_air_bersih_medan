@@ -46,4 +46,38 @@ const deleteExcelData = async (req, res) => {
     }
 };
 
-module.exports = { uploadExcel, getExcelData, deleteExcelData };
+const deletelAllData = async (req, res) => {
+    try {
+        await pool.execute("TRUNCATE siswa");
+        res.status(200).json({ message: "All Data deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting all data:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+const updateDataSiswaSma = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { noIndukSiswa, nama, kelas } = req.body;
+
+        await pool.execute(
+            "UPDATE siswa SET no_induk_siswa = ?, nama = ?, kelas = ? WHERE id = ?",
+            [noIndukSiswa, nama, kelas, id]
+        );
+
+        res.status(200).json({ message: "Data Siswa Berhasil diperbaharui" })
+    } catch (error) {
+        console.error("error:", error)
+    }
+}
+
+
+
+module.exports = {
+    uploadExcel,
+    getExcelData,
+    deleteExcelData,
+    deletelAllData,
+    updateDataSiswaSma,
+};

@@ -4,6 +4,7 @@ import PerkembanganTotalSiswa from "./charts/PerkembanganSiswa";
 const DashboardAdminSma = () => {
     return(
         <div>
+            
             <PerkembanganTotalSiswa/>
         </div>
     )

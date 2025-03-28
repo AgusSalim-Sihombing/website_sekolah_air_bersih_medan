@@ -12,7 +12,7 @@ const Fasilitas = () => {
     }, []);
     const getFoto = async () => {
         try {
-            const response = await axios.get("http://localhost:3001/api/admin/kepala-sekolah-sma");
+            const response = await axios.get("http://localhost:3001/api/admin-sma/get-foto-kepsek-sma");
             if (response.data.length > 0) {
                 const data = response.data[0]; // Ambil data pertama
 
@@ -31,7 +31,7 @@ const Fasilitas = () => {
 
         // </div>
         <Container>
-            <h2 className="text-center mt-5 mb-4">Fasilitas Sekolah Advent jalan Air Bersih Medan</h2>
+            {/* <h2 className="text-center mt-5 mb-4">Fasilitas Sekolah Advent jalan Air Bersih Medan</h2> */}
 
             <Row className="justify-content-md-center">
                 <Col md="auto" className="mb-2 ketua-yayasan">

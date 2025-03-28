@@ -1,7 +1,7 @@
 import "../../../../styles/admin/SideBar.css"
 import { useNavigate } from "react-router-dom"
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -12,7 +12,15 @@ import {
 } from "cdbreact";
 
 
-const SidebarAdminSma = ({ setPageTitle }) => {
+
+
+const SidebarAdminSma = ({ setPageTitle = () => { } }) => {
+  const location = useLocation();
+  // const isManajemenKontenActive = location.pathname.startsWith("/admin-sma/manajemen-konten-sma");
+  // const isManajemenDataActive = location.pathname.startsWith("/admin-sma/manajemen-data-sma");
+  const isManajemenKontenActive = location.pathname.includes("/admin-sma/manajemen-konten-sma");
+  const isManajemenDataActive = location.pathname.includes("/admin-sma/manajemen-data-sma");
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -22,9 +30,6 @@ const SidebarAdminSma = ({ setPageTitle }) => {
 
   return (
     <div >
-      {/* textColor="#fff" */}
-      {/* backgroundColor="#333" */}
-      {/* prefix={<i className="fa fa-bars fa-large"></i>} */}
       <CDBSidebar
         className="sidebar"
         style={{
@@ -32,36 +37,107 @@ const SidebarAdminSma = ({ setPageTitle }) => {
           overflow: "hidden",
         }}>
         <CDBSidebarHeader>
-          <a href="/admin-sma/dashboard" className="text-decoration-none" style={{ color: 'inherit' }}>
+          <NavLink to="/admin-sma/dashboard-sma" className="text-decoration-none" style={{ color: 'inherit' }}>
             ADMIN PAGES
-          </a>
+          </NavLink>
         </CDBSidebarHeader>
 
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu className="cdb-sidebar-menu-item">
-            <NavLink to="/admin-sma/dashboard-sma" className="nav-link" onClick={() => setPageTitle("Dashboard")}>
+            {/* <NavLink
+              to="/admin-sma/dashboard-sma"
+              className="nav-link"
+              onClick={() => setPageTitle("Dashboard")}
+            >
+              <CDBSidebarMenuItem icon="home">Dashboard</CDBSidebarMenuItem>
+            </NavLink> */}
+
+            <NavLink
+              to="/admin-sma/dashboard-sma"
+              className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+              onClick={() => setPageTitle("Dashboard")}
+            >
               <CDBSidebarMenuItem icon="home">Dashboard</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink to="/admin-sma/user-admin-sma" className="nav-link" onClick={() => setPageTitle("User Admin")}>
+
+            {/* <NavLink
+              to="/admin-sma/user-admin-sma"
+              className="nav-link"
+              onClick={() => setPageTitle("User Admin")}
+            >
+              <CDBSidebarMenuItem icon="users">User Admin</CDBSidebarMenuItem>
+            </NavLink> */}
+
+            <NavLink
+              to="/admin-sma/user-admin-sma"
+              className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+              onClick={() => setPageTitle("User Admin")}
+            >
               <CDBSidebarMenuItem icon="users">User Admin</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink to="/admin-sma/manajemen-konten-sma" className="nav-link" onClick={() => setPageTitle("Manajemen Konten")}>
+
+            {/* <NavLink
+              to="/admin-sma/manajemen-konten-sma/visi-misi-tujuan"
+              className={`nav-link ${isManajemenKontenActive ? "active" : ""}`}
+              onClick={() => setPageTitle("Manajemen Konten")}
+            >
+              <CDBSidebarMenuItem icon="film">Manajemen Konten</CDBSidebarMenuItem>
+            </NavLink> */}
+
+            <NavLink
+              to="/admin-sma/manajemen-konten-sma/visi-misi-tujuan"
+              className={({ isActive }) => `nav-link ${location.pathname === "/admin-sma/manajemen-konten-sma/visi-misi-tujuan"
+                || location.pathname === "/admin-sma/manajemen-konten-sma/event-sma"
+                || location.pathname === "/admin-sma/manajemen-konten-sma/pengumuman-sma"
+                || location.pathname === "/admin-sma/manajemen-konten-sma/dokumentasi-kegiatan-sma"
+                ? "active" : ""
+                }`}
+
+              onClick={() => setPageTitle("Manajemen Konten")}
+            >
               <CDBSidebarMenuItem icon="film">Manajemen Konten</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink to="/admin-sma/manajemen-data-sma" className="nav-link" onClick={() => setPageTitle("Manajemen Data")}>
+
+            {/* <NavLink
+              to="/admin-sma/manajemen-data-sma/grafik-siswa-sma"
+              className={`nav-link ${isManajemenDataActive ? "active" : ""}`} onClick={() => setPageTitle("Manajemen Data")}>
+              <CDBSidebarMenuItem icon="database">Manajemen Data</CDBSidebarMenuItem>
+            </NavLink> */}
+
+            <NavLink
+              to="/admin-sma/manajemen-data-sma/grafik-siswa-sma"
+              className={({ isActive }) => `nav-link ${location.pathname === "/admin-sma/manajemen-data-sma/grafik-siswa-sma"
+                || location.pathname === "/admin-sma/manajemen-data-sma/data-siswa-sma"
+                || location.pathname === "/admin-sma/manajemen-data-sma/data-guru"
+                ? "active" : ""}`}
+              onClick={() => setPageTitle("Manajemen Data")}
+            >
               <CDBSidebarMenuItem icon="database">Manajemen Data</CDBSidebarMenuItem>
             </NavLink>
+
+
+
 
           </CDBSidebarMenu>
 
           <CDBSidebarHeader>
-            <a href="/admin-sma/profile-admin-sma" className="text-decoration-none" style={{ color: 'inherit' }}>
+            <NavLink to="/admin-sma/profile-admin-sma" className="text-decoration-none" style={{ color: 'inherit' }}>
               ACCOUNT
-            </a>
+            </NavLink>
           </CDBSidebarHeader>
 
+
+
           <CDBSidebarMenu className="cdb-sidebar-menu-item">
-            <NavLink to="/admin-sma/profile-admin-sma" className="nav-link" onClick={() => setPageTitle("Admin Profile")}>
+            {/* <NavLink to="/admin-sma/profile-admin-sma" className="nav-link" onClick={() => setPageTitle("Admin Profile")}>
+              <CDBSidebarMenuItem icon="user">Profile</CDBSidebarMenuItem>
+            </NavLink> */}
+
+            <NavLink
+              to="/admin-sma/profile-admin-sma"
+              className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+              onClick={() => setPageTitle("Admin Profile")}
+            >
               <CDBSidebarMenuItem icon="user">Profile</CDBSidebarMenuItem>
             </NavLink>
 
@@ -69,8 +145,8 @@ const SidebarAdminSma = ({ setPageTitle }) => {
               <CDBSidebarMenuItem icon="exclamation-circle">404 page</CDBSidebarMenuItem>
             </NavLink>
 
-            <CDBSidebarMenuItem icon="arrow-left" className="logout" >
-              <div onClick={handleLogout}>Logout</div>
+            <CDBSidebarMenuItem icon="arrow-left" className="logout" onClick={handleLogout}>
+              Logout
             </CDBSidebarMenuItem>
 
           </CDBSidebarMenu>

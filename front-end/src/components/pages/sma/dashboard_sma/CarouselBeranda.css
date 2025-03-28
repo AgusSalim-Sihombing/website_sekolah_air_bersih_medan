@@ -1,0 +1,53 @@
+.carousel-3d {
+    max-width: 1400px;
+    /* Atur lebar carousel */
+    max-height: 500px;
+    /* Atur tinggi carousel */
+    margin: auto;
+    /* Pusatkan carousel */
+    overflow: hidden;
+    /* Hindari gambar keluar dari batas */
+}
+
+.carousel-3d .carousel-inner {
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-3d .carousel-item {
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-3d img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Pastikan gambar selalu memenuhi area */
+    aspect-ratio: 16/9;
+    /* Pastikan aspek rasio tetap */
+    border-radius: 5px;
+    /* Opsional: Membuat sudut lebih halus */
+}
+
+/* 📱 Mobile View */
+@media (max-width: 480px) {
+    .carousel-3d {
+        max-width: 90%;
+        /* Kurangi ukuran carousel agar tidak terlalu besar */
+        max-height: 250px;
+        /* Kurangi tinggi carousel di layar kecil */
+    }
+}
+
+/* 📲 Tablet Mobile */
+@media (max-width: 780px) {
+    .carousel-3d {
+        max-width: 95%;
+        /* Biarkan carousel mengambil seluruh lebar layar */
+        max-height: 200px;
+        /* Kurangi tinggi lebih lanjut untuk layar kecil */
+        
+    }
+}
+

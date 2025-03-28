@@ -14,17 +14,18 @@ const AdminProfileSma = () => {
     useEffect(() => {
         getFoto();
     }, []);
-
     const getFoto = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/admin/photo/${adminId}`, { responseType: 'blob' });
+            const response = await axios.get("http://localhost:3001/api/admin/kepala-sekolah-sma");
+            if (response.data.length > 0) {
+                const data = response.data[0]; // Ambil data pertama
 
-            if (response.data) {
-                const imageUrl = URL.createObjectURL(response.data);
-                setFoto(imageUrl);
+                if (data.foto) {
+                    setFoto(`data:image/jpeg;base64,${data.foto}`); // Set foto dari Base64
+                }
             }
         } catch (error) {
-            console.error("Gagal mengambil foto:", error);
+            console.error("Gagal mengambil data:", error);
         }
     };
 
@@ -80,7 +81,7 @@ const AdminProfileSma = () => {
             <h6 className="text-center mt-5 mb-4">Id :{id ? id : ".."}</h6>
             <Row className="justify-content-md-center">
                 <Col md="auto" className="mb-2 ketua-yayasan">
-                    {foto ? <Image src={foto} fluid alt="Ketua Yayasan" /> : <p>Tidak ada foto</p>}
+                    {foto ? <Image src={foto} fluid alt="admin" /> : <p>Memuat Foto...</p>}
 
                     <input type="file" onChange={(e) => setFile(e.target.files[0])} />
                     <Button variant="primary" onClick={handleUpload} className="mt-2">Upload Foto</Button>

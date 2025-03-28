@@ -1,0 +1,10 @@
+.detail-event-home{
+    padding: 20px;
+}
+
+.gambar {
+    padding: 50px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
