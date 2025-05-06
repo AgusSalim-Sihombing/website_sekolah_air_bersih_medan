@@ -88,18 +88,74 @@ const addGuru = async (req, res) => {
     }
 }
 
-const updateGuru = async (req, res) => {
-    const { id } = req.params;
-    const { nama, email, no_hp, alamat, mata_pelajaran } = req.body;
+// const updateGuru = async (req, res) => {
 
+//     try {
+//         const { id } = req.params;
+//         const { nama, email, no_hp, alamat, mata_pelajaran } = req.body;
+//         const foto = req.file ? req.file.buffer : null;
+
+//         //ambil gambar lama
+//         const [rows] = await pool.execute("SELECT foto FROM guru WHERE id = ?", [id]);
+//         if (rows.length === 0) {
+//             return res.status(404).json({ error: "Dokumentasi tidak ditemukan!" });
+//         }
+
+//         const fotoLama = rows[0].foto; // Ambil gambar lama dari database
+//         const fotoFinal = foto || fotoLama; // Gunakan gambar baru jika ada, jika tidak tetap pakai gambar lama
+
+//         await pool.execute(
+//             "UPDATE guru SET nama = ?, email = ?, no_hp = ?, alamat = ?, mata_pelajaran = ?, foto = ? WHERE id = ?",
+//             [nama, email, no_hp, alamat, mata_pelajaran, fotoFinal, id]
+//         );
+//         return res.json({ message: "Data guru berhasil diperbarui" });
+//     } catch (error) {
+//         return res.status(500).json({ error: error.message });
+//     }
+// };
+
+// Perbaikan fungsi updateGuru
+const updateGuru = async (req, res) => {
     try {
+        const { id } = req.params;
+        const { nama, email, no_hp, alamat, mata_pelajaran } = req.body;
+        const foto = req.file ? req.file.buffer : null;
+
+        // Ambil data lama
+        const [rows] = await pool.execute("SELECT foto FROM guru WHERE id = ?", [id]);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "Data guru tidak ditemukan!" });
+        }
+
+        const fotoLama = rows[0].foto;
+        const fotoFinal = foto || fotoLama;
+
         await pool.execute(
-            "UPDATE guru SET nama = ?, email = ?, no_hp = ?, alamat = ?, mata_pelajaran = ? WHERE id = ?",
-            [nama, email, no_hp, alamat, mata_pelajaran, id]
+            "UPDATE guru SET nama = ?, email = ?, no_hp = ?, alamat = ?, mata_pelajaran = ?, foto = ? WHERE id = ?",
+            [nama, email, no_hp, alamat, mata_pelajaran, fotoFinal, id]
         );
-        return res.json({ message: "Data guru berhasil diperbarui" });
+
+        return res.status(200).json({ message: "Data guru berhasil diperbarui" });
     } catch (error) {
-        return res.status(500).json({ error: error.message });
+        console.error("Error updating guru:", error);
+        return res.status(500).json({ error: "Gagal memperbarui data guru" });
+    }
+};
+
+// Perbaikan fungsi deleteDataGuruById
+const deleteDataGuruById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [result] = await pool.execute("DELETE FROM guru WHERE id = ?", [id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Data tidak ditemukan" });
+        }
+
+        res.status(200).json({ message: "Data berhasil dihapus" });
+    } catch (error) {
+        console.error("Error deleting data:", error);
+        res.status(500).json({ message: "Gagal menghapus data" });
     }
 };
 
@@ -114,16 +170,16 @@ const deleteAllDataGuru = async (req, res) => {
     }
 };
 
-const deleteDataGuruById = async (req, res) => {
-    try {
-        const { id } = req.params;
-        await pool.execute("DELETE FROM guru WHERE id = ?", [id]);
-        res.status(200).json({ message: "Data deleted successfully" });
-    } catch (error) {
-        console.error("Error deleting data:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-};
+// const deleteDataGuruById = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         await pool.execute("DELETE FROM guru WHERE id = ?", [id]);
+//         res.status(200).json({ message: "Data deleted successfully" });
+//     } catch (error) {
+//         console.error("Error deleting data:", error);
+//         res.status(500).json({ message: "Internal server error" });
+//     }
+// };
 
 
 module.exports = {
@@ -134,7 +190,8 @@ module.exports = {
     addGuru,
     updateGuru,
     deleteAllDataGuru,
-    deleteDataGuruById
+    deleteDataGuruById,
+    upload
 }
 
 

@@ -67,7 +67,7 @@ const Events = () => {
                       {event.tanggal ? format(new Date(event.tanggal), "dd MMM yyyy", { locale: idLocale }) : "-"}
                     </small>
                   </Card.Footer>
-                  <Button onClick={() => navigate(`/sma/acara/events-detail/${event.id}`)}
+                  <Button onClick={() => navigate(`/sma/acara/events/detail-events/${event.id}`)}
                     style={{ cursor: "pointer", backgroundColor: "rgba(3, 29, 68, 1)" }}>
                     Selengkapnya
                   </Button>
@@ -86,7 +86,7 @@ const Events = () => {
               <ListGroup.Item
                 key={item.id}
                 action
-                onClick={() => navigate(`/sma/acara/detail-pengumuman/${item.id}`)}
+                onClick={() => navigate(`/sma/acara/pengumuman/detail-pengumuman/${item.id}`)}
               >
                 <strong>{item.judul}</strong>
                 <p className="mb-0 text-muted">

@@ -7,7 +7,7 @@ const InformasiPendaftaran = () => {
             <div>
                 <h6>Persyaratan :</h6>
                 <ul>
-                    <li>Sehat jasmani dan waras dikit</li>
+                    <li>Sehat jasmani dan rohani</li>
                 </ul>
             </div>
         </div>

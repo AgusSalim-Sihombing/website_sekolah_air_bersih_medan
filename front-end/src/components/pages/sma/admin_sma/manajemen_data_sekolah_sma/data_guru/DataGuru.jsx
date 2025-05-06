@@ -56,8 +56,8 @@ const DataGuru = () => {
         setShowEditModal(true);
     }
 
-    const handleFileChange = (guru) => {
-        setFormData({ ...formData, foto: guru.target.files[0] });
+    const handleFileChange = (e) => {
+        setFormData({ ...formData, foto: e.target.files[0] });
     };
 
     const handleAddGuru = async (e) => {
@@ -106,32 +106,105 @@ const DataGuru = () => {
         setShowEditModal(true)
     }
 
+    // const handleUpdate = async () => {
+    //     const updateData = new FormData();
+    //     // for (let key in formData) {
+    //     //     updateData.append(key, formData[key])
+    //     // }
+    //     updateData.append("nama", formData.nama);
+    //     updateData.append("email", formData.email);
+    //     updateData.append("no_hp", formData.no_hp);
+    //     updateData.append("alamat", formData.alamat);
+    //     updateData.append("mata_pelajaran", formData.mata_pelajaran);
+
+
+    //     if (formData.foto) {
+    //         updateData.append("foto", formData.foto);
+    //     } else {
+    //         updateData.append("fotoLama", formData.fotoLama);
+    //     }
+
+    //     try {
+    //         if (selectedDataGuru) {
+    //             await axios.put(`http://localhost:3001/api/admin-sma/data-guru/${selectedDataGuru.id}`, updateData, {
+    //                 headers: { "Content-Type": "multipart/form-data" },
+    //             });
+    //             setShowEditModal(false);
+    //             alert("Data berhasil di update :)")
+    //             getDataGuru()
+    //         } else {
+    //             await axios.put(`http://localhost:3001/api/admin-sma/data-guru`, updateData, {
+    //                 headers: { "Content-Type": "multipart/form-data" },
+    //             });
+
+    //         }
+
+    //     } catch (error) {
+    //         alert("Data Gagal  di update :(")
+    //         console.error("Gagal memperbaharui data guru :", error)
+    //     }
+    // }
+
     const handleUpdate = async () => {
-        const updateData = {
-            nama: formData.nama,
-            email: formData.email,
-            no_hp: formData.no_hp,
-            alamat: formData.alamat,
-            mata_pelajaran: formData.mata_pelajaran,
-        };
+        const updateData = new FormData();
+        updateData.append("nama", formData.nama);
+        updateData.append("email", formData.email);
+        updateData.append("no_hp", formData.no_hp);
+        updateData.append("alamat", formData.alamat);
+        updateData.append("mata_pelajaran", formData.mata_pelajaran);
 
-        try {
-            await axios.put(`http://localhost:3001/api/admin-sma/data-guru/${selectedDataGuru.id}`, updateData);
-            setShowEditModal(false);
-            alert("Data berhasil di update :)")
-            getDataGuru()
-
-        } catch (error) {
-            console.error("Gagal memperbaharui data siswa :", error)
+        if (formData.foto) {
+            updateData.append("foto", formData.foto);
         }
-    }
 
-    const handleDeleteById = async (id) => {
         try {
-            await axios.delete(`http://localhost:3001/api/admin-sma/delete-data-guru/${id}`);
+            const response = await axios.put(
+                `http://localhost:3001/api/admin-sma/data-guru/${selectedDataGuru.id}`,
+                updateData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                }
+            );
+
+            alert(response.data.message);
+            setShowEditModal(false);
             getDataGuru();
         } catch (error) {
-            console.error("Error deleting data:", error);
+            console.error("Update error:", error.response?.data);
+            alert(error.response?.data?.error || "Gagal memperbarui data guru");
+        }
+    };
+
+    // const handleDeleteById = async (id) => {
+    //     try {
+    //         await axios.delete(`http://localhost:3001/api/admin-sma/delete-data-guru/${id}`);
+    //         getDataGuru();
+    //     } catch (error) {
+    //         console.error("Error deleting data:", error);
+    //     }
+    // };
+
+    const handleDeleteById = async (id) => {
+        if (!window.confirm("Apakah Anda yakin ingin menghapus data ini?")) return;
+
+        try {
+            const response = await axios.delete(
+                `http://localhost:3001/api/admin-sma/delete-data-guru/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                }
+            );
+
+            alert(response.data.message);
+            getDataGuru();
+        } catch (error) {
+            console.error("Delete error:", error.response?.data);
+            alert(error.response?.data?.message || "Gagal menghapus data");
         }
     };
 
@@ -172,7 +245,7 @@ const DataGuru = () => {
             Email: item.email,
             No_Hp: item.no_hp,
             Alamat: item.alamat,
-            Mapel: item.mata_pelajaran
+            Mapel: item.mata_pelajaran,
         }));
 
         const ws = XLSX.utils.json_to_sheet(formattedData);
@@ -271,7 +344,7 @@ const DataGuru = () => {
                                         <Icon.Pen />
                                     </Button>
 
-                                    <Button variant="danger" onClick={() => handleDeleteById(guru.id_guru)}>
+                                    <Button variant="danger" onClick={() => handleDeleteById(guru.id)}>
                                         <Icon.Trash />
                                     </Button>
                                 </div>
@@ -311,6 +384,21 @@ const DataGuru = () => {
                         <Form.Group className="mb-3">
                             <Form.Label>Mata Pelajaran</Form.Label>
                             <Form.Control type="text" value={formData.mata_pelajaran} onChange={(e) => setFormData({ ...formData, mata_pelajaran: e.target.value })} />
+                        </Form.Group>
+
+                        <Form.Group>
+                            <Form.Label>Foto :</Form.Label>
+                            {selectedDataGuru && selectedDataGuru.foto && (
+                                <div>
+                                    <img
+                                        src={selectedDataGuru.foto}
+                                        alt="foto guru"
+                                        width="200"
+                                        height="150"
+                                        className="mb-2"
+                                    />
+                                </div>
+                            )}
                         </Form.Group>
 
                         <Form.Group className="mb-3">

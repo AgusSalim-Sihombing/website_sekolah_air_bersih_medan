@@ -1,5 +1,6 @@
 import AdminDokumentasiKegiatan from "./admin_dokumentasi_kegiatan/AdminDokumentasiKegiatan";
 import AdminEventSma from "./admin_event_sma/AdminEventSma";
+import Fasilitas from "./admin_fasilitas/Fasilitas";
 import PengumumanAdminSma from "./admin_pengumunan_sma/PengumumanAdminSma";
 import AdminVisiMisiTujuan from "./admin_visi_misi_tujuan/AdminVisiMisiTujuan";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
@@ -63,6 +64,15 @@ const ManajemenKontenSma = () => {
                                 Dokumentasi Event
                             </Link>
                         </div>
+                        <div>
+                            <Link
+                                to="/admin-sma/manajemen-konten-sma/fasilitas"
+                                className="nav-link"
+                                style={{ color: location.pathname.includes("fasilitas") ? "#FFA500" : "black" }}
+                            >
+                                Fasilitas
+                            </Link>
+                        </div>
                     </div>
 
                     {/* Routing untuk sub-halaman Manajemen Konten */}
@@ -72,6 +82,7 @@ const ManajemenKontenSma = () => {
                             <Route path="event-sma" element={<AdminEventSma />} />
                             <Route path="pengumuman-sma" element={<PengumumanAdminSma />} />
                             <Route path="dokumentasi-kegiatan-sma" element={< AdminDokumentasiKegiatan />} />
+                            <Route path="fasilitas" element={< Fasilitas />} />
                         </Routes>
                     </div>
                 </div>

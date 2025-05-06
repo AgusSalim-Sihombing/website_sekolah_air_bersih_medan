@@ -1,7 +1,7 @@
 .carousel-3d {
     max-width: 1400px;
     /* Atur lebar carousel */
-    max-height: 500px;
+    max-height: 600px;
     /* Atur tinggi carousel */
     margin: auto;
     /* Pusatkan carousel */
@@ -47,7 +47,6 @@
         /* Biarkan carousel mengambil seluruh lebar layar */
         max-height: 200px;
         /* Kurangi tinggi lebih lanjut untuk layar kecil */
-        
+
     }
 }
-

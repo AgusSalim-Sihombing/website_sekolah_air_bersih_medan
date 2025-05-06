@@ -4,8 +4,7 @@ import "./style/DataKelas.css";
 
 const DataSiswaSMA = () => {
     const navigate = useNavigate();
-
-
+    const token = localStorage.getItem("token")
     const kelasList = ["X_IPA", "X_IPS", "XI_IPA", "XI_IPS", "XII_IPA", "XII_IPS"];
 
     // const handleClick = () => {
@@ -31,7 +30,11 @@ const DataSiswaSMA = () => {
                             borderRadius:"5px",
                             cursor:"pointer"
                         }}
-                        onClick={() => navigate(`/admin-sma/manajemen-data-sma/data-siswa-sma/${kelas}`)}
+                        onClick={() => navigate(`/admin-sma/manajemen-data-sma/data-siswa-sma/${kelas}`, {
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        })}
                     >
                         <p className="text-lg font-semibold">{kelas}</p>
                     </div>

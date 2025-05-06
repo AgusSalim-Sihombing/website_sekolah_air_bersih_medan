@@ -9,7 +9,9 @@ const DetailDataKelasSma = () => {
     const { kelas } = useParams(); // Ambil kelas dari URL
     const [data, setData] = useState([]);
     const [event, setEvent] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
+    
 
     useEffect(() => {
         fetch(`${API_BASE_URL}/admin-sma/siswa-sma/${kelas}`)
@@ -17,6 +19,8 @@ const DetailDataKelasSma = () => {
             .then((data) => setData(data))
             .catch((err) => console.error("Error fetching data:", err));
     }, [kelas]);
+
+
 
 
     useEffect(() => {
@@ -36,6 +40,10 @@ const DetailDataKelasSma = () => {
         return <p className="text-center mt-5">Loading data dan detail event...</p>;
     }
 
+    const filteredData = data.filter(siswa =>
+        siswa.nama.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
 
     return (
         <Container className="mt-4">
@@ -44,10 +52,11 @@ const DetailDataKelasSma = () => {
 
                     <div className="p-5">
                         <h2 className="text-xl font-bold mb-4">Data Siswa {kelas}</h2>
+                        <h5>Wali Kelas : </h5>
                         <table className="w-full border-collapse border border-gray-400">
                             <thead>
                                 <tr className="bg-gray-200">
-                                    <th className="border p-2">ID</th>
+                                    <th className="border p-2">No.</th>
                                     <th className="border p-4">Nama</th>
                                     <th className="border p-2">Nis</th>
                                     <th className="border p-2">Jenis Kelamin</th>
@@ -57,7 +66,7 @@ const DetailDataKelasSma = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.map((siswa) => (
+                                {filteredData.map((siswa) => (
                                     <tr key={siswa.id} className="text-center">
                                         <td className="border p-2">{siswa.id}</td>
                                         <td className="border p-4">{siswa.nama}</td>
@@ -78,7 +87,7 @@ const DetailDataKelasSma = () => {
                         <h4>Event Terkini</h4>
                         <ListGroup>
                             {event.map((item) => (
-                                <ListGroup.Item key={item.id} action onClick={() => navigate(`/sma/acara/events-detail/${item.id}`)}>
+                                <ListGroup.Item key={item.id} action onClick={() => navigate(`/sma/acara/events/detail-events/${item.id}`)}>
                                     <strong>{item.nama_event}</strong>
                                     {/* <p className="mb-0">{item.tanggal ? format(new Date(item.tanggal), "dd MMM yyyy", { locale: idLocale }) : "-"}</p> */}
                                 </ListGroup.Item>

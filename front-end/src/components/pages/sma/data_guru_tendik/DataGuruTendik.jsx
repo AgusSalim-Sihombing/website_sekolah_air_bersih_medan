@@ -17,6 +17,7 @@ const DataGuruTendik = () => {
     const [selectedData, setSelectedData] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10; // 5 baris * 2 kolom per baris
+    const token = localStorage.getItem("token")
 
     useEffect(() => {
         getDataGuru();
@@ -59,7 +60,11 @@ const DataGuruTendik = () => {
             <Row className="row-costum">
                 {currentItems.map((item, index) => (
                     <Col key={item.id} md={5} className="mb-4 foto">
-                        <div className="card dokumentasi-card" onClick={() => navigate(`/sma/database/data-guru-tendik/${item.id}`)}>
+                        <div className="card dokumentasi-card" onClick={() => navigate(`/sma/database/data-guru-tendik/${item.id}`,{
+                             headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        })}>
                             {item.foto ? (
                                 <img src={item.foto} alt={item.nama} className="card-img-top dokumentasi-img" />
                             ) : (

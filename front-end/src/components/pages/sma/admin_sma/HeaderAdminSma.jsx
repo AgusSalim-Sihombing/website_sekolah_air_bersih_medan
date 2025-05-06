@@ -11,19 +11,31 @@ const HeaderAdminSma = ({ title }) => {
     const [user, setUser] = useState("");
     const [showDropdown, setShowDropdown] = useState(false); // State untuk menampilkan card
     const dropdownRef = useRef(null); // Untuk deteksi klik di luar
-
+    const token = localStorage.getItem("token")
 
     useEffect(() => {
-        getUserAdmin();
-    })
+        getUserAdmin()
+        // Ambil data dari localStorage
+        const storedId = localStorage.getItem("id");
+        const storedUsername = localStorage.getItem("username");
+
+        if (storedId && storedUsername) {
+            setId(storedId);
+            setUser(storedUsername);
+        }
+    }, []);
 
     const getUserAdmin = async () => {
         try {
-            const response = await axios.get("http://localhost:3001/api/admin-sma/get-admin-sma");
+            const response = await axios.get("http://localhost:3001/api/admin-sma/get-admin-sma", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
             if (response.data.length > 0) {
                 const data = response.data[0];
                 setUser(data.username)
-                setId(data.id)
             } else {
                 setUser("")
             }
@@ -35,6 +47,9 @@ const HeaderAdminSma = ({ title }) => {
 
     const handleLogout = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("role");
         navigate("/")
     }
 
@@ -75,7 +90,7 @@ const HeaderAdminSma = ({ title }) => {
                             <li>
                                 <div style={{ gap: "10px", display: "flex", alignItems: "center" }}>
                                     <><Icon.Gear /></>
-                                    <a href="/admin-sma/profile-admin-sma" style={{ color: 'inherit',textDecoration:"none" }}> Profile Setting</a>
+                                    <a href="/admin-sma/profile-admin-sma" style={{ color: 'inherit', textDecoration: "none" }}> Profile Setting</a>
 
                                 </div>
                             </li>

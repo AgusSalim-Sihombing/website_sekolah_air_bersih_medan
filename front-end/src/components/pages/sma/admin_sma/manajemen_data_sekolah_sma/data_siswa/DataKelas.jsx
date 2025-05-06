@@ -19,6 +19,8 @@ const DataKelasSma = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedData, setSelectedData] = useState(null)
+    const token = localStorage.getItem("token")
+
     const [formData, setFormData] = useState({
         nama: "",
         nis: "",
@@ -35,7 +37,11 @@ const DataKelasSma = () => {
 
     const getDataSiswaSma = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/admin-sma/siswa-sma/${kelas}`);
+            const response = await axios.get(`${API_BASE_URL}/admin-sma/siswa-sma/${kelas}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             console.log
             // setData(response.data)
             setData(Array.isArray(response.data) ? response.data : []);
@@ -74,7 +80,11 @@ const DataKelasSma = () => {
         };
 
         try {
-            await axios.put(`http://localhost:3001/api/admin-sma/siswa-sma/${selectedData.id}`, updateData);
+            await axios.put(`http://localhost:3001/api/admin-sma/siswa-sma/${selectedData.id}`, updateData, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             setShowEditModal(false);
             alert("Data berhasil di update :)")
             getDataSiswaSma()
@@ -86,10 +96,16 @@ const DataKelasSma = () => {
     const handleDelete = async (id) => {
         if (window.confirm("Apakah Anda yakin ingin menghapus data siswa ini ?")) {
             try {
-                await axios.delete(`http://localhost:3001/api/admin-sma/siswa-sma/${id}`);
+                await axios.delete(`http://localhost:3001/api/admin-sma/siswa-sma/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                alert("data berhasil di hapus")
                 getDataSiswaSma();
             } catch (error) {
                 console.error("Gagal menghapus data siswa :", error)
+                alert("gagal memghapus data siswa!")
             }
         }
     }
@@ -227,7 +243,7 @@ const DataKelasSma = () => {
 
             <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Event</Modal.Title>
+                    <Modal.Title>Edit Data</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>

@@ -1,4 +1,71 @@
 const pool = require("../../database/database_connection");
+const xlsx = require("xlsx");
+const moment = require("moment");
+
+const uploadExcel = async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: "File is required" });
+    }
+
+    // try {
+    //     const workbook = xlsx.read(req.file.buffer, { type: "buffer" });
+    //     const sheetName = workbook.SheetNames[0];
+    //     const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+    //     for (const row of data) {
+    //         await pool.execute(
+    //             "INSERT INTO siswa_sma (nama, nis, jenis_kelamin, kelas, tanggal_lahir, alamat) VALUES (?,?,?,?,?,?)",
+    //             [row["nama"], row["nis"], row["jenis_kelamin"], row["kelas"], row["tanggal_lahir"], row["alamat"]]
+    //         );
+    //     }
+
+    //     res.status(201).json({ message: "File uploaded and data inserted successfully" });
+    // } catch (error) {
+    //     console.error("Error processing Excel file:", error);
+    //     res.status(500).json({ message: "Internal server error" });
+    // }
+
+    try {
+        const workbook = xlsx.read(req.file.buffer, { type: "buffer" });
+        const sheetName = workbook.SheetNames[0];
+        const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName], { raw: false });
+
+        for (const row of data) {
+            let tanggalLahir = row["tanggal_lahir"];
+
+            // Cek apakah tanggal dalam format angka (Excel serial date)
+            if (!isNaN(tanggalLahir)) {
+                const parsedDate = xlsx.SSF.parse_date_code(tanggalLahir);
+                tanggalLahir = moment(`${parsedDate.y}-${parsedDate.m}-${parsedDate.d}`).format("YYYY-MM-DD");
+            } else {
+                // Format ulang jika bukan angka
+                tanggalLahir = moment(new Date(tanggalLahir)).format("YYYY-MM-DD");
+            }
+
+            await pool.execute(
+                "INSERT INTO siswa_sma (nama, nis, jenis_kelamin, kelas, tanggal_lahir, alamat) VALUES (?,?,?,?,?,?)",
+                [row["nama"], row["nis"], row["jenis_kelamin"], row["kelas"], tanggalLahir, row["alamat"]]
+            );
+        }
+
+        res.status(201).json({ message: "File uploaded and data inserted successfully" });
+    } catch (error) {
+        console.error("Error processing Excel file:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+const getDataSiswaSma = async (req, res) => {
+    try {
+        const [rows] = await pool.execute(
+            "SELECT * FROM siswa_sma"
+        );
+        return res.json(rows);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+}
+
 
 const getDataSiswaByKelas = async (req, res) => {
     const { kelas } = req.params; // Ambil kelas dari URL parameter
@@ -61,9 +128,22 @@ const hapusSiswa = async (req, res) => {
     }
 };
 
+const deletelAllData = async (req, res) => {
+    try {
+        await pool.execute("TRUNCATE siswa_sma");
+        res.status(200).json({ message: "All Data deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting all data:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 module.exports = {
+    uploadExcel,
+    getDataSiswaSma,
     getDataSiswaByKelas,
     tambahSiswa,
     updateSiswa,
-    hapusSiswa
+    hapusSiswa,
+    deletelAllData
 };

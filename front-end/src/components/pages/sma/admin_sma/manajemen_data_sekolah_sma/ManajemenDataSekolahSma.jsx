@@ -20,12 +20,12 @@ const ManajemenDataSekolahSma = () => {
                         position: "fixed",
                         zIndex: "1",
                         // width:"100%",
-                        height:"50px",
-                        top:"65px",
-                        padding:"20px",
-                        alignItems:"center",
-                        justifyContent:"center",
-                        borderRadius:"3"
+                        height: "50px",
+                        top: "65px",
+                        padding: "20px",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: "3"
                     }} >
                         <div>
                             <Link
@@ -59,7 +59,7 @@ const ManajemenDataSekolahSma = () => {
 
                     {/* Routing untuk sub-halaman Manajemen Konten */}
                     <div className="content-area">
-                        <Routes>
+                        <Routes>    
                             <Route path="data-siswa-sma" element={<DataSiswaSma />} />
                             <Route path="data-siswa-sma/:kelas" element={<DataKelasSma />} />
                             <Route path="data-guru" element={<DataGuru />} />

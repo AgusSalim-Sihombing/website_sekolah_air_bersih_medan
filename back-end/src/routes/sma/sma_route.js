@@ -12,31 +12,41 @@ const pengumumanSmaControllers = require("../../controllers/sma/pengumuan_contro
 const totatalSiswaSmaBulanan = require("../../controllers/sma/total_siswa_sma_bulanan_controllers");
 const dataSiswaSma = require("../../controllers/sma/data_siswa_sma_controllers")
 const dokumentasiController = require("../../controllers/sma/admin_dokumentasi_kegiatan")
+const FasilitasController = require("../../controllers/sma/fasilitas_controller")
+const { verifyToken, checkAdminOwnership, checkSuperAdmin } = require("../../middleware/auth.js")
 const router = express.Router();
 
 //admin
 router.post("/login-admin-sma", adminSmaControllers.loginAdminSma);
-router.post("/add-admin-sma", adminSmaControllers.addAdminSma);
-router.get("/get-admin-sma", adminSmaControllers.getAdminSma);
-router.put("/update-admin-sma/:id", adminSmaControllers.updateAdminSma);
-router.put("/toogle-status-admin-sma/:id", adminSmaControllers.disableToggleStatusAdminSma);
-router.delete("/delete-admin-sma/:id", adminSmaControllers.deleteAdminSma);
+router.post("/add-admin-sma", verifyToken, checkSuperAdmin, adminSmaControllers.addAdminSma);
+router.get("/get-admin-sma", verifyToken, adminSmaControllers.getAdminSma);
+router.put("/update-admin-sma/:id", verifyToken, checkSuperAdmin, adminSmaControllers.updateAdminSma);
+router.put("/toogle-status-admin-sma/:id", verifyToken, adminSmaControllers.disableToggleStatusAdminSma);
+router.delete("/delete-admin-sma/:id", verifyToken, checkSuperAdmin, adminSmaControllers.deleteAdminSma);
 
 //data-excel-siswa
-router.post("/upload-excel", upload.single("file"), excelControllers.uploadExcel);
-router.get("/get-excel-data", excelControllers.getExcelData);
-router.put("/update-data-siswa-sma/:id", excelControllers.updateDataSiswaSma)
-router.delete("/delete-excel-data/:id", excelControllers.deleteExcelData);
-router.delete("/delete-all-data-siswa", excelControllers.deletelAllData);
+router.post("/upload-excel", verifyToken, upload.single("file"), excelControllers.uploadExcel);
+router.get("/get-excel-data", verifyToken, excelControllers.getExcelData);
+router.put("/update-data-siswa-sma/:id", verifyToken, excelControllers.updateDataSiswaSma)
+router.delete("/delete-excel-data/:id", verifyToken, excelControllers.deleteExcelData);
+
 
 //data-guru
-router.post("/upload-excel-guru", upload.single("file"), dataGuru.uploadExcelGuru);
-router.get("/get-data-guru", dataGuru.getDataGuru);
-router.get("/get-data-guru/:id", dataGuru.getDataGuruById)
-router.post("data-guru", dataGuru.addGuru)
-router.put("/data-guru/:id", dataGuru.updateGuru)
-router.delete("/delete-all-guru", dataGuru.deleteAllDataGuru);
-router.delete("/delete-data-guru/:id", dataGuru.deleteDataGuruById);
+// router.post("/upload-excel-guru", upload.single("file"), dataGuru.uploadExcelGuru);
+// router.get("/get-data-guru", dataGuru.getDataGuru);
+// router.get("/get-data-guru/:id", dataGuru.getDataGuruById)
+// router.post("data-guru",  dataGuru.addGuru)
+// router.put("/data-guru/:id", dataGuru.upload.single("foto"), dataGuru.updateGuru)
+// router.delete("/delete-all-guru",  dataGuru.deleteAllDataGuru);
+// router.delete("/delete-data-guru/:id", dataGuru.deleteDataGuruById);
+
+router.post("/upload-excel-guru", verifyToken, upload.single("file"), dataGuru.uploadExcelGuru);
+router.get("/get-data-guru",  dataGuru.getDataGuru);
+router.get("/get-data-guru/:id", dataGuru.getDataGuruById);
+router.post("/data-guru", verifyToken, dataGuru.addGuru);
+router.put("/data-guru/:id", verifyToken, dataGuru.upload.single("foto"), dataGuru.updateGuru);
+router.delete("/delete-all-guru", verifyToken, dataGuru.deleteAllDataGuru);
+router.delete("/delete-data-guru/:id", verifyToken, dataGuru.deleteDataGuruById);
 
 //kepala sekolah
 router.get("/get-kata-sambutan-kepsek-sma", kepsekSmaControllers.getKataSambutan)
@@ -49,21 +59,20 @@ router.get("/events-sma/flyer/:id", eventSmaControllers.getFlyerById);
 router.put("/events-sma/:id", eventSmaControllers.updateEvent);
 router.put("/events-sma/:id/status", eventSmaControllers.updateStatus)
 router.put("/events-sma/:id/flyer", upload.single("flyer"), eventSmaControllers.updateFlyerById);
-// router.post("/events-sma", upload.single("flyer"), eventSmaControllers.addEvent);
 router.post("/events-sma", eventSmaControllers.addEvent);
 router.delete("/events-sma/:id", eventSmaControllers.deleteEvent);
 
 //Dokumentasi Kegiatan
-// router.get("/dokumentasi-kegiatan", dokumentasiKegiatan.getAllDokumentasi);
-// router.get("/dokumentasi-kegiatan/:id", dokumentasiKegiatan.getDokumentasiById);
-// router.post("/dokumentasi-kegiatan", dokumentasiKegiatan.addDokumentasi); // Fix method from PUT to POST
-// router.put("/dokumentasi-kegiatan/:id", dokumentasiKegiatan.updateDokumentasi);
-// router.delete("/dokumentasi-kegiatan/:id", dokumentasiKegiatan.deleteDokumentasi);
 router.get("/dokumentasi", dokumentasiController.getAllDokumentasi);
 router.post("/dokumentasi", dokumentasiController.addDokumentasi);
 router.put("/dokumentasi/:id", dokumentasiController.upload.single("gambar"), dokumentasiController.updateDokumentasi);
 router.delete("/dokumentasi/:id", dokumentasiController.deleteDokumentasi);
 
+//Fasilitas
+router.get("/fasilitas", FasilitasController.getAllFasilitas);
+router.post("/fasilitas", FasilitasController.addFasilitas);
+router.put("fasilitas/:id", FasilitasController.upload.single("gambar_fasilitas"), FasilitasController.updateFasilitas);
+router.delete("/fasilitas/:id", FasilitasController.deleteFasilitas);
 
 
 // Routes for announcements
@@ -79,10 +88,13 @@ router.get("/total-sma-bulanan", totatalSiswaSmaBulanan.getTotalSiswaBulanan);
 
 
 //Data Siswa Kelas X
+router.post("/upload-excel-sma", upload.single("file"), dataSiswaSma.uploadExcel);
+router.get("/get-siswa-sma", dataSiswaSma.getDataSiswaSma);
 router.get("/siswa-sma/:kelas", dataSiswaSma.getDataSiswaByKelas);
 router.post('/siswa-sma', dataSiswaSma.tambahSiswa);
-router.put('/siswa-sma/:id', dataSiswaSma.updateSiswa);
+router.put('/siswa-sma/:id',  dataSiswaSma.updateSiswa);
 router.delete('/siswa-sma/:id', dataSiswaSma.hapusSiswa);
+router.delete("/delete-all-data-siswa", dataSiswaSma.deletelAllData);
 
 
 module.exports = router;

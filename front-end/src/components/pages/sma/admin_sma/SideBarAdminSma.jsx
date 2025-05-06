@@ -90,6 +90,7 @@ const SidebarAdminSma = ({ setPageTitle = () => { } }) => {
                 || location.pathname === "/admin-sma/manajemen-konten-sma/event-sma"
                 || location.pathname === "/admin-sma/manajemen-konten-sma/pengumuman-sma"
                 || location.pathname === "/admin-sma/manajemen-konten-sma/dokumentasi-kegiatan-sma"
+                || location.pathname === "/admin-sma/manajemen-konten-sma/fasilitas"
                 ? "active" : ""
                 }`}
 

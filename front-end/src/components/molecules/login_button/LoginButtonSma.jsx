@@ -57,11 +57,13 @@ const LoginButtonSma = ({ onClick }) => {
                 password,
             });
 
-            if (response.status === 200) {
+
+            if (response.status === 200 || response.data.status === "active") {
                 console.log("Success", response.data);
                 localStorage.setItem("token", response.data.token);
                 localStorage.setItem("id", response.data.id);
                 localStorage.setItem("username", response.data.username);
+                localStorage.setItem("role", response.data.role)
                 navigate("/admin-sma/dashboard-sma");
             } else {
                 console.log("Login failed", response.data);
@@ -84,7 +86,7 @@ const LoginButtonSma = ({ onClick }) => {
     return (
         <div>
             <ActionButton textButton="Login" onClick={handleShow} type="button" />
-            <Modal show={show} onHide={handleClose} style={{zIndex:"9999"}}>
+            <Modal show={show} onHide={handleClose} style={{ zIndex: "9999" }}>
                 <Modal.Header closeButton>
                     <Modal.Title>User Admin Login</Modal.Title>
                 </Modal.Header>

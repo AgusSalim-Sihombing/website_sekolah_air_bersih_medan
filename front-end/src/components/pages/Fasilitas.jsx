@@ -1,55 +1,111 @@
 import React, { useEffect, useState } from "react"
-import { Container, Row, Col, Image } from 'react-bootstrap';
 import axios from "axios"
-import JajaranPengurus from "../molecules/JajaranPengurus";
-
+import { Modal } from "react-bootstrap";
+import { Download } from "react-bootstrap-icons";
 
 const Fasilitas = () => {
-    const [foto, setFoto] = useState(null)
+    const [fasilitas, setFasilitas] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedFasilitas, setSelectedFasilitas] = useState(null);
 
     useEffect(() => {
-        getFoto();
+        getFasilitas();
     }, []);
-    const getFoto = async () => {
-        try {
-            const response = await axios.get("http://localhost:3001/api/admin-sma/get-foto-kepsek-sma");
-            if (response.data.length > 0) {
-                const data = response.data[0]; // Ambil data pertama
 
-                if (data.foto) {
-                    setFoto(`data:image/jpeg;base64,${data.foto}`); // Set foto dari Base64
-                }
-            }
+    const getFasilitas = async () => {
+        try {
+            const res = await axios.get("http://localhost:3001/api/admin-sma/fasilitas");
+            setFasilitas(res.data);
         } catch (error) {
-            console.error("Gagal mengambil data:", error);
+            console.error("Error fetching data:", error);
         }
     };
+
+    const handleShowModal = (fasilitas) => {
+        setSelectedFasilitas(fasilitas);
+        setShowModal(true);
+    };
+
+    const handleDownload = () => {
+        if (selectedFasilitas) {
+            const link = document.createElement("a");
+            link.href = selectedFasilitas.gambar_fasilitas; // URL gambar
+            link.download = selectedFasilitas.nama_fasilitas || "fasilitas"; // Nama file
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    };
+
     return (
-        // <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
-        //     <h1 className="text-xl font-bold text-center">Fasilitas Advent Jalan Air Bersih Medan</h1>
-        //     {foto && <img src={foto} alt="Kepala Sekolah" className="w-32 h-32 rounded-full mx-auto my-4" />}
+        <div className="container">
+            <h2 className="text-center mb-4">Dokumentasi Kegiatan</h2>
+            <div className="row">
+                {fasilitas.map((item) => (
+                    <div key={item.id} className="col-md-4 mb-4">
+                        <div className="card fasilitas-card" onClick={() => handleShowModal(item)}>
+                            <img
+                                src={item.gambar_fasilitas}
+                                alt={item.nama_fasilitas}
+                                className="card-img-top fasilitas-img"
+                            />
+                            <div className="card-body text-center">
+                                <h5 className="card-title">{item.nama_fasilitas}</h5>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
 
-        // </div>
-        <Container>
-            {/* <h2 className="text-center mt-5 mb-4">Fasilitas Sekolah Advent jalan Air Bersih Medan</h2> */}
+            {/* Modal Detail Gambar */}
+            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Detail Fasilitas</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="text-center">
+                    {selectedFasilitas && (
+                        <>
+                            <img
+                                src={selectedFasilitas.gambar_fasilitas}
+                                alt={selectedFasilitas.nama_fasilitas}
+                                className="img-fluid"
+                            />
+                            <h5 className="mt-3">{selectedFasilitas.nama_fasilitas}</h5>
+                            {/* Ikon Download */}
+                            <button className="btn btn-primary mt-2" onClick={handleDownload}>
+                                <Download size={20} className="me-2" />
+                                Download Gambar
+                            </button>
+                        </>
+                    )}
+                </Modal.Body>
+            </Modal>
 
-            <Row className="justify-content-md-center">
-                <Col md="auto" className="mb-2 ketua-yayasan">
-                    <Image src={foto} fluid alt="Ketua Yayasan" />
-                    
-                </Col>
-                <Col md="auto" className="mb-5">
-                    <Image src="https://placehold.co/300x400" fluid alt="Pengawas Yayasan" />
-                    
-                </Col>
-                <Col md="auto" className="mb-4">
-                    <Image src="https://placehold.co/300x400" fluid alt="Anggota Pengawas Yayasan" />
-                    
-                </Col>
-            </Row>
-        </Container>
-
-        // <JajaranPengurus/>
+            {/* CSS untuk mengatur ukuran gambar & efek hover */}
+            <style>
+                {`
+                .fasilitas-card {
+                    cursor: pointer;
+                    transition: transform 0.3s ease;
+                }
+                .fasilitas-card:hover {
+                    transform: scale(1.05);
+                    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+                }
+                .fasilitas-img {
+                    width: 250px;
+                    height: 150px;
+                    object-fit: cover;
+                    display: block;
+                    margin: 0 auto;
+                    transition: transform 0.3s ease;
+                }
+                .fasilitas-card:hover .fasilitas-img {
+                    transform: scale(1.1);
+                }
+                `}
+            </style>
+        </div>
     );
 }
 
