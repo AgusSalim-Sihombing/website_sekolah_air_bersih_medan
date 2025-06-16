@@ -4,6 +4,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import idLocale from "date-fns/locale/id";
 import { Download } from "react-bootstrap-icons"; // Import ikon download
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
 
 const DokumentasiKegiatan = () => {
     const [dokumentasi, setDokumentasi] = useState([]);

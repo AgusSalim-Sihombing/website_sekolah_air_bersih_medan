@@ -4,6 +4,7 @@ import { Card, Container } from "react-bootstrap";
 import axios from "axios";
 import { format } from "date-fns";
 import idLocale from "date-fns/locale/id";
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
 
 const PengumumanSma = () => {
     const [pengumuman, setPengumuman] = useState([]);
@@ -14,7 +15,7 @@ const PengumumanSma = () => {
     }, []);
 
     const fetchPengumuman = async () => {
-        const response = await axios.get("http://localhost:3001/api/admin-sma/pengumuman-sma");
+        const response = await axios.get(`${API_BASE_URL}/admin-sma/pengumuman-sma`);
         setPengumuman(response.data);
     };
 
@@ -30,10 +31,9 @@ const PengumumanSma = () => {
                 >
                     <Card.Body style={{ flex: 1 }}>
                         <Card.Title>{item.judul}</Card.Title>
-                        <Card.Text className="text-muted">
-                            {item.tanggal ? format(new Date(item.tanggal), "dd MMM yyyy", { locale: idLocale }) : "-"}
+                        <Card.Text className="text-muted"> Tanggal Publish Pengumuman:
+                            {item.tanggal_rilis ? format(new Date(item.tanggal_rilis), "dd MMM yyyy", { locale: idLocale }) : "-"}
                         </Card.Text>
-                        <Card.Text className="text-truncate">{item.isi}</Card.Text>
                     </Card.Body>
                 </Card>
             ))}

@@ -1,69 +1,114 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Image, Button } from 'react-bootstrap';
-import axios from 'axios';
-import "../../../../../styles/molecules/JajaranPengurus.css"
+import React, { useEffect, useState } from "react";
+import {
+  Container,
+  Card,
+  Row,
+  Col,
+  Form,
+  Image,
+  Button,
+} from "react-bootstrap";
+import { FaUserCircle } from "react-icons/fa";
 
-const AdminProfile = () => {
-    const [foto, setFoto] = useState(null);
-    const [file, setFile] = useState(null);
-    const adminId = 1; // Ganti dengan ID admin yang sesuai
+const AdminProfileSma = () => {
+  const [id, setId] = useState("");
+  const [user, setUser] = useState("");
+  const [role, setRole] = useState("");
+  const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [title, setTitle] = useState("Administrator");
+  const [language, setLanguage] = useState("English");
 
-    useEffect(() => {
-        getFoto();
-    }, []);
+  useEffect(() => {
+    const storedId = localStorage.getItem("id");
+    const storedUsername = localStorage.getItem("username");
+    const storedRole = localStorage.getItem("role");
 
-    const getFoto = async () => {
-        try {
-            const response = await axios.get(`http://localhost:3001/api/admin/photo/${adminId}`, { responseType: 'blob' });
+    if (storedId && storedUsername) {
+      setId(storedId);
+      setUser(storedUsername);
+      setRole(storedRole || "Administrator");
+      setEmail(`${storedUsername}@example.com`);
+      setFullName("John Doe");
+    }
+  }, []);
 
-            if (response.data) {
-                const imageUrl = URL.createObjectURL(response.data);
-                setFoto(imageUrl);
-            }
-        } catch (error) {
-            console.error("Gagal mengambil foto:", error);
-        }
-    };
+  return (
+    <Container className="py-5">
+      <Card className="p-4 shadow-sm">
+        <Row>
+          <Col md={4} className="text-center">
+            <Image
+              src="https://www.gravatar.com/avatar/?d=mp&s=150"
+              roundedCircle
+              width={150}
+              height={150}
+              className="mb-3"
+            />
+            <h4>{fullName}</h4>
+            <p className="text-muted">
+              <a href={`mailto:${email}`}>{email}</a> - {role}
+            </p>
+            <p style={{ fontSize: "0.9rem", color: "#999" }}>
+              Avatar by <a href="https://gravatar.com">gravatar.com</a>. Or upload your own...
+            </p>
+            <div
+              style={{
+                border: "2px dashed #ccc",
+                padding: "20px",
+                borderRadius: "8px",
+                cursor: "pointer",
+                color: "#aaa",
+              }}
+            >
+              Drop your files here or <strong>click in this area</strong>
+            </div>
+          </Col>
 
-    const handleUpload = async () => {
-        if (!file) return alert("Pilih file terlebih dahulu!");
+          <Col md={8}>
+            <h5 className="mb-3">Account</h5>
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>Username</Form.Label>
+                <Form.Control value={user} readOnly />
+              </Form.Group>
 
-        const formData = new FormData();
-        formData.append("foto", file);
+              <Form.Group className="mb-3">
+                <Form.Label>Email <span className="text-danger">*</span></Form.Label>
+                <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              </Form.Group>
 
-        try {
-            await axios.post(`http://localhost:3001/api/admin/post-photo/${adminId}`, formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
-            getFoto(); // Refresh foto setelah upload
-        } catch (error) {
-            console.error("Gagal mengunggah foto:", error);
-        }
-    };
+              <Form.Group className="mb-3">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" value="********" readOnly />
+              </Form.Group>
 
-    const handleDelete = async () => {
-        try {
-            await axios.delete(`http://localhost:3001/api/admin/delete-photo/${adminId}`);
-            setFoto(null); // Hapus foto dari state
-        } catch (error) {
-            console.error("Gagal menghapus foto:", error);
-        }
-    };
+              <Form.Group className="mb-3">
+                <Form.Label>Full name <span className="text-danger">*</span></Form.Label>
+                <Form.Control value={fullName} onChange={(e) => setFullName(e.target.value)} />
+              </Form.Group>
 
-    return (
-        <Container>
-            <h2 className="text-center mt-5 mb-4">Jajaran Pengurus Yayasan</h2>
-            <Row className="justify-content-md-center">
-                <Col md="auto" className="mb-2 ketua-yayasan">
-                    {foto ? <Image src={foto} fluid alt="Ketua Yayasan" /> : <p>Tidak ada foto</p>}
+              <Form.Group className="mb-3">
+                <Form.Label>Title</Form.Label>
+                <Form.Control value={title} onChange={(e) => setTitle(e.target.value)} />
+              </Form.Group>
 
-                    <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-                    <Button variant="primary" onClick={handleUpload} className="mt-2">Upload Foto</Button>
-                    <Button variant="danger" onClick={handleDelete} className="mt-2 ms-2">Hapus Foto</Button>
-                </Col>
-            </Row>
-        </Container>
-    );
+              <Form.Group className="mb-3">
+                <Form.Label>Language</Form.Label>
+                <Form.Select value={language} onChange={(e) => setLanguage(e.target.value)}>
+                  <option>English</option>
+                  <option>Bahasa Indonesia</option>
+                  <option>Spanish</option>
+                </Form.Select>
+              </Form.Group>
+
+              <Button variant="primary">Update Profile</Button>
+            </Form>
+          </Col>
+        </Row>
+      </Card>
+    </Container>
+  );
 };
 
-export default AdminProfile;
+export default AdminProfileSma;

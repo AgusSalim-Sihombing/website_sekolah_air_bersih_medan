@@ -8,22 +8,32 @@ import { useNavigate } from "react-router-dom";
 const HeaderAdminSma = ({ title }) => {
     const navigate = useNavigate();
     const [id, setId] = useState("");
-    const [user, setUser] = useState("");
+    const [username, setUsername] = useState("");
+    const [role, setRole] = useState("")
+
     const [showDropdown, setShowDropdown] = useState(false); // State untuk menampilkan card
     const dropdownRef = useRef(null); // Untuk deteksi klik di luar
     const token = localStorage.getItem("token")
 
     useEffect(() => {
-        getUserAdmin()
+        if (token) {
+            getUserAdmin();
+        }
+    }, [token]);
+
+    useEffect(() => {
         // Ambil data dari localStorage
         const storedId = localStorage.getItem("id");
         const storedUsername = localStorage.getItem("username");
+        const storedRole = localStorage.getItem("role");
 
         if (storedId && storedUsername) {
             setId(storedId);
-            setUser(storedUsername);
+            setUsername(storedUsername);
+            setRole(storedRole || "-");
         }
     }, []);
+
 
     const getUserAdmin = async () => {
         try {
@@ -32,16 +42,9 @@ const HeaderAdminSma = ({ title }) => {
                     Authorization: `Bearer ${token}`
                 }
             });
-
-            if (response.data.length > 0) {
-                const data = response.data[0];
-                setUser(data.username)
-            } else {
-                setUser("")
-            }
         } catch (error) {
             console.error("Gagal mengambil data", error)
-            setUser("")
+            setUsername("")
         }
     };
 
@@ -80,8 +83,9 @@ const HeaderAdminSma = ({ title }) => {
                 </div>
 
                 <div className="name-admin">
-                    {user ? user : ".."}
+                    {username ? username : ".."}
                 </div>
+
 
                 {/* Dropdown Card */}
                 {showDropdown && (

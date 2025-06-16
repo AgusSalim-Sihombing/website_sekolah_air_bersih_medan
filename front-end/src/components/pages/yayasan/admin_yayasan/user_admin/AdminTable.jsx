@@ -8,6 +8,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { format } from "date-fns";
 import idLocale from "date-fns/locale/id";
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
 
 const AdminTable = () => {
     const [data, setData] = useState([]);
@@ -54,7 +55,7 @@ const AdminTable = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post("http://localhost:3001/api/admin/add-admin", formData);
+            const response = await axios.post(`${API_BASE_URL}/admin/add-admin`, formData);
             alert(response.data.message); // Notifikasi sukses
             setShowModal(false);
             setFormData({ username: "", password: "", confirmPassword: "" });
@@ -71,7 +72,7 @@ const AdminTable = () => {
 
     const getAdmins = async () => {
         try {
-            const response = await axios.get("http://localhost:3001/api/admin/get-admin");
+            const response = await axios.get(`${API_BASE_URL}/admin/get-admin`);
             setData(response.data);
         } catch (error) {
             console.error("Gagal mengambil data admin:", error);
@@ -88,7 +89,7 @@ const AdminTable = () => {
 
     const handleUpdate = async () => {
         try {
-            await axios.put(`http://localhost:3001/api/admin//update-admin/${selectedAdmin.id}`, {
+            await axios.put(`${API_BASE_URL}/admin//update-admin/${selectedAdmin.id}`, {
                 username,
                 role,
                 status,
@@ -103,7 +104,7 @@ const AdminTable = () => {
     const handleDelete = async (id) => {
         if (window.confirm("Apakah Anda yakin ingin menghapus admin ini?")) {
             try {
-                await axios.delete(`http://localhost:3001/api/admin//delete-admin/${id}`);
+                await axios.delete(`${API_BASE_URL}/admin//delete-admin/${id}`);
                 getAdmins();
             } catch (error) {
                 console.error("Gagal menghapus admin:", error);
@@ -113,7 +114,7 @@ const AdminTable = () => {
 
     const handleToggleStatus = async (id) => {
         try {
-            await axios.put(`http://localhost:3001/api/admin/toggle-status/${id}`);
+            await axios.put(`${API_BASE_URL}/admin/toggle-status/${id}`);
             getAdmins();
         } catch (error) {
             console.error("Gagal mengubah status:", error);

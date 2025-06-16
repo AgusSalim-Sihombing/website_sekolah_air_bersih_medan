@@ -3,94 +3,98 @@ import AdminEventSma from "./admin_event_sma/AdminEventSma";
 import Fasilitas from "./admin_fasilitas/Fasilitas";
 import PengumumanAdminSma from "./admin_pengumunan_sma/PengumumanAdminSma";
 import AdminVisiMisiTujuan from "./admin_visi_misi_tujuan/AdminVisiMisiTujuan";
-import { Routes, Route, Link, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import React from "react";
+import { Nav } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
 const ManajemenKontenSma = () => {
+
     const location = useLocation();
+
     return (
         <div>
-            <div>
-                {/* Header Kedua */}
-                <div>
-                    <div className="header-second" style={{
-                        backgroundColor: "rgba(242, 242, 300, 1)",
-                        width: "calc(100% - 320px)",
-                        display: "flex",
-                        gap: "20px",
-                        position: "fixed",
-                        zIndex: "1",
-                        // width:"100%",
-                        height: "50px",
-                        top: "65px",
-                        padding: "20px",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        borderRadius: "3"
-                    }} >
-                        <div>
-                            <Link
-                                to="/admin-sma/manajemen-konten-sma/visi-misi-tujuan"
-                                className="nav-link"
-                                style={{ color: location.pathname.includes("visi-misi-tujuan") ? "#FFA500" : "black" }}
-                            >
-                                Visi-Misi-Tujuan
-                            </Link>
-                        </div>
+            {/* Tab Navigasi */}
+            <Nav
+                variant="tabs"
+                style={{
+                    backgroundColor: "rgba(242, 242, 300, 1)",
+                    position: "fixed",
+                    top: "65px",
+                    width: "calc(100% - 320px)", // Sesuaikan dengan sidebar jika ada
+                    zIndex: "1",
+                }}
+                className="px-3"
+            >
+                <Nav.Item>
+                    <Nav.Link
+                        as={NavLink}
+                        to="/admin-sma/manajemen-konten-sma/visi-misi-tujuan"
+                        style={{
+                            color: location.pathname.includes("visi-misi-tujuan") ? "#FFA500" : "black",
+                        }}
+                    >
+                        Visi-Misi-Tujuan
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link
+                        as={NavLink}
+                        to="/admin-sma/manajemen-konten-sma/event-sma"
+                        style={{
+                            color: location.pathname.includes("event-sma") ? "#FFA500" : "black",
+                        }}
+                    >
+                        Event
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link
+                        as={NavLink}
+                        to="/admin-sma/manajemen-konten-sma/pengumuman-sma"
+                        style={{
+                            color: location.pathname.includes("pengumuman-sma") ? "#FFA500" : "black",
+                        }}
+                    >
+                        Pengumuman
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link
+                        as={NavLink}
+                        to="/admin-sma/manajemen-konten-sma/dokumentasi-kegiatan-sma"
+                        style={{
+                            color: location.pathname.includes("dokumentasi-kegiatan-sma") ? "#FFA500" : "black",
+                        }}
+                    >
+                        Dokumentasi Event
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link
+                        as={NavLink}
+                        to="/admin-sma/manajemen-konten-sma/fasilitas"
+                        style={{
+                            color: location.pathname.includes("fasilitas") ? "#FFA500" : "black",
+                        }}
+                    >
+                        Fasilitas
+                    </Nav.Link>
+                </Nav.Item>
+            </Nav>
 
-                        <div>
-                            <Link
-                                to="/admin-sma/manajemen-konten-sma/event-sma"
-                                className="nav-link"
-                                style={{ color: location.pathname.includes("event-sma") ? "#FFA500" : "black" }}
-                            >
-                                Event
-                            </Link>
-                        </div>
-                        <div>
-                            <Link
-                                to="/admin-sma/manajemen-konten-sma/pengumuman-sma"
-                                className="nav-link"
-                                style={{ color: location.pathname.includes("pengumuman-sma") ? "#FFA500" : "black" }}
-                            >
-                                Pengumuman
-                            </Link>
-                        </div>
-                        <div>
-                            <Link
-                                to="/admin-sma/manajemen-konten-sma/dokumentasi-kegiatan-sma"
-                                className="nav-link"
-                                style={{ color: location.pathname.includes("dokumentasi-kegiatan-sma") ? "#FFA500" : "black" }}
-                            >
-                                Dokumentasi Event
-                            </Link>
-                        </div>
-                        <div>
-                            <Link
-                                to="/admin-sma/manajemen-konten-sma/fasilitas"
-                                className="nav-link"
-                                style={{ color: location.pathname.includes("fasilitas") ? "#FFA500" : "black" }}
-                            >
-                                Fasilitas
-                            </Link>
-                        </div>
-                    </div>
-
-                    {/* Routing untuk sub-halaman Manajemen Konten */}
-                    <div className="content-area">
-                        <Routes>
-                            <Route path="visi-misi-tujuan" element={<AdminVisiMisiTujuan />} />
-                            <Route path="event-sma" element={<AdminEventSma />} />
-                            <Route path="pengumuman-sma" element={<PengumumanAdminSma />} />
-                            <Route path="dokumentasi-kegiatan-sma" element={< AdminDokumentasiKegiatan />} />
-                            <Route path="fasilitas" element={< Fasilitas />} />
-                        </Routes>
-                    </div>
-                </div>
+            {/* Konten berdasarkan Tab yang diklik */}
+            <div className="content-area">
+                <Routes>
+                    <Route path="visi-misi-tujuan" element={<AdminVisiMisiTujuan />} />
+                    <Route path="event-sma" element={<AdminEventSma />} />
+                    <Route path="pengumuman-sma" element={<PengumumanAdminSma />} />
+                    <Route path="dokumentasi-kegiatan-sma" element={<AdminDokumentasiKegiatan />} />
+                    <Route path="fasilitas" element={<Fasilitas />} />
+                </Routes>
             </div>
-            {/* <AdminVisiMisiTujuan />
-            <AdminEventSma /> */}
         </div>
-    )
+    );
 }
 
 export default ManajemenKontenSma;

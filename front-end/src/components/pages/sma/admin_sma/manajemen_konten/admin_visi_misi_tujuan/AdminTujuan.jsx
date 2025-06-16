@@ -1,145 +1,132 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../../../../../../styles/admin/admin_visi_misi_tujuan/AdminVisiMisiTujuan.css";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
+import "../../../../../../styles/admin/admin_visi_misi_tujuan/AdminVisiMisiTujuan.css";
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
 
 const AdminTujuan = () => {
-    const [idTujuan, setIdTujuan] = useState("");
-    const [tujuan, setTujuan] = useState({});
-    const [tujuanAll, setTujuanAll] = useState([])
-    const [isLoading, setLoading] = useState(false);
-    const [message, setMessage] = useState("")
+  const [tujuan, setTujuan] = useState("");
+  const [isLoading, setLoading] = useState(false);
+  const [message, setMessage] = useState("Belum Ada Perubahan Data");
+  const [showAddModal, setShowAddModal] = useState(false);
 
+  useEffect(() => {
+    getTujuan();
+  }, []);
 
-    useEffect(() => {
-
-        getTujuan();
-
-    }, []);
-
-    useEffect(() => {
-        function simulateNetworkRequest() {
-            return new Promise(resolve => {
-                setTimeout(resolve, 3000);
-                setMessage("Data Sedang Di Perbaharui..")
-            });
-        }
-
-        if (isLoading) {
-            simulateNetworkRequest().then(() => {
-                setLoading(false);
-                setMessage("Data Berhasil Di Perbaharui ;)")
-            });
-        }
-    }, [isLoading]);
-
-    useEffect(() => {
-        const fetchTujuanById = async () => {
-            try {
-                const response = await axios.get(`http://localhost:3001/api/admin/tujuan/${idTujuan}`);
-                setTujuan(response.data.tujuan || ""); // Mengisi textarea dengan misi yang diambil
-                // console.log(misi)
-            } catch (error) {
-                setTujuan("")
-                console.log("Tidak ada data dengan ID :", idTujuan) // setMisi([]); // Jika ID tidak ditemukan, textarea kosong
-            }
-        };
-
-        fetchTujuanById();
-    }, [idTujuan]); // Akan dipanggil setiap kali ID berubah
-
-    const getTujuan = async () => {
-        try {
-            const response = await axios.get("http://localhost:3001/api/admin/tujuan")
-            // console.log("Response dari API:", response.data);
-
-            if (Array.isArray(response.data)) {
-                const data = response.data;
-                setIdTujuan(data.id)
-                setTujuanAll(data)
-            } else {
-                setTujuanAll([])
-            }
-
-        } catch (error) {
-            console.log("Gagal Mengambil data :", error)
-            setTujuanAll([])
-        }
+  const getTujuan = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/admin/tujuan`);
+      const data = response.data[0];
+      setTujuan(data ? data.tujuan : ""); // Kosongkan jika tidak ada data
+    } catch (error) {
+      console.error("Gagal mengambil data tujuan ", error);
     }
+  };
 
-
-    const updateTujuan = async () => {
-        if (!idTujuan || !tujuan) {
-            setMessage("ID Tujuan dan Teks Tujuan harus di isi")
-            return;
-        }
-
-        try {
-            setLoading(true)
-            const response = await axios.put(`http://localhost:3001/api/admin/update-tujuan/${idTujuan}`, { tujuan: tujuan })
-            if (response.status === 200) {
-                getTujuan();
-            }
-        } catch (error) {
-            alert("Gagal memperbaharui Tujuan")
-            console.log("Error saat memperbaharui Tujuan :", error)
-        }
-
+  // Tambah data tujuan
+  const addTujuan = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`${API_BASE_URL}/admin/add-tujuan`, { tujuan });
+      alert("Tujuan berhasil ditambahkan.");
+      setShowAddModal(false);
+      getTujuan(); // Refresh data
+    } catch (error) {
+      console.error("Gagal menambahkan tujuan:", error);
     }
-
-    return (
-        <div className = "tujuan" >
-
-            <div className="card">
-                <div className="card-header">
-                    <h5 className="card-title text-center">Tujuan</h5>
-                </div>
-                <div className="card-body">
-                    <ul className="costum-list">
-                        {tujuanAll?.length > 0 ? ( // Optional Chaining agar tidak error
-                            tujuanAll.map((item, index) => (
-                                <li key={index} >
-                                    {item.tujuan}
-                                </li>
-                            ))
-                        ) : (
-                            <p>Memuat Tujuan...</p> // Pesan loading jika data masih kosong
-                        )}
-                    </ul>
-
-                </div>
-            </div>
+  };
 
 
-    <div className="form-edit">
-        <p>Masukkan Id</p>
-        <input
-            type="number"
-            placeholder="ID Tujuan"
-            value={idTujuan}
-            onChange={(e) => setIdTujuan(e.target.value)}
-        />
-        <p style={{ marginTop: "10px", bottom: "0" }}>Edit Teks Tujuan</p>
-        <textarea
-            className="form-control costum-form"
-            value={tujuan}
-            placeholder="Text Tujuan"
-            onChange={(e) => setTujuan(e.target.value)}
-            rows="5"
-        />
-        <p className="text-center mt-3">{isLoading ? message : message}</p>
-        <button
-            className="btn btn-update mt-3 "
-            onClick={updateTujuan}
-        >
-            {isLoading ? "Loading.." : "Update Tujuan"}
-        </button>
+  // Perbarui Tujuan
+  const updateTujuan = async () => {
+    setLoading(true);
+    setMessage("Data Sedang Diperbaharui...");
 
+    try {
+      const response = await axios.put(`${API_BASE_URL}/admin/update-tujuan`, { tujuan });
+      if (response.status === 200) {
+        await getTujuan();
+        setMessage("Data Berhasil Diperbaharui ;)");
+      }
+    } catch (error) {
+      console.error("Error saat memperbarui tujuan:", error);
+      setMessage("Gagal Memperbaharui Data!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteTujuan = async () => {
+    const confirmDelete = window.confirm("Apakah Anda yakin ingin menghapus tujuan ini?");
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`${API_BASE_URL}/admin/delete-tujuan`);
+      setTujuan(""); // Kosongkan editor ReactQuill
+      alert("Tujuan berhasil dihapus.");
+      setMessage("Tujuan berhasil dihapus.");
+      getTujuan()
+    } catch (error) {
+      console.error("Gagal menghapus Tujuan :", error);
+      setMessage("Gagal menghapus Tujuan");
+    }
+  };
+
+  return (
+    <div className="tujuan">
+      <div className="card">
+        <div className="card-header">
+          <h5 className="card-title text-center">Tujuan</h5>
+        </div>
+        <div className="card-body">
+          {/* Tampilkan HTML tujuan */}
+          <div dangerouslySetInnerHTML={{ __html: tujuan }} />
+        </div>
+      </div>
+
+      <div className="form-edit">
+        <ReactQuill value={tujuan} onChange={setTujuan} className="custom-quill" />
+        <p className="text-center mt-3">{message}</p>
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          <button className="btn btn-update mt-3" onClick={updateTujuan} disabled={!tujuan || isLoading}>
+            {isLoading ? "Loading..." : "Update Tujuan"}
+          </button>
+          <Button
+            className="btn btn-update mt-3"
+            onClick={() => setShowAddModal(true)}
+            disabled={!!tujuan || isLoading}
+          >
+            Tambahkan Tujuan
+          </Button>
+          <button className="btn btn-danger mt-3" onClick={deleteTujuan} disabled={!tujuan || isLoading}>
+            Hapus Tujuan
+          </button>
+        </div>
+      </div>
+
+      {/* Modal Tambah */}
+      <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Tambah Tujuan</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={addTujuan}>
+            <Form.Group className="mb-3">
+              <Form.Label>Isi</Form.Label>
+              <ReactQuill onChange={setTujuan} required />
+            </Form.Group>
+            <Button variant="success" type="submit">Simpan</Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </div>
-        </div >
-    )
-
-
-}
+  );
+};
 
 export default AdminTujuan;

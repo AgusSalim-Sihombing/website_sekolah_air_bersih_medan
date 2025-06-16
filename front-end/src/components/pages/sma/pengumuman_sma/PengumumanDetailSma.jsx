@@ -28,24 +28,24 @@ const DetailPengumumanSma = () => {
     }
 
     return (
-        <div style={{
-            display:"flex",
-            flexDirection:"column",
-            alignItems:"center"
-        }}>
-            <h4>Detail Pengumuman</h4>
-            <Container className="p-5">
-                <Card className="p-2">
-                    <h2>{pengumuman.judul}</h2>
-                    <p className="text-muted">
-                        {pengumuman.tanggal
-                            ? format(new Date(pengumuman.tanggal), "dd MMM yyyy, HH:mm", { locale: idLocale })
-                            : "-"}
-                    </p>
-                    <p>{pengumuman.isi}</p>
-                </Card>
-            </Container>
+
+        <div
+            style={{
+                padding :"20px"
+            }}
+        >
+
+            <h2>{pengumuman.judul}</h2>
+            <p className="text-muted"> Tanggal Publish :
+                {pengumuman.tanggal
+                    ? format(new Date(pengumuman.tanggal), "dd MMM yyyy, HH:mm", { locale: idLocale })
+                    : "-"}
+            </p>
+            <div dangerouslySetInnerHTML={{ __html: pengumuman.isi }} />
+
+
         </div>
+
     );
 };
 

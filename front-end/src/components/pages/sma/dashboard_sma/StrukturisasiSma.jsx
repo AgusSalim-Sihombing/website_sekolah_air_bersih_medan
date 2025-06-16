@@ -232,7 +232,7 @@ import DeskripsiTugas from "./data/DeskripsiTugas";
 import RingLoader from "react-spinners/RingLoader";
 
 // import Loader from "../../../molecules/Loader";
-
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
 
 const OrganizationalChart = () => {
   const [chartData, setChartData] = useState([]);
@@ -249,7 +249,7 @@ const OrganizationalChart = () => {
 
   const getDataOrganization = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/api/admin/data-organisasi-cart");
+      const response = await axios.get(`${API_BASE_URL}/admin/data-organisasi-cart`);
       setDataAll(response.data);
 
       const formattedData = response.data.map((item) => {

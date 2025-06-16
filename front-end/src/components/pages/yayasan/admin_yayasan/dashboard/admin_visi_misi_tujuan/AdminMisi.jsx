@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import * as Icon from "react-bootstrap-icons"
-
 import "../../../../../../styles/admin/admin_visi_misi_tujuan/AdminVisiMisiTujuan.css"
+
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
 
 const AdminMisi = () => {
     const [idMisi, setIdMisi] = useState("");
@@ -37,7 +38,7 @@ const AdminMisi = () => {
     useEffect(() => {
         const fetchMisiById = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/api/admin/misi/${idMisi}`);
+                const response = await axios.get(`${API_BASE_URL}/admin/misi/${idMisi}`);
                 setMisi(response.data.misi || ""); // Mengisi textarea dengan misi yang diambil
                 // console.log(misi)
             } catch (error) {
@@ -51,9 +52,8 @@ const AdminMisi = () => {
 
     const getMisi = async () => {
         try {
-            const response = await axios.get("http://localhost:3001/api/admin/misi")
+            const response = await axios.get(`${API_BASE_URL}/admin/misi`)
             // console.log("Response dari API:", response.data);
-
             if (Array.isArray(response.data)) {
                 const data = response.data;
                 setIdMisi(data.id)
@@ -77,7 +77,7 @@ const AdminMisi = () => {
 
         try {
             setLoading(true)
-            const response = await axios.put(`http://localhost:3001/api/admin/update-misi/${idMisi}`, { misi: misi })
+            const response = await axios.put(`${API_BASE_URL}/admin/update-misi/${idMisi}`, { misi: misi })
             if (response.status === 200) {
                 getMisi();
             }

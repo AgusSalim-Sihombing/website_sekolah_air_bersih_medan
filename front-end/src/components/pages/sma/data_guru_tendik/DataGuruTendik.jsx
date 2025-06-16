@@ -90,7 +90,6 @@ const DataGuruTendik = () => {
                     <Pagination.Next onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} />
                 </Pagination>
             )}
-
         </Container>
     );
 };

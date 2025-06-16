@@ -36,9 +36,9 @@ const getPengumumanById = async (req, res) => {
 
 // Add a new announcement
 const addPengumuman = async (req, res) => {
-    const { judul, isi, status } = req.body;
+    const { judul, isi, status, tanggal } = req.body;
     try {
-        await pool.query("INSERT INTO pengumuman_sma (judul, isi, status) VALUES (?, ?, ?)", [judul, isi, status]);
+        await pool.query("INSERT INTO pengumuman_sma (judul, isi, status, tanggal) VALUES (?, ?, ?, ?)", [judul, isi, status, tanggal]);
         res.status(201).json({ message: "Pengumuman berhasil ditambahkan" });
     } catch (error) {
         res.status(500).json({ message: "Error menambahkan pengumuman", error });
@@ -48,9 +48,9 @@ const addPengumuman = async (req, res) => {
 // Update an announcement
 const updatePengumuman = async (req, res) => {
     const { id } = req.params;
-    const { judul, isi, status } = req.body;
+    const { judul, isi, status, tanggal } = req.body;
     try {
-        await pool.query("UPDATE pengumuman_sma SET judul = ?, isi = ?, status = ? WHERE id = ?", [judul, isi, status, id]);
+        await pool.query("UPDATE pengumuman_sma SET judul = ?, isi = ?, status = ?, tanggal = ? WHERE id = ?", [judul, isi, status, tanggal, id]);
         res.json({ message: "Pengumuman berhasil diperbarui" });
     } catch (error) {
         res.status(500).json({ message: "Error updating pengumuman", error });

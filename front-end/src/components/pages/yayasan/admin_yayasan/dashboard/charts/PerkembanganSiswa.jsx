@@ -6,10 +6,11 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import "../../../../../../styles/admin/chart/PerkembanganSiswa.css"
-
 import TotalSiswaTable from './TableTotalSiswaTahunan';
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
+const APP_SOCKET_URL = import.meta.env.VITE_REACT_APP_SOCKET_URL
 
-const socket = io("http://localhost:3001");
+const socket = io(APP_SOCKET_URL);
 
 const PerkembanganSiswa = () => {
     const [data, setData] = useState([]);
@@ -30,7 +31,7 @@ const PerkembanganSiswa = () => {
     const getTotalSiswa = async () => {
 
         try {
-            const response = await axios.get("http://localhost:3001/api/admin/total-siswa-tahunan");
+            const response = await axios.get(`${API_BASE_URL}/admin/total-siswa-tahunan`);
             updateChartData(response.data);
         } catch (error) {
             console.error("Gagal mengambil data:", error);
@@ -49,11 +50,6 @@ const PerkembanganSiswa = () => {
 
         setData(formattedData);
     }
-
-
-
-
-
     return (
         <div>
             <div className='chart-title'>

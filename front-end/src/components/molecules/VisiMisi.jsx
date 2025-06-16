@@ -184,28 +184,22 @@ const VisiMisiTujuan = () => {
   const getMisi = async () => {
     try {
       const response = await axios.get("http://localhost:3001/api/admin/misi");
-      if (Array.isArray(response.data)) {
-        setMisi(response.data);
-      } else {
-        setMisi([]);
+      if (response.data.length > 0) {
+        setMisi(response.data[0].misi);
       }
     } catch (error) {
       console.error("Gagal mengambil data:", error);
-      setMisi([]);
     }
   };
 
   const getTujuan = async () => {
     try {
       const response = await axios.get("http://localhost:3001/api/admin/tujuan");
-      if (Array.isArray(response.data)) {
-        setTujuan(response.data);
-      } else {
-        setTujuan([]);
+      if (response.data.length > 0) {
+        setTujuan(response.data[0].tujuan);
       }
     } catch (error) {
       console.error("Gagal mengambil data:", error);
-      setTujuan([]);
     }
   };
 
@@ -216,19 +210,11 @@ const VisiMisiTujuan = () => {
     },
     {
       title: "Misi",
-      content: misi.length > 0 ? (
-        <ul>{misi.map((item, index) => <li key={index}>{item.misi}</li>)}</ul>
-      ) : (
-        <Loader />
-      ),
+      content: misi ? misi : <Loader />,
     },
     {
       title: "Tujuan",
-      content: tujuan.length > 0 ? (
-        <ul>{tujuan.map((item, index) => <li key={index}>{item.tujuan}</li>)}</ul>
-      ) : (
-        <Loader />
-      ),
+      content: tujuan ? tujuan : <Loader />,
     },
   ];
 
@@ -252,7 +238,8 @@ const VisiMisiTujuan = () => {
               <SwiperSlide key={index}>
                 <div className="mobile-card">
                   <h2 className="text-center">{item.title}</h2>
-                  <div className="mobile-content">{item.content}</div>
+                  {/* <div className="mobile-content">{item.content}</div> */}
+                  <div className="card-body costum" dangerouslySetInnerHTML={{ __html: item.content }} />
                 </div>
               </SwiperSlide>
             ))}
@@ -282,7 +269,8 @@ const VisiMisiTujuan = () => {
                     <div className="card-header">
                       <h2 className="card-title text-center">{item.title}</h2>
                     </div>
-                    <div className="card-body costum">{item.content}</div>
+                    {/* <div className="card-body costum">{item.content}</div> */}
+                    <div className="card-body costum" dangerouslySetInnerHTML={{ __html: item.content }} />
                   </div>
                 </Tilt>
               </SwiperSlide>
@@ -297,7 +285,8 @@ const VisiMisiTujuan = () => {
                   <div className="card-header">
                     <h2 className="card-title text-center">{item.title}</h2>
                   </div>
-                  <div className="card-body costum">{item.content}</div>
+                  {/* <div className="card-body costum">{item.content}</div> */}
+                  <div className="card-body costum" dangerouslySetInnerHTML={{ __html: item.content }} />
                 </div>
               </div>
             ))}

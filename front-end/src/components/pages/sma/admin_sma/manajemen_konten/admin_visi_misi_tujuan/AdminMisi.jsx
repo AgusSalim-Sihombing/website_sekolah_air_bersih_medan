@@ -1,161 +1,132 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import * as Icon from "react-bootstrap-icons"
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 import "../../../../../../styles/admin/admin_visi_misi_tujuan/AdminVisiMisiTujuan.css";
-
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
 
 const AdminMisi = () => {
-    const [idMisi, setIdMisi] = useState("");
-    const [misi, setMisi] = useState({})
-    const [misiAll, setMisiAll] = useState([]);
+  const [misi, setMisi] = useState("");
+  const [isLoading, setLoading] = useState(false);
+  const [message, setMessage] = useState("Belum Ada Perubahan Data");
+  const [showAddModal, setShowAddModal] = useState(false);
 
-    const [isLoading, setLoading] = useState(false);
-    const [message, setMessage] = useState("")
+  useEffect(() => {
+    getMisi();
+  }, []);
 
-    useEffect(() => {
-
-        getMisi();
-
-    }, []);
-
-    useEffect(() => {
-        function simulateNetworkRequest() {
-            return new Promise(resolve => {
-                setTimeout(resolve, 3000);
-                setMessage("Data Sedang Di Perbaharui..")
-            });
-        }
-
-        if (isLoading) {
-            simulateNetworkRequest().then(() => {
-                setLoading(false);
-                setMessage("Data Berhasil Di Perbaharui ;)")
-            });
-        }
-    }, [isLoading]);
-
-    useEffect(() => {
-        const fetchMisiById = async () => {
-            try {
-                const response = await axios.get(`http://localhost:3001/api/admin/misi/${idMisi}`);
-                setMisi(response.data.misi || ""); // Mengisi textarea dengan misi yang diambil
-                // console.log(misi)
-            } catch (error) {
-                setMisi("")
-                console.log("Tidak ada data dengan ID :", idMisi) // setMisi([]); // Jika ID tidak ditemukan, textarea kosong
-            }
-        };
-
-        fetchMisiById();
-    }, [idMisi]); // Akan dipanggil setiap kali ID berubah
-
-    const getMisi = async () => {
-        try {
-            const response = await axios.get("http://localhost:3001/api/admin/misi")
-            // console.log("Response dari API:", response.data);
-
-            if (Array.isArray(response.data)) {
-                const data = response.data;
-                setIdMisi(data.id)
-                setMisiAll(data)
-            } else {
-                setMisiAll([])
-            }
-
-        } catch (error) {
-            console.log("Gagal Mengambil data :", error)
-            setMisiAll([])
-        }
+  const getMisi = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/admin/misi`);
+      const data = response.data[0];
+      setMisi(data ? data.misi : ""); // Kosongkan jika tidak ada data
+    } catch (error) {
+      console.error("Gagal mengambil data misi ", error);
     }
+  };
 
-
-    const updateMisi = async () => {
-        if (!idMisi || !misi) {
-            setMessage("ID Misi dan Teks Misi harus di isi")
-            return;
-        }
-
-        try {
-            setLoading(true)
-            const response = await axios.put(`http://localhost:3001/api/admin/update-misi/${idMisi}`, { misi: misi })
-            if (response.status === 200) {
-                getMisi();
-            }
-        } catch (error) {
-            alert("Gagal memperbaharui Misi")
-            console.log("Error saat memperbaharui Misi :", error)
-        }
-
+  // Tambah data misi
+  const addMisi = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`${API_BASE_URL}/admin/add-misi`, { misi });
+      alert("Misi berhasil ditambahkan.");
+      setShowAddModal(false);
+      getMisi(); // Refresh data
+    } catch (error) {
+      console.error("Gagal menambahkan misi:", error);
     }
+  };
 
-    return (
-        <div className="misi" >
 
-            <div className="card">
-                <div className="card-header">
-                    <h5 className="card-title text-center">Misi</h5>
-                </div>
-                <div className="card-body">
-                    <ul className="costum-list">
-                        {misiAll?.length > 0 ? ( // Optional Chaining agar tidak error
-                            misiAll.map((item, index) => (
-                                <li key={index} >
-                                    {item.misi}
-                                </li>
-                            ))
-                        ) : (
-                            <p>Memuat Misi...</p> // Pesan loading jika data masih kosong
-                        )}
-                    </ul>
+  // Perbarui Misi
+  const updateMisi = async () => {
+    setLoading(true);
+    setMessage("Data Sedang Diperbaharui...");
 
-                    {/* <ul className="custom-list">
-                            {misi.map((item, index) => (
-                                <li key={item.id}>
-                                    {item.misi}
-                                </li>
-                            ))}
-                        </ul> */}
+    try {
+      const response = await axios.put(`${API_BASE_URL}/admin/update-misi`, { misi });
+      if (response.status === 200) {
+        await getMisi();
+        setMessage("Data Berhasil Diperbaharui ;)");
+      }
+    } catch (error) {
+      console.error("Error saat memperbarui misi:", error);
+      setMessage("Gagal Memperbaharui Data!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-                </div>
-            </div>
-            {/* <div className="edit-visi">
-                    <input type="text" value={visi} onChange={(e) => setVisi(e.target.value)} className="input" />
-                    <button >Update</button>
-                </div> */}
+  const deleteMisi = async () => {
+    const confirmDelete = window.confirm("Apakah Anda yakin ingin menghapus misi ini?");
+    if (!confirmDelete) return;
 
-            <div className="form-edit">
-                <p>Masukkan Id</p>
-                <input
-                    type="number"
-                    placeholder="ID Misi"
-                    value={idMisi}
-                    onChange={(e) => setIdMisi(e.target.value)}
-                />
-                <p style={{ marginTop: "10px", bottom: "0" }}>Edit Teks Misi</p>
-                <textarea
-                    className="form-control costum-form"
-                    value={misi}
-                    placeholder="Text Misi"
-                    onChange={(e) => setMisi(e.target.value)}
-                    rows="5"
-                />
-                <p className="text-center mt-3">{isLoading ? message : message}</p>
-                <button
-                    className="btn btn-update mt-3 "
-                    onClick={updateMisi}
-                >
-                    {isLoading ? "Loading.."
-                        : <div style={{ display: "flex", alignItems: "center", gap: "5px", justifyContent: "center" }}>
-                            <text>Update Misi</text>
-                            <Icon.SendDashFill />
-                        </div>}
-                </button>
+    try {
+      await axios.delete(`${API_BASE_URL}/admin/delete-misi`);
+      setMisi(""); // Kosongkan editor ReactQuill
+      alert("Misi berhasil dihapus.");
+      setMessage("Misi berhasil dihapus.");
+      getMisi()
+    } catch (error) {
+      console.error("Gagal menghapus Misi :", error);
+      setMessage("Gagal menghapus Misi");
+    }
+  };
 
-            </div>
+  return (
+    <div className="misi">
+      <div className="card">
+        <div className="card-header">
+          <h5 className="card-title text-center">Misi</h5>
         </div>
-    )
+        <div className="card-body">
+          {/* Tampilkan HTML misi */}
+          <div dangerouslySetInnerHTML={{ __html: misi }} />
+        </div>
+      </div>
 
-}
+      <div className="form-edit">
+        <ReactQuill value={misi} onChange={setMisi} className="custom-quill" />
+        <p className="text-center mt-3">{message}</p>
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          <button className="btn btn-update mt-3" onClick={updateMisi} disabled={!misi || isLoading}>
+            {isLoading ? "Loading..." : "Update Misi"}
+          </button>
+          <Button
+            className="btn btn-update mt-3"
+            onClick={() => setShowAddModal(true)}
+            disabled={!!misi || isLoading}
+          >
+            Tambahkan Misi
+          </Button>
+          <button className="btn btn-danger mt-3" onClick={deleteMisi} disabled={!misi || isLoading}>
+            Hapus Misi
+          </button>
+        </div>
+      </div>
+
+      {/* Modal Tambah */}
+      <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Tambah Misi</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={addMisi}>
+            <Form.Group className="mb-3">
+              <Form.Label>Isi</Form.Label>
+              <ReactQuill onChange={setMisi} required />
+            </Form.Group>
+            <Button variant="success" type="submit">Simpan</Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </div>
+  );
+};
 
 export default AdminMisi;

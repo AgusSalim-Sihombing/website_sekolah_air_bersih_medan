@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // import AuthRoute from "./routes/RootRoutes.jsx"
 // import AdminRouth from "./routes/AdminRoute.jsx"
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthProvider } from "./auth/Auth"
 import UserLayout from './layout/yayasan/public_layout/UserLayout';
 import UserHome from './components/pages/yayasan/public_yayasan/UserHome';

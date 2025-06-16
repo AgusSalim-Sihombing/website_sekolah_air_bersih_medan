@@ -30,6 +30,10 @@ const verifyToken = (req, res, next) => {
         return res.status(401).json({ message: "Token tidak tersedia" });
     }
 
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ message: "Format token salah atau tidak tersedia" });
+    }
+
     jwt.verify(token, SECRET_KEY, (err, decoded) => {
         if (err) return res.status(403).json({ message: "Token tidak valid atau kadaluarsa" });
 
@@ -43,9 +47,10 @@ const checkAdminOwnership = (req, res, next) => {
     const requestedAdminId = req.params.id;
     const loggedInAdminId = req.user.id; // ID admin yang sedang login
 
-    if (requestedAdminId !== loggedInAdminId) {
+    if (parseInt(requestedAdminId) !== parseInt(loggedInAdminId)) {
         return res.status(403).json({ message: "Anda tidak memiliki akses untuk memodifikasi data admin lain" });
     }
+
     next();
 };
 

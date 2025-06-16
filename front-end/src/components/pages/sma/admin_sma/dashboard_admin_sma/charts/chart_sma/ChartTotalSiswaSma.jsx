@@ -5,11 +5,12 @@ import { io } from "socket.io-client";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-// import "../../../../../../styles/admin/chart/PerkembanganSiswa.css"
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
+const APP_SOCKET_URL = import.meta.env.VITE_REACT_APP_SOCKET_URL
 
 import TotalSiswaTable from './TableTotalSiswaTahunan';
 
-const socket = io("http://localhost:3001");
+const socket = io(APP_SOCKET_URL);
 
 const PerkembanganSiswa = () => {
     const [data, setData] = useState([]);

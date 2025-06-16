@@ -3,22 +3,25 @@
     justify-content: space-around;
     align-items: center;
     padding: 20px;
-    /* background-color: aqua; */
-    box-shadow: 10px;
+    background-color: rgb(244, 244, 244);
 }
 
 .misi {
+    margin-top: 20px;
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 20px;
+    background-color: rgb(227, 227, 227);
 }
 
 .tujuan {
+    margin-top: 20px;
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 20px;
+    background-color: rgb(244, 244, 244);
 }
 
 /* .input{
@@ -32,7 +35,7 @@
 
 .costum-form {
     width: 500px;
-   
+
 }
 
 .btn-update {
@@ -53,7 +56,26 @@ ul {
 }
 
 
-.input{
+.input {
     width: 50px;
-   
+
+}
+
+.custom-quill .ql-editor {
+    min-height: 200px;
+    max-width: 500px;
+    /* Tinggi minimum */
+    max-height: 300px;
+    /* Tinggi maksimum */
+    overflow-y: auto;
+    /* Scroll jika konten terlalu tinggi */
+}
+
+/* Opsional: pastikan container editor tidak resize */
+.custom-quill {
+    resize: none;
+}
+
+.custom-quill .ql-container:focus-within {
+  border-color: #218838; /* hijau lebih gelap saat fokus */
 }

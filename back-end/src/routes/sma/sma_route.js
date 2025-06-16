@@ -21,7 +21,7 @@ router.post("/login-admin-sma", adminSmaControllers.loginAdminSma);
 router.post("/add-admin-sma", verifyToken, checkSuperAdmin, adminSmaControllers.addAdminSma);
 router.get("/get-admin-sma", verifyToken, adminSmaControllers.getAdminSma);
 router.put("/update-admin-sma/:id", verifyToken, checkSuperAdmin, adminSmaControllers.updateAdminSma);
-router.put("/toogle-status-admin-sma/:id", verifyToken, adminSmaControllers.disableToggleStatusAdminSma);
+router.put("/toggle-status-admin-sma/:id", verifyToken, adminSmaControllers.disableToggleStatusAdminSma);
 router.delete("/delete-admin-sma/:id", verifyToken, checkSuperAdmin, adminSmaControllers.deleteAdminSma);
 
 //data-excel-siswa

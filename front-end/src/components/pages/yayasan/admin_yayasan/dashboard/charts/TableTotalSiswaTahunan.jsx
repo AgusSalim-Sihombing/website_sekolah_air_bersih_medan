@@ -6,6 +6,7 @@ import * as Icon from 'react-bootstrap-icons';
 import Pagination from "react-bootstrap/Pagination";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
 
 const TotalSiswaTable = () => {
     const [data, setData] = useState([]);
@@ -24,7 +25,7 @@ const TotalSiswaTable = () => {
 
     const getTotalSiswa = async () => {
         try {
-            const response = await axios.get("http://localhost:3001/api/admin/total-siswa-tahunan");
+            const response = await axios.get(`${API_BASE_URL}/admin/total-siswa-tahunan`);
             setData(response.data);
         } catch (error) {
             console.error("Gagal mengambil data:", error);
@@ -49,7 +50,7 @@ const TotalSiswaTable = () => {
 
     const handleAddSubmit = async () => {
         try {
-            await axios.post("http://localhost:3001/api/admin/total-siswa-tahunan", {
+            await axios.post(`${API_BASE_URL}/admin/total-siswa-tahunan`, {
                 tahun,
                 laki_laki: jumlahLaki,
                 perempuan: jumlahPerempuan,
@@ -64,7 +65,7 @@ const TotalSiswaTable = () => {
 
     const handleUpdate = async () => {
         try {
-            await axios.put(`http://localhost:3001/api/admin/total-siswa-tahunan/${tahun}`, {
+            await axios.put(`${API_BASE_URL}/admin/total-siswa-tahunan/${tahun}`, {
                 laki_laki: jumlahLaki,
                 perempuan: jumlahPerempuan,
             });
@@ -79,7 +80,7 @@ const TotalSiswaTable = () => {
     const handleDelete = async (tahun) => {
         if (window.confirm(`Apakah Anda yakin ingin menghapus data tahun ${tahun}?`)) {
             try {
-                await axios.delete(`http://localhost:3001/api/admin/total-siswa-tahunan/${tahun}`);
+                await axios.delete(`${API_BASE_URL}/admin/total-siswa-tahunan/${tahun}`);
                 getTotalSiswa();
             } catch (error) {
                 console.error("Gagal menghapus data:", error);
@@ -89,7 +90,7 @@ const TotalSiswaTable = () => {
 
     const handleToggleActive = async (tahun) => {
         try {
-            await axios.put(`http://localhost:3001/api/admin/total-siswa-tahunan/toggle/${tahun}`);
+            await axios.put(`${API_BASE_URL}/admin/total-siswa-tahunan/toggle/${tahun}`);
             getTotalSiswa();
         } catch (error) {
             console.error("Gagal mengubah status:", error);

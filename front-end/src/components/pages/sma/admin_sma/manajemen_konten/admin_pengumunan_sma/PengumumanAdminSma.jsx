@@ -1,59 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-
-// const PengumumanAdminSma = () => {
-//     const [pengumuman, setPengumuman] = useState([]);
-//     const [judul, setJudul] = useState("");
-//     const [isi, setIsi] = useState("");
-//     const [status, setStatus] = useState("draft");
-
-//     useEffect(() => {
-//         fetchPengumuman();
-//     }, []);
-
-//     const fetchPengumuman = async () => {
-//         const response = await axios.get("http://localhost:3001/api/admin-sma/pengumuman-sma-admin");
-//         setPengumuman(response.data);
-//     };
-
-//     const handleSubmit = async (e) => {
-//         e.preventDefault();
-//         await axios.post("http://localhost:3001/api/admin-sma/pengumuman-sma", { judul, isi, status });
-//         fetchPengumuman();
-//     };
-
-//     const handleDelete = async (id) => {
-//         await axios.delete(`http://localhost:3001/api/admin-sma/pengumuman-sma/${id}`);
-//         fetchPengumuman();
-//     };
-
-//     return (
-//         <div>
-//             <h2>Manajemen Pengumuman</h2>
-//             <form onSubmit={handleSubmit}>
-//                 <input type="text" placeholder="Judul" value={judul} onChange={(e) => setJudul(e.target.value)} required />
-//                 <textarea placeholder="Isi Pengumuman" value={isi} onChange={(e) => setIsi(e.target.value)} required />
-//                 <select value={status} onChange={(e) => setStatus(e.target.value)}>
-//                     <option value="draft">Draft</option>
-//                     <option value="published">Published</option>
-//                 </select>
-//                 <button type="submit">Simpan</button>
-//             </form>
-
-//             <h3>Daftar Pengumuman</h3>
-//             <ul>
-//                 {pengumuman.map((item) => (
-//                     <li key={item.id}>
-//                         <strong>{item.judul}</strong> ({item.status})
-//                         <button onClick={() => handleDelete(item.id)}>Hapus</button>
-//                     </li>
-//                 ))}
-//             </ul>
-//         </div>
-//     );
-// };
-
-// export default PengumumanAdminSma;
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -63,6 +7,12 @@ import * as Icon from "react-bootstrap-icons";
 import Pagination from "react-bootstrap/Pagination";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
+import { format } from "date-fns";
+import idLocale from "date-fns/locale/id";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
+
 
 const PengumumanAdminSma = () => {
     const [pengumuman, setPengumuman] = useState([]);
@@ -71,6 +21,7 @@ const PengumumanAdminSma = () => {
     const [selectedPengumuman, setSelectedPengumuman] = useState(null);
     const [judul, setJudul] = useState("");
     const [isi, setIsi] = useState("");
+    const [tanggal, setTanggal] = useState("");
     const [status, setStatus] = useState("draft");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
@@ -80,14 +31,14 @@ const PengumumanAdminSma = () => {
     }, []);
 
     const fetchPengumuman = async () => {
-        const response = await axios.get("http://localhost:3001/api/admin-sma/pengumuman-sma-admin");
-        
+        const response = await axios.get(`${API_BASE_URL}/admin-sma/pengumuman-sma-admin`);
+
         setPengumuman(response.data);
     };
 
     const handleAddPengumuman = async (e) => {
         e.preventDefault();
-        await axios.post("http://localhost:3001/api/admin-sma/pengumuman-sma", { judul, isi, status });
+        await axios.post(`${API_BASE_URL}/admin-sma/pengumuman-sma`, { judul, isi, status, tanggal });
         setShowAddModal(false);
         fetchPengumuman();
     };
@@ -97,18 +48,19 @@ const PengumumanAdminSma = () => {
         setJudul(pengumuman.judul);
         setIsi(pengumuman.isi);
         setStatus(pengumuman.status);
+        setTanggal(pengumuman.tanggal);
         setShowModal(true);
     };
 
     const handleUpdate = async () => {
-        await axios.put(`http://localhost:3001/api/admin-sma/pengumuman-sma/${selectedPengumuman.id}`, { judul, isi, status });
+        await axios.put(`${API_BASE_URL}/admin-sma/pengumuman-sma/${selectedPengumuman.id}`, { judul, isi, status, tanggal });
         setShowModal(false);
         fetchPengumuman();
     };
 
     const handleDelete = async (id) => {
         if (window.confirm("Apakah Anda yakin ingin menghapus pengumuman ini?")) {
-            await axios.delete(`http://localhost:3001/api/admin-sma/pengumuman-sma/${id}`);
+            await axios.delete(`${API_BASE_URL}/admin-sma/pengumuman-sma/${id}`);
             fetchPengumuman();
         }
     };
@@ -128,6 +80,8 @@ const PengumumanAdminSma = () => {
                     <tr>
                         <th>No</th>
                         <th>Judul</th>
+                        <th>Isi</th>
+                        <th>Tanggal Pengumuman</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -137,14 +91,28 @@ const PengumumanAdminSma = () => {
                         <tr key={index}>
                             <td>{indexOfFirstItem + index + 1}</td>
                             <td>{item.judul}</td>
+                            <td><div dangerouslySetInnerHTML={{ __html: item.isi }} /></td>
+                            <td>{item.tanggal ? format(new Date(item.tanggal), "dd MMM yyyy", { locale: idLocale }) : "-"}</td>
                             <td>{item.status}</td>
                             <td>
-                                <Button variant="primary" className="mx-1" onClick={() => handleEdit(item)}>
-                                    <Icon.Pen />
-                                </Button>
-                                <Button variant="danger" className="mx-1" onClick={() => handleDelete(item.id)}>
-                                    <Icon.Trash />
-                                </Button>
+                                <div style={{
+                                    display:"flex",
+                                    flexDirection:"row",
+                                    justifyContent:"center",
+                                    gap:"20px"
+                                }}>
+                                    <>
+                                        <Button variant="primary" className="mx-1" onClick={() => handleEdit(item)}>
+                                            Edit <Icon.Pen />
+                                        </Button>
+                                    </>
+
+                                    <>
+                                        <Button variant="danger" className="mx-1" onClick={() => handleDelete(item.id)}>
+                                            Hapus <Icon.Trash />
+                                        </Button>
+                                    </>
+                                </div>
                             </td>
                         </tr>
                     ))}
@@ -170,10 +138,21 @@ const PengumumanAdminSma = () => {
                             <Form.Label>Judul</Form.Label>
                             <Form.Control type="text" value={judul} onChange={(e) => setJudul(e.target.value)} />
                         </Form.Group>
-                        <Form.Group className="mb-3">
+                        {/* <Form.Group className="mb-3">
                             <Form.Label>Isi</Form.Label>
                             <Form.Control as="textarea" value={isi} onChange={(e) => setIsi(e.target.value)} />
+                        </Form.Group> */}
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>Isi</Form.Label>
+                            <ReactQuill value={isi} onChange={setIsi} />
                         </Form.Group>
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>Tanggal Pengumuman</Form.Label>
+                            <Form.Control type="date" value={tanggal ? format(new Date(tanggal), "yyyy-MM-dd", { locale: idLocale }) : "-"} onChange={(e) => setTanggal(e.target.value)} />
+                        </Form.Group>
+
                         <Form.Group className="mb-3">
                             <Form.Label>Status</Form.Label>
                             <Form.Select value={status} onChange={(e) => setStatus(e.target.value)}>
@@ -197,12 +176,18 @@ const PengumumanAdminSma = () => {
                     <Form onSubmit={handleAddPengumuman}>
                         <Form.Group className="mb-3">
                             <Form.Label>Judul</Form.Label>
-                            <Form.Control type="text" value={judul} onChange={(e) => setJudul(e.target.value)} required />
+                            <Form.Control type="text" onChange={(e) => setJudul(e.target.value)} required />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Isi</Form.Label>
-                            <Form.Control as="textarea" value={isi} onChange={(e) => setIsi(e.target.value)} required />
+                            <ReactQuill onChange={setIsi} required />
                         </Form.Group>
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>Tanggal Pengumuman</Form.Label>
+                            <Form.Control type="date" onChange={(e) => setTanggal(e.target.value)} />
+                        </Form.Group>
+
                         <Button variant="success" type="submit">Simpan</Button>
                     </Form>
                 </Modal.Body>

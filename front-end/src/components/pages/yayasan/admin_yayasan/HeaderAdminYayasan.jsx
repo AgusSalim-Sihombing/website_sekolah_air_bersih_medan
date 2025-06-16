@@ -3,6 +3,7 @@ import "../../../../styles/admin/HeaderAdmin.css"
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import * as Icon from 'react-bootstrap-icons';
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
 
 const HeaderAdminYayasan = ({ title }) => {
     const [id, setId] = useState("");
@@ -22,7 +23,7 @@ const HeaderAdminYayasan = ({ title }) => {
 
     const getUserAdmin = async () => {
         try {
-            const response = await axios.get("http://localhost:3001/api/admin/user-admin");
+            const response = await axios.get(`${API_BASE_URL}/admin/user-admin`);
             if (response.data.length > 0) {
                 const data = response.data[0];
                 setUser(data.username)

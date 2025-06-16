@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import axios from "axios"
 import { Modal } from "react-bootstrap";
 import { Download } from "react-bootstrap-icons";
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
 
 const Fasilitas = () => {
     const [fasilitas, setFasilitas] = useState([]);
@@ -14,7 +15,7 @@ const Fasilitas = () => {
 
     const getFasilitas = async () => {
         try {
-            const res = await axios.get("http://localhost:3001/api/admin-sma/fasilitas");
+            const res = await axios.get(`${API_BASE_URL}/admin-sma/fasilitas`);
             setFasilitas(res.data);
         } catch (error) {
             console.error("Error fetching data:", error);

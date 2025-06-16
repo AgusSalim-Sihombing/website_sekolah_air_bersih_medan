@@ -18,9 +18,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { io } from 'socket.io-client';
 const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
+const APP_SOCKET_URL = import.meta.env.VITE_REACT_APP_SOCKET_URL
 
-
-const socket = io("http://localhost:3001");
+const socket = io(APP_SOCKET_URL);
 
 const GrafikTotalSiswaBulanan = () => {
     const [data, setData] = useState([]);
@@ -44,42 +44,10 @@ const GrafikTotalSiswaBulanan = () => {
             formatChartData(response.data);
         } catch (error) {
             console.error("Gagal mengambil data:", error);
+            alert("Terjadi kesalahan saat mengambil data. Silakan reload halaman.");
         }
     };
 
-    // const formatChartData = (data) => {
-    //     const formattedData = {};
-
-    //     data.forEach((item) => {
-    //         const bulan = `Bulan ${item.bulan}-${item.tahun}`;
-
-    //         if (!formattedData[bulan]) {
-    //             formattedData[bulan] = { name: bulan };
-    //         }
-
-    //         formattedData[bulan][`${item.kelas} Laki-Laki`] = item.jumlah_laki_laki;
-    //         formattedData[bulan][`${item.kelas} Perempuan`] = item.jumlah_perempuan;
-    //     });
-
-    //     setData(Object.values(formattedData));
-    // };
-
-    // const formatChartData = (data) => {
-    //     const formattedData = {};
-
-    //     data.forEach((item) => {
-    //         const bulan = `Bulan ${item.bulan}-${item.tahun}`;
-
-    //         if (!formattedData[bulan]) {
-    //             formattedData[bulan] = { name: bulan };
-    //         }
-
-    //         // Total siswa = laki-laki + perempuan
-    //         formattedData[bulan][item.kelas] = item.jumlah_laki_laki + item.jumlah_perempuan;
-    //     });
-
-    //     setData(Object.values(formattedData));
-    // };
 
     const formatChartData = (data) => {
         const formattedData = {};
@@ -110,78 +78,8 @@ const GrafikTotalSiswaBulanan = () => {
     };
 
     return (
-        // <Container>
-        //     <h3 className='chart-title'>Perkembangan Siswa per Bulan</h3>
-        //     <Row>
-        //         <Col>
-        //             <BarChart width={1000} height={400} data={data} barSize={30}>
-        //                 <XAxis dataKey="name" />
-        //                 <YAxis />
-        //                 <Tooltip />
-        //                 <Legend />
-        //                 <Bar dataKey="X IPA Laki-Laki" fill="rgb(0,0,102)" />
-        //                 <Bar dataKey="X IPA Perempuan" fill="rgb(0,0,102)" />
-        //                 <Bar dataKey="X IPS Laki-Laki" fill="rgb(0,0,204)" />
-        //                 <Bar dataKey="X IPS Perempuan" fill="rgb(0,0,204)" />
-        //                 <Bar dataKey="XI IPA Laki-Laki" fill="rgb(0,0,255)" />
-        //                 <Bar dataKey="XI IPA Perempuan" fill="rgb(0,0,255)" />
-        //                 <Bar dataKey="XI IPS Laki-Laki" fill="rgb(0,102,0)" />
-        //                 <Bar dataKey="XI IPS Perempuan" fill="rgb(0,102,0)" />
-        //                 <Bar dataKey="XII IPA Laki-Laki" fill="rgb(0,204,0)" />
-        //                 <Bar dataKey="XII IPA Perempuan" fill="rgb(0,204,0)" />
-        //                 <Bar dataKey="XII IPS Laki-Laki" fill="rgb(0,255,0)" />
-        //                 <Bar dataKey="XII IPS Perempuan" fill="rgb(0,255,0)" />
-        //             </BarChart>
-        //         </Col>
-        //     </Row>
-        // </Container>
-        <div style={{marginTop:"60px", marginBottom:"30px"}}>
-            {/* <Container>
-                <h3 className='chart-title'>Perkembangan Total Siswa per Bulan</h3>
-                <Row>
-                    <Col>
-                        <BarChart
-                        width={1000} 
-                        height={400} 
-                        data={data}>
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            <Bar dataKey="X IPA" fill="rgb(0, 0, 80)" />
-                            <Bar dataKey="X IPS" fill="rgb(0, 0, 120)" />
-                            <Bar dataKey="XI IPA" fill="rgb(0, 0, 150)" />
-                            <Bar dataKey="XI IPS" fill="rgb(0, 0, 180)" />
-                            <Bar dataKey="XII IPA" fill="rgb(0, 0, 210)" />
-                            <Bar dataKey="XII IPS" fill="rgb(0, 0, 250)" />
-                        </BarChart>
-                    </Col>
-                </Row>
-            </Container> */}
 
-            {/* Total siswa per bulan */}
-            {/* <Container>
-                <h3 className='chart-title'>Perkembangan Total Siswa per Bulan</h3>
-                <Row>
-                    <Col>
-                        <ComposedChart
-                            width={window.innerWidth - 400}
-                            height={400}
-                            data={data}
-                            barSize={40}
-                        >
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            <Bar dataKey="totalSiswa" name="Total Siswa" fill="blue" />
-                            <Line type="monotone" dataKey="totalSiswa" stroke="#ff7300" name='Total Barang' />
-                            <Line type="monotone" dataKey="totalSiswa" stroke="#ff7300" name='Total Barang' />
-                            <Scatter dataKey="totalSiswa" fill="red" />
-                        </ComposedChart>
-                    </Col>
-                </Row>
-            </Container> */}
+        <div style={{ marginTop: "60px", marginBottom: "30px" }}>
 
             <Container>
                 <h3 className='chart-title'>Perkembangan Total Siswa per Bulan Tahun 2024</h3>

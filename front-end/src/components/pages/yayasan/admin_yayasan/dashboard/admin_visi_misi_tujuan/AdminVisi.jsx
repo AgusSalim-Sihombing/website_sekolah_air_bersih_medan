@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../../../../../styles/admin/admin_visi_misi_tujuan/AdminVisiMisiTujuan.css"
 import { Next } from "react-bootstrap/esm/PageItem";
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
 
 const AdminVisi = () => {
 
@@ -31,7 +32,7 @@ const AdminVisi = () => {
 
     const getVisi = async () => {
         try {
-            const response = await axios.get("http://localhost:3001/api/admin/visi");
+            const response = await axios.get(`${API_BASE_URL}/admin/visi`);
             // console.log("Response dari API:", response.data);
             if (response.data.length > 0) {
                 const data = response.data[0];
@@ -63,7 +64,7 @@ const AdminVisi = () => {
         setMessage("Data Sedang Diperbaharui...");
 
         try {
-            const response = await axios.put("http://localhost:3001/api/admin/visi-update", { visi });
+            const response = await axios.put(`${API_BASE_URL}/admin/visi-update`, { visi });
             if (response.status === 200) {
                 // Ambil data terbaru setelah update
                 setTimeout(() => {
