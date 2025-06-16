@@ -1,45 +1,6 @@
-.profile {
-    padding: 30px;
-}
-
-.title {
-    font-size: 30px;
-    font-weight: bold;
-    align-items: center;
-}
-
-.tbody-profile-sma {
-    font-size: 20px;
-}
-
-.table-profile-sma {
-    top: 10px;
-    margin-left: 250px;
-    position: relative;
-}
-
-.denah {
-    font-size: 30px;
-    font-weight: bold;
-    position: relative;
-    margin-top: 60px;
-    /* left: 30px; */
-}
-
-.denah-sekolah {
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    background-color: rgb(239, 238, 238);
-    box-shadow: 1px 1px 5px 4px #c4c4c4bb;
-    margin-top: 30px;
-}
-
-.box {
-    /* justify-content: center;
-    align-items: center; */
-    width: 700px;
-    height: 600px;
+.profile-row {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed #ddd;
+  font-size: 0.95rem;
 }

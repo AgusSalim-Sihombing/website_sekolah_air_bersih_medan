@@ -7,6 +7,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import React from "react";
 import { Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import ProfileSekolahSma from "./admin_profile_sekolah_sma/ProfilSekolahSma";
 
 const ManajemenKontenSma = () => {
 
@@ -81,6 +82,17 @@ const ManajemenKontenSma = () => {
                         Fasilitas
                     </Nav.Link>
                 </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link
+                        as={NavLink}
+                        to="/admin-sma/manajemen-konten-sma/profil-sma"
+                        style={{
+                            color: location.pathname.includes("profil-sma") ? "#FFA500" : "black",
+                        }}
+                    >
+                        Profil Sekolah SMA
+                    </Nav.Link>
+                </Nav.Item>
             </Nav>
 
             {/* Konten berdasarkan Tab yang diklik */}
@@ -91,6 +103,7 @@ const ManajemenKontenSma = () => {
                     <Route path="pengumuman-sma" element={<PengumumanAdminSma />} />
                     <Route path="dokumentasi-kegiatan-sma" element={<AdminDokumentasiKegiatan />} />
                     <Route path="fasilitas" element={<Fasilitas />} />
+                    <Route path="profil-sma" element={<ProfileSekolahSma />} />
                 </Routes>
             </div>
         </div>

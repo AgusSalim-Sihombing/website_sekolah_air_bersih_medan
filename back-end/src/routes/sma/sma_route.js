@@ -2,7 +2,14 @@ const express = require("express");
 const multer = require("multer");
 
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({
+    storage: storage,
+    limits: {
+        fieldSize: 10 * 1024 * 1024, // 10 mb
+        fileSize: 10 * 1024 * 1024
+    }
+});
+
 const adminSmaControllers = require("../../controllers/sma/admin_sma/admin_sma_controller")
 const excelControllers = require("../../controllers/sma/excel_controllers");
 const dataGuru = require("../../controllers/sma/data_guru_controllers");
@@ -14,6 +21,8 @@ const dataSiswaSma = require("../../controllers/sma/data_siswa_sma_controllers")
 const dokumentasiController = require("../../controllers/sma/admin_dokumentasi_kegiatan")
 const FasilitasController = require("../../controllers/sma/fasilitas_controller")
 const { verifyToken, checkAdminOwnership, checkSuperAdmin } = require("../../middleware/auth.js")
+const profileController = require("../../controllers/sma/profil_sekolah_sma_controllers.js");
+
 const router = express.Router();
 
 //admin
@@ -41,7 +50,7 @@ router.delete("/delete-excel-data/:id", verifyToken, excelControllers.deleteExce
 // router.delete("/delete-data-guru/:id", dataGuru.deleteDataGuruById);
 
 router.post("/upload-excel-guru", verifyToken, upload.single("file"), dataGuru.uploadExcelGuru);
-router.get("/get-data-guru",  dataGuru.getDataGuru);
+router.get("/get-data-guru", dataGuru.getDataGuru);
 router.get("/get-data-guru/:id", dataGuru.getDataGuruById);
 router.post("/data-guru", verifyToken, dataGuru.addGuru);
 router.put("/data-guru/:id", verifyToken, dataGuru.upload.single("foto"), dataGuru.updateGuru);
@@ -51,6 +60,12 @@ router.delete("/delete-data-guru/:id", verifyToken, dataGuru.deleteDataGuruById)
 //kepala sekolah
 router.get("/get-kata-sambutan-kepsek-sma", kepsekSmaControllers.getKataSambutan)
 router.get("/getfoto-kepsek-sma", kepsekSmaControllers.getFotoKepalaSekolahSma)
+
+//Profil Sekolah Sma
+router.get("/profil-sma", profileController.getProfileSma);
+router.post("/profil-sma", upload.single("gambar_denah"), profileController.createProfileSma);
+router.put("/profil-sma/:id", upload.single("gambar_denah"), profileController.updateProfileSma);
+router.delete("/profil-sma/:id", profileController.deleteProfileSma);
 
 //event-sma
 router.get("/events-sma", eventSmaControllers.getAllEvents)
@@ -92,7 +107,7 @@ router.post("/upload-excel-sma", upload.single("file"), dataSiswaSma.uploadExcel
 router.get("/get-siswa-sma", dataSiswaSma.getDataSiswaSma);
 router.get("/siswa-sma/:kelas", dataSiswaSma.getDataSiswaByKelas);
 router.post('/siswa-sma', dataSiswaSma.tambahSiswa);
-router.put('/siswa-sma/:id',  dataSiswaSma.updateSiswa);
+router.put('/siswa-sma/:id', dataSiswaSma.updateSiswa);
 router.delete('/siswa-sma/:id', dataSiswaSma.hapusSiswa);
 router.delete("/delete-all-data-siswa", dataSiswaSma.deletelAllData);
 
