@@ -250,7 +250,7 @@ const getAdminSma = async (req, res) => {
             return res.status(403).json({ message: "Unauthorized access" });
         }
 
-        const [rows] = await pool.execute("SELECT id, username, role, status FROM admin_sma");
+        const [rows] = await pool.execute("SELECT id, username, role, status, created_at, updated_at FROM admin_sma");
         res.json(rows);
     } catch (error) {
         res.status(500).json({ error: error.message });

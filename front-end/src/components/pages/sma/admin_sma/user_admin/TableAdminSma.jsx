@@ -290,24 +290,28 @@ const TableAdminSma = () => {
                                 )}
                             </td>
                             <td>
-                                <Button
-                                    variant="primary"
-                                    className="mx-1"
-                                    onClick={() => handleEdit(item)}
-                                    // PERUBAHAN DI SINI: Disable tombol edit jika superadmin dan mencoba mengedit dirinya sendiri
-                                    disabled={currentAdmin?.role === 'superadmin' && currentAdmin?.id === item.id}
-                                >
-                                    <Icon.Pen />
-                                </Button>
-                                {/* Hanya super admin yang bisa menghapus */}
-                                {currentAdmin?.role === 'superadmin' && currentAdmin.id !== item.id && (
-                                    <Button
-                                        variant="danger"
-                                        className="mx-1"
-                                        onClick={() => handleDelete(item.id)}
-                                    >
-                                        <Icon.Trash />
-                                    </Button>
+                                {currentAdmin?.role === 'superadmin' ? (
+                                    <>
+                                        <Button
+                                            variant="primary"
+                                            className="mx-1"
+                                            onClick={() => handleEdit(item)}
+                                            disabled={currentAdmin?.id === item.id}
+                                        >
+                                            <Icon.Pen />
+                                        </Button>
+                                        {currentAdmin.id !== item.id && (
+                                            <Button
+                                                variant="danger"
+                                                className="mx-1"
+                                                onClick={() => handleDelete(item.id)}
+                                            >
+                                                <Icon.Trash />
+                                            </Button>
+                                        )}
+                                    </>
+                                ) : (
+                                    <span>-</span> // admin biasa tidak bisa aksi apapun
                                 )}
                             </td>
                         </tr>

@@ -15,11 +15,11 @@ const HeaderAdminSma = ({ title }) => {
     const dropdownRef = useRef(null); // Untuk deteksi klik di luar
     const token = localStorage.getItem("token")
 
-    useEffect(() => {
-        if (token) {
-            getUserAdmin();
-        }
-    }, [token]);
+    // useEffect(() => {
+    //     if (token) {
+    //         getUserAdmin();
+    //     }
+    // }, [token]);
 
     useEffect(() => {
         // Ambil data dari localStorage
