@@ -9,6 +9,7 @@ import Modal from "react-bootstrap/Modal";
 import DataSiswaSMA from "./DataSiswaSma2";
 import { format } from "date-fns";
 import idLocale from "date-fns/locale/id";
+import Spinner from "react-bootstrap/Spinner";
 
 // import * as XLSX from "xlsx";
 
@@ -23,13 +24,20 @@ const DataSiswaSma = () => {
     const [selectedKelas, setSelectedKelas] = useState("");
     const [selectedDataSma, setSelectedDataSma] = useState(null);
     const token = localStorage.getItem("token");
+    const [isUploading, setIsUploading] = useState(false);
+
     const [formData, setFormData] = useState({
         nama: "",
-        nis: "",
-        jenis_kelamin: "",
-        kelas: "",
+        jk: "",
+        nisn: "",
+        tempat_lahir: "",
         tanggal_lahir: "",
+        nik: "",
+        agama: "",
         alamat: "",
+        nama_ayah: "",
+        nama_ibu: "",
+        kelas: ""
     })
 
     useEffect(() => {
@@ -38,7 +46,7 @@ const DataSiswaSma = () => {
 
     const getDataSiswaSma = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/admin-sma/get-siswa-sma`, {
+            const response = await axios.get(`${API_BASE_URL}/public/siswa`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -62,21 +70,23 @@ const DataSiswaSma = () => {
         const formData = new FormData();
         formData.append("file", file);
 
+        setIsUploading(true);  // Mulai loading
+
         try {
-            await axios.post("http://localhost:3001/api/admin-sma/upload-excel-sma", formData, {
+            await axios.post(`${API_BASE_URL}/public/siswa`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${token}`
                 },
             });
-            // const response = await axios.post(`${API_BASE_URL}/admin-sma/upload-excel-sma`, formData, {
-            //     headers: { "Content-Type": "multipart/form-data" },
-            // });
-
             alert("Upload sukses!");
             getDataSiswaSma();
+            setFile(null); // Reset input file
         } catch (error) {
             console.error("Upload error:", error);
+            alert("Upload gagal!");
+        } finally {
+            setIsUploading(false); // Selesai loading
         }
     };
 
@@ -104,34 +114,9 @@ const DataSiswaSma = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleEdit = (siswaSma) => {
-        setSelectedDataSma(siswaSma);
-        setFormData({
-            nama: siswaSma.nama,
-            nis: siswaSma.nis,
-            jenis_kelamin: siswaSma.jenis_kelamin,
-            kelas: siswaSma.kelas,
-            tanggal_lahir: siswaSma.tanggal_lahir,
-            alamat: siswaSma.alamat,
-        });
-        setShowModal(true);
-    }
 
-    const handleDelete = async (id, nama) => {
-        const confirmDelete = window.confirm(
-            `⚠️ Anda akan menghapus data siswa:\n\n"${nama}"\n\nData yang dihapus tidak dapat dikembalikan. Apakah Anda yakin?`
-        );
 
-        if (!confirmDelete) return;
 
-        try {
-            await axios.delete(`${API_BASE_URL}/admin-sma/siswa-sma/${id}`);
-            alert(`✅ Data siswa "${nama}" berhasil dihapus!`);
-            getDataSiswaSma();
-        } catch (error) {
-            console.error("Error deleting data:", error);
-        }
-    };
 
     const handleDeleteAllData = async () => {
         if (data.length === 0) {
@@ -147,7 +132,12 @@ const DataSiswaSma = () => {
         }
 
         try {
-            await axios.delete(`${API_BASE_URL}/admin-sma/delete-all-data-siswa`);
+            await axios.delete(`${API_BASE_URL}/public/siswa`, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${token}`
+                },
+            });
             alert("Semua data berhasil dihapus!");
             getDataSiswaSma();
         } catch (error) {
@@ -173,35 +163,49 @@ const DataSiswaSma = () => {
     const handleDownloadExcel = () => {
         if (data.length === 0) return;
 
-        // Ubah data sebelum dikonversi ke Excel
+        // Ubah data sesuai struktur tabel database
         const formattedData = data.map(item => ({
             ID: item.id,
             Nama: item.nama,
+            "Jenis Kelamin": item.jk,
             NIS: item.nis,
-            "Jenis Kelamin": item.jenis_kelamin,
+            NISN: item.nisn,
+            "Tempat Lahir": item.tempat_lahir,
+            "Tanggal Lahir": formatDate(item.tanggal_lahir),
+            NIK: item.nik,
+            Agama: item.agama,
+            Alamat: item.alamat,
+            "Nama Ayah": item.nama_ayah,
+            "Nama Ibu": item.nama_ibu,
             Kelas: item.kelas,
-            "Tanggal Lahir": formatDate(item.tanggal_lahir), // Format tanggal sebelum masuk ke Excel
-            Alamat: item.alamat
+            "Unit Sekolah": item.unit_sekolah
         }));
 
         const ws = XLSX.utils.json_to_sheet(formattedData);
 
-        // Format kolom Tanggal Lahir sebagai date di Excel
+        // Format lebar kolom (opsional, bisa disesuaikan)
         const wscols = [
-            { wch: 5 },  // ID
-            { wch: 20 }, // Nama
-            { wch: 12 }, // NIS
-            { wch: 15 }, // Jenis Kelamin
-            { wch: 10 }, // Kelas
-            { wch: 15 }, // Tanggal Lahir
-            { wch: 30 }  // Alamat
+            { wch: 5 },   // ID
+            { wch: 20 },  // Nama
+            { wch: 12 },  // Jenis Kelamin
+            { wch: 15 },  // NIS
+            { wch: 15 },  // NISN
+            { wch: 20 },  // Tempat Lahir
+            { wch: 15 },  // Tanggal Lahir
+            { wch: 20 },  // NIK
+            { wch: 10 },  // Agama
+            { wch: 30 },  // Alamat
+            { wch: 20 },  // Nama Ayah
+            { wch: 20 },  // Nama Ibu
+            { wch: 10 },  // Kelas
+            { wch: 15 },  // Unit Sekolah
         ];
         ws["!cols"] = wscols;
 
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "DataSiswa");
 
-        // Simpan file dengan nama berdasarkan kelas
+        // Simpan file Excel
         XLSX.writeFile(wb, `data-siswa-sma.xlsx`);
     };
 
@@ -211,16 +215,28 @@ const DataSiswaSma = () => {
         <div>
             <h4 style={{ alignItems: "center", display: "flex", justifyContent: "center", marginTop: "65px", marginBottom: "30px" }}>Manajemen Data Sekolah SMA</h4>
             <DataSiswaSMA />
-            <h4 style={{ alignItems: "center", display: "flex", justifyContent: "center", marginTop: "80px", marginBottom: "30px" }}>Upload Data Siswa SMA</h4>
+            <h4 style={{ alignItems: "center", display: "flex", justifyContent: "center", marginTop: "80px", marginBottom: "30px" }}>Upload Data Siswa</h4>
 
             <div style={{
                 justifyContent: "space-between",
+                alignItems:"center",
                 display: "flex",
                 margin: "20px"
             }}>
-                <div>
+                <div className="d-flex flex-column p-2 bd-highlight">
                     <input type="file" accept=".xlsx" onChange={handleFileChange} />
-                    <button onClick={handleUpload} style={{ borderRadius: "5px", color: "" }}>Upload File</button>
+                    <button
+                        className="mt-1"
+                        onClick={handleUpload}
+                        style={{ borderRadius: "5px" }}
+                        disabled={isUploading}
+                    >
+                        {isUploading ? (
+                            <>
+                                <Spinner animation="border" size="sm" /> Mengupload...
+                            </>
+                        ) : "Upload File"}
+                    </button>
                 </div>
 
                 <div style={{ display: "flex", gap: "20px" }}>
@@ -237,20 +253,31 @@ const DataSiswaSma = () => {
                         style={{ width: "200px" }}
                     >
                         <option value="">Semua Kelas</option>
-                        <option value="X_IPA">X - IPA</option>
-                        <option value="X_IPS">X - IPS</option>
+                        <option value="VII">VII</option>
+                        <option value="VIII_A">VIII - A</option>
+                        <option value="VIII_B">VIII - B</option>
+                        <option value="IX_A">IX - A</option>
+                        <option value="IX_B">IX -B</option>
+                        <option value="X_1">X - 1</option>
+                        <option value="X_2">X - 2</option>
                         <option value="XI_IPA">XI - IPA</option>
-                        <option value="XI_IPS">XI - IPS</option>
                         <option value="XII_IPA">XII - IPA</option>
                         <option value="XII_IPS">XII - IPS</option>
+                        <option value="X_TKJ">X - TKJ</option>
+                        <option value="XI_TKJ">X - TKJ</option>
+                        <option value="XII">XII - SMK</option>
+
                     </Form.Select>
                     <button onClick={handleDeleteAllData} style={{ borderRadius: "5px", color: "white", backgroundColor: "red", border: "none" }}>Bersihkan Semua Data</button>
-                    <Icon.FiletypeXlsx
-                        size={24}
-                        style={{ cursor: "pointer", color: "#007bff" }}
-                        onClick={handleDownloadExcel}
-                        title="Download Excel"
-                    />
+                    <div className="d-flex p-2 bd-highlight">
+                        <p>Unduh Seluruh Data</p>
+                        <Icon.FiletypeXlsx
+                            size={24}
+                            style={{ cursor: "pointer", color: "#007bff" }}
+                            onClick={handleDownloadExcel}
+                            title="Download Excel"
+                        />
+                    </div>
                 </div>
 
             </div>
@@ -260,12 +287,18 @@ const DataSiswaSma = () => {
                     <tr>
                         <th>ID</th>
                         <th>Nama</th>
-                        <th>Nis</th>
-                        <th>Jenis kelamin</th>
-                        <th>Kelas</th>
+                        <th>Jenis Kelamin</th>
+                        <th>NISN</th>
+                        <th>Tempat Lahir</th>
                         <th>Tanggal Lahir</th>
+                        <th>NIK</th>
+                        <th>Agama</th>
                         <th>Alamat</th>
-                        <th>Aksi</th>
+                        <th>Nama Ayah</th>
+                        <th>Nama Ibu</th>
+                        <th>Kelas</th>
+                        <th>Unit</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -273,22 +306,18 @@ const DataSiswaSma = () => {
                         <tr key={siswa.id}>
                             <td className="border p-2">{siswa.id}</td>
                             <td className="border p-4">{siswa.nama}</td>
-                            <td className="border p-2">{siswa.nis}</td>
-                            <td className="border p-2">{siswa.jenis_kelamin}</td>
-                            <td className="border p-2">{siswa.kelas}</td>
-                            <td className="border p-2">{siswa.tanggal_lahir ? format(new Date(siswa.tanggal_lahir), "dd-MMMM-yyyy", { locale: idLocale }) : "-"}</td>
+                            <td className="border p-2">{siswa.jk}</td>
+                            <td className="border p-2">{siswa.nisn}</td>
+                            <td className="border p-2">{siswa.tempat_lahir}</td>
+                            <td className="border p-2">{siswa.tanggal_lahir ? format(new Date(siswa.tanggal_lahir), "dd MMMM yyy", { locale: idLocale }) : "-"}</td>
+                            <td className="border p-2">{siswa.nik}</td>
+                            <td className="border p-2">{siswa.agama}</td>
                             <td className="border p-2">{siswa.alamat}</td>
-                            <td className="border p-2">
-                                <div>
-                                    <Button variant="primary" className="mx-1" onClick={() => handleEdit(siswa)}>
-                                        <Icon.Pen />
-                                    </Button>
+                            <td className="border p-2">{siswa.nama_ayah}</td>
+                            <td className="border p-2">{siswa.nama_ibu}</td>
+                            <td className="border p-2">{siswa.kelas}</td>
+                            <td className="border p-2">{siswa.unit_sekolah}</td>
 
-                                    <Button variant="danger" onClick={() => handleDelete(siswa.id, siswa.nama)}>
-                                        <Icon.Trash />
-                                    </Button>
-                                </div>
-                            </td>
                         </tr>
                     ))}
                 </tbody>
@@ -338,8 +367,8 @@ const DataSiswaSma = () => {
                         <Form.Group>
                             <Form.Label>Kelas</Form.Label>
                             <Form.Select value={formData.kelas} onChange={handleInputChange} name="kelas">
-                                <option value="X_IPA">X - IPA</option>
-                                <option value="X_IPS">X - IPS</option>
+                                <option value="X_1">X - 1</option>
+                                <option value="X_2">X - 2</option>
                                 <option value="XI_IPA">XI - IPA</option>
                                 <option value="XI_IPS">XI - IPS</option>
                                 <option value="XII_IPA">XII - IPA</option>

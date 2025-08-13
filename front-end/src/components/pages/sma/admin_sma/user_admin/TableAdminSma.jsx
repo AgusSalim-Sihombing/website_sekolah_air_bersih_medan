@@ -27,7 +27,8 @@ const TableAdminSma = () => {
         password: "",
         confirmPassword: "",
         role: "admin",
-        status: "active"
+        status: "active",
+        unit_sekolah:"SMA"
     });
 
     useEffect(() => {
@@ -46,7 +47,7 @@ const TableAdminSma = () => {
 
     const getAdmins = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/admin-sma/get-admin-sma`, {
+            const response = await axios.get(`${API_BASE_URL}/admin-unit/admin`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -60,10 +61,8 @@ const TableAdminSma = () => {
         }
     };
 
-    const handleAddAdminSma = async (e) => {
+    const handleAddAdmin = async (e) => {
         e.preventDefault();
-
-        const token = localStorage.getItem("token");
 
         if (formData.password !== formData.confirmPassword) {
             alert("Password dan konfirmasi password tidak sama");
@@ -76,16 +75,21 @@ const TableAdminSma = () => {
         }
 
         try {
+            const payload = {
+                username: formData.username,
+                password: formData.password,
+                confirmPassword: formData.confirmPassword,
+                role: formData.role,
+                status: formData.status,
+                unit_sekolah: formData.unit_sekolah // WAJIB ambil dari token
+            };
+
             const response = await axios.post(
-                `${API_BASE_URL}/admin-sma/add-admin-sma`,
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                }
+                `${API_BASE_URL}/admin-unit/admin`,
+                payload,
+                { headers: { Authorization: `Bearer ${token}` } }
             );
+
             alert(response.data.message);
             setShowAddModal(false);
             getAdmins();
@@ -94,6 +98,7 @@ const TableAdminSma = () => {
             alert(error.response?.data?.message || "Terjadi kesalahan");
         }
     };
+
 
 
     const handleEdit = (admin) => {
@@ -123,7 +128,7 @@ const TableAdminSma = () => {
 
         try {
             await axios.put(
-                `${API_BASE_URL}/admin-sma/update-admin-sma/${selectedAdmin.id}`,
+                `${API_BASE_URL}/admin-unit/admin/${selectedAdmin.id}`,
                 {
                     username: formData.username,
                     password: formData.password || undefined,
@@ -162,7 +167,7 @@ const TableAdminSma = () => {
         if (window.confirm("Apakah Anda yakin ingin menghapus admin ini?")) {
             try {
                 await axios.delete(
-                    `${API_BASE_URL}/admin-sma/delete-admin-sma/${id}`,
+                    `${API_BASE_URL}/admin-unit/admin/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`
@@ -193,15 +198,12 @@ const TableAdminSma = () => {
         }
 
         try {
-            await axios.put(
-                `${API_BASE_URL}/admin-sma/toggle-status-admin-sma/${id}`,
+            await axios.patch(
+                `${API_BASE_URL}/admin-unit/admin/status/${id}`,
                 {},
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
+                { headers: { Authorization: `Bearer ${token}` } }
             );
+
             getAdmins();
         } catch (error) {
             console.error("Gagal mengubah status:", error);
@@ -426,7 +428,7 @@ const TableAdminSma = () => {
                     <Modal.Title>Tambah Admin</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={handleAddAdminSma}>
+                    <Form onSubmit={handleAddAdmin}>
                         <Form.Group className="mb-3">
                             <Form.Label>Username</Form.Label>
                             <Form.Control
@@ -483,6 +485,19 @@ const TableAdminSma = () => {
                                     >
                                         <option value="active">Aktif</option>
                                         <option value="inactive">Nonaktif</option>
+                                    </Form.Select>
+                                </Form.Group>
+
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Unit</Form.Label>
+                                    <Form.Select
+                                        name="unit_sekolah"
+                                        value={formData.unit_sekolah}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="SMP">SMP</option>
+                                        <option value="SMA">SMA</option>
+                                        <option value="SMK">SMK</option>
                                     </Form.Select>
                                 </Form.Group>
                             </>

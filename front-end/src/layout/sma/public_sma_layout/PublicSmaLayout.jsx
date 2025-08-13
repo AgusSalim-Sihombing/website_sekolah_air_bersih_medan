@@ -4,14 +4,12 @@ import FooterSma from "../../../components/organisms/sma/FooterSma";
 import "./PublicSmaLayout.css"
 const PublicSmaLayout = () => {
     return (
-        <div>
+        <div className="main-wrapper-dashboard-sma">
             <HeaderSma />
-            <div className="main-wrapper-dashboard-sma">
-                <main className="main-content-dashboard-sma">
-                    <Outlet />
-                </main>
-                <FooterSma />
-            </div>
+            <main className="main-content-dashboard-sma">
+                <Outlet />
+            </main>
+            <FooterSma />
         </div>
     );
 };

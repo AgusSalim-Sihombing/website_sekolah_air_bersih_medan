@@ -1,0 +1,88 @@
+/* Base untuk desktop (sudah kamu punya sebelumnya) */
+.vmt {
+    background: #f9f9f9;
+    padding: 60px 0;
+}
+
+.vmt h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.vmt section {
+    background: white;
+    padding: 30px;
+    border-left: 6px solid #007bff;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.vmt section:hover {
+    border-left-color: #0056b3;
+}
+
+.vmt section h2 {
+    font-size: 1.75rem;
+    margin-bottom: 15px;
+    color: #0056b3;
+}
+
+.vmt section div {
+    text-align: justify;
+    line-height: 1.7;
+    font-size: 1.1rem;
+    color: #444;
+}
+
+
+/* ============================= */
+/* Responsive untuk Tablet */
+@media (max-width: 1024px) {
+    .vmt {
+        padding: 40px 20px;
+    }
+
+    .vmt h1 {
+        font-size: 2rem;
+    }
+
+    .vmt section {
+        padding: 25px;
+        border-left: 4px solid #007bff;
+    }
+
+    .vmt section h2 {
+        font-size: 1.5rem;
+    }
+
+    .vmt section div {
+        font-size: 1rem;
+    }
+}
+
+/* Responsive untuk Mobile */
+@media (max-width: 768px) {
+    .vmt {
+        padding: 30px 15px;
+    }
+
+    .vmt h1 {
+        font-size: 1.75rem;
+    }
+
+    .vmt section {
+        padding: 20px;
+        border-left: 3px solid #007bff;
+    }
+
+    .vmt section h2 {
+        font-size: 1.3rem;
+    }
+
+    .vmt section div {
+        font-size: 0.95rem;
+    }
+}

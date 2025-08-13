@@ -13,7 +13,7 @@ const loginAdmin = async (req, res) => {
     try {
         const { username, password } = req.body;
         const [rows] = await pool.execute(
-            "SELECT * FROM admin WHERE username = ?", [username]
+            "SELECT * FROM admin_sekolah WHERE username = ?", [username]
         );
 
         if (rows.length === 0) {
@@ -21,47 +21,65 @@ const loginAdmin = async (req, res) => {
         }
 
         const user = rows[0];
-        const match = await bcrypt.compare(password, user.password);
 
+        if (user.status !== "active") {
+            return res.status(403).json({ message: "Akun tidak aktif. Hubungi administrator." });
+        }
+
+        const match = await bcrypt.compare(password, user.password);
         if (!match) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
-        const token = jwt.sign(
-            { id: user.id, username: user.username },
-            SECRET_KEY,
-            {
-                expiresIn: "1h"
-            }
-        );
-        res.status(200).json({ token, userId: user.id });
-        if (token.length !== 0) {
-            console.log("Login sukses dengan id admin :", user.id)
+        if (!user.unit_sekolah) {
+            return res.status(403).json({ message: "Akun tidak memiliki unit sekolah, hubungi administrator." });
         }
+
+        const token = jwt.sign({
+            id: user.id,
+            username: user.username,
+            role: user.role,
+            unit_sekolah: user.unit_sekolah
+        }, SECRET_KEY, { expiresIn: "4h" });
+
+        res.status(200).json({
+            token,
+            id: user.id,
+            username: user.username,
+            role: user.role,
+            status: user.status,
+            unit_sekolah: user.unit_sekolah
+        });
+
+        console.log(`Login sukses untuk ${user.username} (${user.unit_sekolah})`);
     } catch (error) {
-        console.error(error)
-        res.status(500).json({ message: "Internal server error" })
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
     }
 }
-
 const addAdmin = async (req, res) => {
     try {
-        const { username, password, confirmPassword, role = "admin", status = "active" } = req.body;
+        // Hanya super admin yang bisa menambahkan admin baru
+        if (req.user.role !== 'superadmin') {
+            return res.status(403).json({ message: "Unauthorized access" });
+        }
+
+        const { username, password, confirmPassword, role = "admin", status = "active", unit_sekolah = "SMA" } = req.body;
 
         if (password !== confirmPassword) {
             return res.status(400).json({ message: "Passwords do not match" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const [result] = await pool.execute(
-            "INSERT INTO admin (username, password, role, status) VALUES (?, ?, ?, ?)",
-            [username, hashedPassword, role, status]
+        await pool.execute(
+            "INSERT INTO admin_sekolah (username, password, role, status, unit_sekolah) VALUES (?, ?, ?, ?, ?)",
+            [username, hashedPassword, role, status, unit_sekolah]
         );
 
         res.status(201).json({
             message: "Admin registered successfully",
-            userId: result.insertId,
         });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
@@ -70,88 +88,34 @@ const addAdmin = async (req, res) => {
 
 const getAdmin = async (req, res) => {
     try {
-        const [rows] = await pool.execute(
-            "SELECT * FROM admin"
-        );
+        // Hanya super admin yang bisa melihat semua admin
+        if (req.user.role !== 'superadmin') {
+            return res.status(403).json({ message: "Unauthorized access" });
+        }
+
+        const [rows] = await pool.execute("SELECT id, username, role, status, created_at, updated_at FROM admin_sekolah");
         res.json(rows);
     } catch (error) {
-        res.status(500).json({ error: error.message })
-    }
-
-};
-
-
-
-const getAdminPhoto = async (req, res) => {
-    try {
-        const { id } = req.params; // Ambil ID admin dari parameter URL
-        const [rows] = await pool.execute(
-            "SELECT foto FROM admin WHERE id = ?",
-            [id]
-        );
-
-        if (rows.length === 0 || !rows[0].foto) {
-            return res.status(404).json({ message: "Foto tidak ditemukan" });
-        }
-
-        // Mengembalikan gambar dalam bentuk binary
-        res.setHeader("Content-Type", "image/jpeg"); // Sesuaikan dengan tipe gambar (jpeg/png)
-        res.send(rows[0].foto);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Terjadi kesalahan saat mengambil foto" });
+        res.status(500).json({ error: error.message });
     }
 };
-
-const uploadAdminPhoto = async (req, res) => {
-    try {
-        const { id } = req.params;
-        if (!req.file) {
-            return res.status(400).json({ message: "Tidak ada file yang diunggah" });
-        }
-
-        const fotoBuffer = req.file.buffer;
-
-        await pool.execute(
-            "UPDATE admin SET foto = ? WHERE id = ?",
-            [fotoBuffer, id]
-        );
-
-        res.status(200).json({ message: "Foto berhasil diunggah" });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Gagal mengunggah foto" });
-    }
-};
-
-const deleteAdminPhoto = async (req, res) => {
-    try {
-        const { id } = req.params;
-
-        await pool.execute(
-            "UPDATE admin SET foto = NULL WHERE id = ?",
-            [id]
-        );
-
-        res.status(200).json({ message: "Foto berhasil dihapus" });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Gagal menghapus foto" });
-    }
-};
-
 
 const updateAdmin = async (req, res) => {
     try {
         const { id } = req.params;
         const { username, password, role, status } = req.body;
 
-        let query = "UPDATE admin SET username = ?, role = ?, status = ? WHERE id = ?";
+        // Verifikasi kepemilikan atau role super admin
+        if (req.user.id !== parseInt(id) && req.user.role !== 'superadmin') {
+            return res.status(403).json({ message: "Unauthorized access" });
+        }
+
+        let query = "UPDATE admin_sekolah SET username = ?, role = ?, status = ? WHERE id = ?";
         let values = [username, role, status, id];
 
         if (password) {
             const hashedPassword = await bcrypt.hash(password, 10);
-            query = "UPDATE admin SET username = ?, password = ?, role = ?, status = ? WHERE id = ?";
+            query = "UPDATE admin_sekolah SET username = ?, password = ?, role = ?, status = ? WHERE id = ?";
             values = [username, hashedPassword, role, status, id];
         }
 
@@ -167,7 +131,18 @@ const updateAdmin = async (req, res) => {
 const deleteAdmin = async (req, res) => {
     try {
         const { id } = req.params;
-        await pool.execute("DELETE FROM admin WHERE id = ?", [id]);
+
+        // Hanya super admin yang bisa menghapus admin
+        if (req.user.role !== 'superadmin') {
+            return res.status(403).json({ message: "Unauthorized access" });
+        }
+
+        // Tidak boleh menghapus diri sendiri
+        if (req.user.id === parseInt(id)) {
+            return res.status(400).json({ message: "Cannot delete yourself" });
+        }
+
+        await pool.execute("DELETE FROM admin_sekolah WHERE id = ?", [id]);
         res.status(200).json({ message: "Admin deleted successfully" });
     } catch (error) {
         console.error(error);
@@ -179,9 +154,18 @@ const disableToggleStatusAdmin = async (req, res) => {
     const { id } = req.params;
 
     try {
-        // Ambil status saat ini
+        // Hanya super admin yang bisa mengubah status
+        if (req.user.role !== 'superadmin') {
+            return res.status(403).json({ message: "Unauthorized access" });
+        }
+
+        // Tidak bisa menonaktifkan diri sendiri
+        if (req.user.id === parseInt(id)) {
+            return res.status(400).json({ message: "Cannot disable yourself" });
+        }
+
         const [rows] = await pool.execute(
-            "SELECT status FROM admin WHERE id = ?",
+            "SELECT status FROM admin_sekolah WHERE id = ?",
             [id]
         );
 
@@ -190,11 +174,10 @@ const disableToggleStatusAdmin = async (req, res) => {
         }
 
         const currentStatus = rows[0].status;
-        const newStatus = currentStatus === "active" ? "inactive" : "active"; // Toggle status
+        const newStatus = currentStatus === "active" ? "inactive" : "active";
 
-        // Update status ke nilai yang berlawanan
         const [result] = await pool.execute(
-            "UPDATE admin SET status = ? WHERE id = ?",
+            "UPDATE admin_sekolah SET status = ? WHERE id = ?",
             [newStatus, id]
         );
 
@@ -214,9 +197,6 @@ module.exports = {
     loginAdmin,
     addAdmin,
     getAdmin,
-    getAdminPhoto,
-    uploadAdminPhoto,
-    deleteAdminPhoto,
     updateAdmin,
     deleteAdmin,
     disableToggleStatusAdmin

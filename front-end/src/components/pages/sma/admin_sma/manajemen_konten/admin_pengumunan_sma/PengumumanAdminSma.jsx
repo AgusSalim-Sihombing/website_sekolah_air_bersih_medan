@@ -25,22 +25,38 @@ const PengumumanAdminSma = () => {
     const [status, setStatus] = useState("draft");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         fetchPengumuman();
     }, []);
 
     const fetchPengumuman = async () => {
-        const response = await axios.get(`${API_BASE_URL}/admin-sma/pengumuman-sma-admin`);
-
+        const response = await axios.get(`${API_BASE_URL}/admin-sma/pengumuman-sma-admin`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+        });
         setPengumuman(response.data);
     };
 
     const handleAddPengumuman = async (e) => {
         e.preventDefault();
-        await axios.post(`${API_BASE_URL}/admin-sma/pengumuman-sma`, { judul, isi, status, tanggal });
-        setShowAddModal(false);
-        fetchPengumuman();
+        try {
+            await axios.post(`${API_BASE_URL}/admin-sma/pengumuman-sma`, { judul, isi, status, tanggal }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            });
+            alert("Pengumuman berhasil ditambahkan.");
+            setJudul("");
+            setIsi("");
+            setShowAddModal(false);
+            fetchPengumuman();
+        } catch (error) {
+            console.error("Error adding pengumuman:", error);
+            alert("Gagal menambahkan pengumuman. Silakan coba lagi.");
+        }
     };
 
     const handleEdit = (pengumuman) => {
@@ -53,14 +69,31 @@ const PengumumanAdminSma = () => {
     };
 
     const handleUpdate = async () => {
-        await axios.put(`${API_BASE_URL}/admin-sma/pengumuman-sma/${selectedPengumuman.id}`, { judul, isi, status, tanggal });
-        setShowModal(false);
-        fetchPengumuman();
+
+        try {
+            await axios.put(`${API_BASE_URL}/admin-sma/pengumuman-sma/${selectedPengumuman.id}`, { judul, isi, status, tanggal }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            });
+            alert("Pengumuman berhasil diperbarui.");
+            setSelectedPengumuman(null);
+            setShowModal(false);
+            fetchPengumuman();
+        } catch (error) {
+            console.error("Error updating pengumuman:", error);
+            alert("Gagal memperbarui pengumuman. Silakan coba lagi.");
+        }
     };
 
     const handleDelete = async (id) => {
         if (window.confirm("Apakah Anda yakin ingin menghapus pengumuman ini?")) {
-            await axios.delete(`${API_BASE_URL}/admin-sma/pengumuman-sma/${id}`);
+            await axios.delete(`${API_BASE_URL}/admin-sma/pengumuman-sma/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            });
+            alert("Pengumuman berhasil dihapus.");
             fetchPengumuman();
         }
     };
@@ -96,10 +129,10 @@ const PengumumanAdminSma = () => {
                             <td>{item.status}</td>
                             <td>
                                 <div style={{
-                                    display:"flex",
-                                    flexDirection:"row",
-                                    justifyContent:"center",
-                                    gap:"20px"
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "center",
+                                    gap: "20px"
                                 }}>
                                     <>
                                         <Button variant="primary" className="mx-1" onClick={() => handleEdit(item)}>
@@ -176,17 +209,32 @@ const PengumumanAdminSma = () => {
                     <Form onSubmit={handleAddPengumuman}>
                         <Form.Group className="mb-3">
                             <Form.Label>Judul</Form.Label>
-                            <Form.Control type="text" onChange={(e) => setJudul(e.target.value)} required />
+                            <Form.Control
+                                type="text"
+                                value={judul}
+                                onChange={(e) => setJudul(e.target.value)}
+                                required
+                            />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Isi</Form.Label>
-                            <ReactQuill onChange={setIsi} required />
+                            <ReactQuill value={isi} onChange={setIsi} required />
+
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label>Tanggal Pengumuman</Form.Label>
-                            <Form.Control type="date" onChange={(e) => setTanggal(e.target.value)} />
+                            <Form.Control type="date" value={tanggal} onChange={(e) => setTanggal(e.target.value)} />
                         </Form.Group>
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>Status</Form.Label>
+                            <Form.Select value={status} onChange={(e) => setStatus(e.target.value)}>
+                                <option value="draft">Draft</option>
+                                <option value="published">Published</option>
+                            </Form.Select>
+                        </Form.Group>
+
 
                         <Button variant="success" type="submit">Simpan</Button>
                     </Form>

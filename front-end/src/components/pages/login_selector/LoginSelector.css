@@ -1,0 +1,86 @@
+/* LoginSelector.css
+.login-selector-page {
+    background: url('Background.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    position: relative;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selector-container {
+    z-index: 2;
+}
+
+.items-selector {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-card {
+    margin-top: 5px;
+    cursor: pointer;
+    background-color: white;
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.login-card:hover {
+    transform: scale(1.05);
+    background-color: gold;
+}
+ */
+
+.login-selector-page {
+    background: url('Background.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    position: relative;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.4);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.selector-container {
+    z-index: 2;
+}
+
+.items-selector {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-card {
+    margin-top: 5px;
+    cursor: pointer;
+    background-color: white;
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.login-card:hover {
+    transform: scale(1.05);
+    background-color: gold;
+}
+
+h5 {
+    margin: 10px 0;
+}

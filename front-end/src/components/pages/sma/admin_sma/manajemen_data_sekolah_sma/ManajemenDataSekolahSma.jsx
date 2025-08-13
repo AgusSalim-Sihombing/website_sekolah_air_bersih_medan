@@ -4,6 +4,9 @@ import DataGuru from "./data_guru/DataGuru";
 import DataSiswaSma from "./data_siswa/DataSiswaSma";
 import GrafikSiswaSma from "./data_siswa/grafik_siswa_sma/GrafikSiswaSma";
 import DataKelasSma from "./data_siswa/DataKelas";
+import DataAlumni from "./data_alumni/DataAlumni";
+import GuruTendikAdmin from "./data_guru/GuruTendikAdmin";
+import WaliKelasAdminSma from "./wali_kelas/WaliKelasAdminSma";
 
 const ManajemenDataSekolahSma = () => {
     const location = useLocation();
@@ -51,6 +54,19 @@ const ManajemenDataSekolahSma = () => {
                 <Nav.Item>
                     <Nav.Link
                         as={NavLink}
+                        to="/admin-sma/manajemen-data-sma/wali-kelas"
+                        className="nav-link"
+                        style={{
+                            color: location.pathname.includes("wali-kelas") ? "#FFA500" : "black",
+                        }}
+                    >
+                        Wali Kelas
+                    </Nav.Link>
+                </Nav.Item>
+
+                <Nav.Item>
+                    <Nav.Link
+                        as={NavLink}
                         to="/admin-sma/manajemen-data-sma/data-guru"
                         className="nav-link"
                         style={{
@@ -60,6 +76,19 @@ const ManajemenDataSekolahSma = () => {
                         Data Guru
                     </Nav.Link>
                 </Nav.Item>
+
+                <Nav.Item>
+                    <Nav.Link
+                        as={NavLink}
+                        to="/admin-sma/manajemen-data-sma/arsip-alumni"
+                        className="nav-link"
+                        style={{
+                            color: location.pathname.includes("arsip-alumni") ? "#FFA500" : "black",
+                        }}
+                    >
+                        Arsip Alumni
+                    </Nav.Link>
+                </Nav.Item>
             </Nav>
 
             {/* Routing Konten */}
@@ -67,8 +96,11 @@ const ManajemenDataSekolahSma = () => {
                 <Routes>
                     <Route path="data-siswa-sma" element={<DataSiswaSma />} />
                     <Route path="data-siswa-sma/:kelas" element={<DataKelasSma />} />
-                    <Route path="data-guru" element={<DataGuru />} />
+                    {/* <Route path="data-guru" element={<DataGuru />} /> */}
+                    <Route path="data-guru" element={<GuruTendikAdmin />} />
                     <Route path="grafik-siswa-sma" element={<GrafikSiswaSma />} />
+                    <Route path="arsip-alumni" element={<DataAlumni />} />
+                    <Route path="wali-kelas" element={<WaliKelasAdminSma />} />
                 </Routes>
             </div>
         </div>

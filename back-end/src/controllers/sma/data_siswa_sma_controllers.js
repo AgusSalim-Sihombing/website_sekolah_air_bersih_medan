@@ -7,23 +7,6 @@ const uploadExcel = async (req, res) => {
         return res.status(400).json({ message: "File is required" });
     }
 
-    // try {
-    //     const workbook = xlsx.read(req.file.buffer, { type: "buffer" });
-    //     const sheetName = workbook.SheetNames[0];
-    //     const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
-
-    //     for (const row of data) {
-    //         await pool.execute(
-    //             "INSERT INTO siswa_sma (nama, nis, jenis_kelamin, kelas, tanggal_lahir, alamat) VALUES (?,?,?,?,?,?)",
-    //             [row["nama"], row["nis"], row["jenis_kelamin"], row["kelas"], row["tanggal_lahir"], row["alamat"]]
-    //         );
-    //     }
-
-    //     res.status(201).json({ message: "File uploaded and data inserted successfully" });
-    // } catch (error) {
-    //     console.error("Error processing Excel file:", error);
-    //     res.status(500).json({ message: "Internal server error" });
-    // }
 
     try {
         const workbook = xlsx.read(req.file.buffer, { type: "buffer" });
@@ -69,7 +52,7 @@ const getDataSiswaSma = async (req, res) => {
 
 const getDataSiswaByKelas = async (req, res) => {
     const { kelas } = req.params; // Ambil kelas dari URL parameter
-    const allowedKelas = ["X_IPA", "X_IPS", "XI_IPA", "XI_IPS", "XII_IPA", "XII_IPS"];
+    const allowedKelas = ["X_1", "X_2", "XI_IPA", "XI_IPS", "XII_IPA", "XII_IPS"];
 
     if (!allowedKelas.includes(kelas)) {
         return res.status(400).json({ error: "Kelas tidak valid" });

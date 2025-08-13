@@ -48,6 +48,7 @@ const TableEventSma = () => {
             setData(response.data);
         } catch (error) {
             console.error("Gagal mengambil data event:", error);
+            alert("Gagal load data dari data base")
         }
     };
 
@@ -84,8 +85,10 @@ const TableEventSma = () => {
             // await axios.post(`http://localhost:3001/api/admin-sma/events-sma/${selectedEvent.id}`, data);
             setShowAddModal(false);
             getEvents();
+            alert("Event Berhasil Di Tambahkan")
         } catch (error) {
             console.error("Gagal menambahkan event:", error);
+            alert("Event Gagal Di Tambahkan")
         }
     };
 
@@ -138,8 +141,10 @@ const TableEventSma = () => {
             // await axios.put(`http://localhost:3001/api/admin-sma/events-sma/${selectedEvent.id}`, updateData);
             setShowModal(false);
             getEvents();
+            alert("Event Berhasil Di Update")
         } catch (error) {
-            console.error("Gagal memperbarui event:", error);
+            console.error("Terjadi Kesalahan :", error);
+            alert("Gagal Memperbaharui Event")
         }
     };
 
@@ -149,6 +154,7 @@ const TableEventSma = () => {
                 status: newStatus,
             });
             getEvents(); // Refresh data event setelah update
+            alert("Status berhasil di update")
         } catch (error) {
             console.error("Gagal memperbarui status event:", error);
         }
@@ -159,8 +165,10 @@ const TableEventSma = () => {
             try {
                 await axios.delete(`http://localhost:3001/api/admin-sma/events-sma/${id}`);
                 getEvents();
+                alert("Event Berhasil Di Hapus")
             } catch (error) {
                 console.error("Gagal menghapus event:", error);
+                alert("Gagal Menghapus Event")
             }
         }
     };

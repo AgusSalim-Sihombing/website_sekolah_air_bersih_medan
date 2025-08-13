@@ -1,7 +1,9 @@
 import "../../../../styles/admin/SideBar.css"
 import { useNavigate } from "react-router-dom"
-import React from 'react';
+import React, { useEffect, useState, useRef } from "react";
 import { NavLink, useLocation } from 'react-router-dom';
+import { Toast } from "react-bootstrap";
+
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -21,11 +23,25 @@ const SidebarAdminSma = ({ setPageTitle = () => { } }) => {
   const isManajemenKontenActive = location.pathname.includes("/admin-sma/manajemen-konten-sma");
   const isManajemenDataActive = location.pathname.includes("/admin-sma/manajemen-data-sma");
 
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastVariant, setToastVariant] = useState("success");
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/sma")
+    localStorage.removeItem("id");
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
+    localStorage.removeItem("unit_sekolah")
+    setToastMessage("Logout berhasil! Mengarahkan ke halaman login admin...");
+    setToastVariant("success");
+    setShowToast(true);
+
+    setTimeout(() => {
+      navigate("/login-admin");
+    }, 1500);
   }
 
   return (
@@ -85,13 +101,17 @@ const SidebarAdminSma = ({ setPageTitle = () => { } }) => {
             </NavLink> */}
 
             <NavLink
-              to="/admin-sma/manajemen-konten-sma/visi-misi-tujuan"
+              to="/admin-sma/manajemen-konten-sma/carousel-sma"
               className={({ isActive }) => `nav-link ${location.pathname === "/admin-sma/manajemen-konten-sma/visi-misi-tujuan"
                 || location.pathname === "/admin-sma/manajemen-konten-sma/event-sma"
                 || location.pathname === "/admin-sma/manajemen-konten-sma/pengumuman-sma"
                 || location.pathname === "/admin-sma/manajemen-konten-sma/dokumentasi-kegiatan-sma"
                 || location.pathname === "/admin-sma/manajemen-konten-sma/fasilitas"
                 || location.pathname === "/admin-sma/manajemen-konten-sma/profil-sma"
+                || location.pathname === "/admin-sma/manajemen-konten-sma/kata-sambutan-sma"
+                || location.pathname === "/admin-sma/manajemen-konten-sma/carousel-sma"
+                || location.pathname === "/admin-sma/manajemen-konten-sma/informasi-pendaftaran"
+                || location.pathname === "/admin-sma/manajemen-konten-sma/event"
                 ? "active" : ""
                 }`}
 
@@ -143,9 +163,10 @@ const SidebarAdminSma = ({ setPageTitle = () => { } }) => {
               <CDBSidebarMenuItem icon="user">Profile</CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink to="/admin-sma/hero404" target="_blank" className="nav-link">
-              <CDBSidebarMenuItem icon="exclamation-circle">404 page</CDBSidebarMenuItem>
-            </NavLink>
+            <CDBSidebarMenuItem icon="exclamation-circle" onClick={() => window.open("/halaman-tes-404", "_blank")}>
+              Lihat Tampilan 404
+            </CDBSidebarMenuItem>
+
 
             <CDBSidebarMenuItem icon="arrow-left" className="logout" onClick={handleLogout}>
               Logout
@@ -166,6 +187,26 @@ const SidebarAdminSma = ({ setPageTitle = () => { } }) => {
         </CDBSidebarFooter>
 
       </CDBSidebar>
+
+      <Toast
+        onClose={() => setShowToast(false)}
+        show={showToast}
+        delay={2500}
+        autohide
+        bg={toastVariant}
+        style={{
+          position: "fixed",
+          top: 20,
+          right: 20,
+          minWidth: "250px",
+          zIndex: 9999,
+        }}
+      >
+        <Toast.Header>
+          <strong className="me-auto">Informasi</strong>
+        </Toast.Header>
+        <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+      </Toast>
     </div>
   );
 };

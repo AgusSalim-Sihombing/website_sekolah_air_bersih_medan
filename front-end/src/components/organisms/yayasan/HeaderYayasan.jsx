@@ -31,14 +31,13 @@ const HeaderYayasan = () => {
                         <Nav className="ms-auto">
                             <Nav.Link href="/" className={location.pathname === "/" ? "active" : ""}>Beranda</Nav.Link>
                             <NavDropdown title="Unit" id="basic-nav-dropdown" >
-                                <NavDropdown.Item href="/sma" className={location.pathname === "/smp" ? "active" : ""}>SMP</NavDropdown.Item>
+                                <NavDropdown.Item href="/smp" className={location.pathname === "/smp" ? "active" : ""}>SMP</NavDropdown.Item>
                                 <NavDropdown.Item href="/sma" >SMA</NavDropdown.Item>
                                 <NavDropdown.Item href="/smk" >SMK</NavDropdown.Item>
                             </NavDropdown>
                             <Nav.Link href="/informasi-pendaftaran" className={location.pathname === "/informasi-pendaftaran" ? "active" : ""}>Informasi Pendaftaran</Nav.Link>
 
                         </Nav>
-                        <LoginButtonYayasan className="button" />
                     </Navbar.Collapse>
                 </Container>
             </Navbar>

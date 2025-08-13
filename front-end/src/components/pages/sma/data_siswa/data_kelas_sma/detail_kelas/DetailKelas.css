@@ -1,0 +1,16 @@
+/* Untuk desktop: table penuh */
+.custom-table-wrapper {
+  width: 100%;
+  /* overflow-x: scroll; */
+}
+
+/* Scroll hanya aktif jika layar kecil */
+@media (max-width: 768px) {
+  .custom-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .custom-table-wrapper table {
+    min-width: 768px;
+  }
+}

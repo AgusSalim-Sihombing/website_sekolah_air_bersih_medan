@@ -9,13 +9,16 @@ const socketIo = require("socket.io");
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require("cors");
-const adminRoutes = require("./src/routes/admin_route");
+const adminRoute = require("./src/routes/admin_route");
+const adminRoutes = require("./src/routes/admin_routes")
 const adminSmaRoutes = require("./src/routes/sma/sma_route")
+const publicRoutes = require("./src/routes/public/public_route")
+const smpRoutes = require("./src/routes/smp/smp_route")
 const http = require("http");
 const db = require("./src/database/database_connection")
 require('dotenv').config();
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -28,9 +31,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-        origin: "http://localhost:3006",
-        methods: ["GET", "POST", "PUT"],
-    },
+        origin: process.env.FRONTEND_URL || "http://localhost:3006",
+        methods: ["GET", "POST", "PUT"]
+    }
 });
 
 //Total Siswa Tahunan
@@ -121,9 +124,11 @@ io.on("connection", (socket) => {
 //     xlsx.writeFile(workbook, filePath);
 // };
 
-app.use("/api/admin", adminRoutes)
+app.use("/api/admin", adminRoute)
 app.use("/api/admin-sma", adminSmaRoutes)
-
+app.use("/api/public", publicRoutes)
+app.use("/api/admin-unit", adminRoutes)
+app.use("/api/smp", smpRoutes)
 
 server.listen(PORT, () => {
     console.log(`Server berjalan pada http://localhost:${PORT}`)

@@ -4,12 +4,16 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import * as Icon from 'react-bootstrap-icons';
 import { useNavigate } from "react-router-dom";
+import {Toast } from "react-bootstrap";
 
 const HeaderAdminSma = ({ title }) => {
     const navigate = useNavigate();
     const [id, setId] = useState("");
     const [username, setUsername] = useState("");
     const [role, setRole] = useState("")
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState("");
+    const [toastVariant, setToastVariant] = useState("success");
 
     const [showDropdown, setShowDropdown] = useState(false); // State untuk menampilkan card
     const dropdownRef = useRef(null); // Untuk deteksi klik di luar
@@ -53,7 +57,14 @@ const HeaderAdminSma = ({ title }) => {
         localStorage.removeItem("id");
         localStorage.removeItem("username");
         localStorage.removeItem("role");
-        navigate("/")
+        localStorage.removeItem("unit_sekolah")
+        setToastMessage("Logout berhasil! Mengarahkan ke halaman login admin...");
+        setToastVariant("success");
+        setShowToast(true);
+
+        setTimeout(() => {
+            navigate("/login-admin");
+        }, 1500);
     }
 
 
@@ -106,6 +117,25 @@ const HeaderAdminSma = ({ title }) => {
                         </ul>
                     </div>
                 )}
+                <Toast
+                    onClose={() => setShowToast(false)}
+                    show={showToast}
+                    delay={2500}
+                    autohide
+                    bg={toastVariant}
+                    style={{
+                        position: "fixed",
+                        top: 20,
+                        right: 20,
+                        minWidth: "250px",
+                        zIndex: 9999,
+                    }}
+                >
+                    <Toast.Header>
+                        <strong className="me-auto">Informasi</strong>
+                    </Toast.Header>
+                    <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+                </Toast>
             </div>
         </header>
 

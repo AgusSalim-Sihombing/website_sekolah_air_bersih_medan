@@ -8,25 +8,67 @@ import React from "react";
 import { Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import ProfileSekolahSma from "./admin_profile_sekolah_sma/ProfilSekolahSma";
+import KataSambutanSma from "./kata_sambutan/KataSambutanSma";
+import CarouselSma from "./admin_carousel_sma/CarouselSma";
+import InformasiPendaftaranAdmin from "./admin_informasi_pendaftaran/InformasiPendaftaranAdmin";
+import { useRef, useLayoutEffect, useState } from "react";
+import EventAdmin from "./admin_event_sma/event/EventAdmin";
 
 const ManajemenKontenSma = () => {
 
     const location = useLocation();
 
+    const navRef = useRef(null);
+    const [navHeight, setNavHeight] = useState(0);
+
+    // Atur padding konten sesuai tinggi nav
+    useLayoutEffect(() => {
+        if (navRef.current) {
+            setNavHeight(navRef.current.offsetHeight);
+        }
+    }, [location]); // Update saat route berubah
+
     return (
         <div>
             {/* Tab Navigasi */}
             <Nav
+                ref={navRef}
                 variant="tabs"
                 style={{
                     backgroundColor: "rgba(242, 242, 300, 1)",
                     position: "fixed",
                     top: "65px",
-                    width: "calc(100% - 320px)", // Sesuaikan dengan sidebar jika ada
+                    width: "calc(100% - 320px)",
                     zIndex: "1",
+                    justifyContent: "center",
+                    gap:"20px"
                 }}
                 className="px-3"
             >
+                <Nav.Item>
+                    <Nav.Link
+                        as={NavLink}
+                        to="/admin-sma/manajemen-konten-sma/carousel-sma"
+                        style={{
+                            color: location.pathname.includes("carousel-sma") ? "#FFA500" : "black",
+                        }}
+                    >
+                        Carousel
+                    </Nav.Link>
+                </Nav.Item>
+
+                <Nav.Item>
+                    <Nav.Link
+                        as={NavLink}
+                        to="/admin-sma/manajemen-konten-sma/kata-sambutan-sma"
+                        style={{
+                            color: location.pathname.includes("kata-sambutan-sma") ? "#FFA500" : "black",
+                        }}
+                    >
+                        Kata Sambutan Kepala Sekolah SMA
+                    </Nav.Link>
+                </Nav.Item>
+
                 <Nav.Item>
                     <Nav.Link
                         as={NavLink}
@@ -38,12 +80,23 @@ const ManajemenKontenSma = () => {
                         Visi-Misi-Tujuan
                     </Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                {/* <Nav.Item>
                     <Nav.Link
                         as={NavLink}
                         to="/admin-sma/manajemen-konten-sma/event-sma"
                         style={{
                             color: location.pathname.includes("event-sma") ? "#FFA500" : "black",
+                        }}
+                    >
+                        Event
+                    </Nav.Link>
+                </Nav.Item> */}
+                <Nav.Item>
+                    <Nav.Link
+                        as={NavLink}
+                        to="/admin-sma/manajemen-konten-sma/event"
+                        style={{
+                            color: location.pathname.includes("event") ? "#FFA500" : "black",
                         }}
                     >
                         Event
@@ -93,17 +146,36 @@ const ManajemenKontenSma = () => {
                         Profil Sekolah SMA
                     </Nav.Link>
                 </Nav.Item>
+
+                <Nav.Item>
+                    <Nav.Link
+                        as={NavLink}
+                        to="/admin-sma/manajemen-konten-sma/informasi-pendaftaran"
+                        style={{
+                            color: location.pathname.includes("informasi-pendaftaran") ? "#FFA500" : "black",
+                        }}
+                    >
+                        Informasi Pendaftaran
+                    </Nav.Link>
+                </Nav.Item>
+
             </Nav>
 
             {/* Konten berdasarkan Tab yang diklik */}
-            <div className="content-area">
+            <div className="content-area" style={{ paddingTop: navHeight }}>
                 <Routes>
                     <Route path="visi-misi-tujuan" element={<AdminVisiMisiTujuan />} />
-                    <Route path="event-sma" element={<AdminEventSma />} />
+                    <Route path="carousel-sma" element={<CarouselSma />} />
+                    <Route path="kata-sambutan-sma" element={<KataSambutanSma />} />
+                    {/* <Route path="event-sma" element={<AdminEventSma />} /> */}
+                    <Route path="event" element={<EventAdmin/>}/>
                     <Route path="pengumuman-sma" element={<PengumumanAdminSma />} />
                     <Route path="dokumentasi-kegiatan-sma" element={<AdminDokumentasiKegiatan />} />
                     <Route path="fasilitas" element={<Fasilitas />} />
                     <Route path="profil-sma" element={<ProfileSekolahSma />} />
+                    <Route path="informasi-pendaftaran" element={<InformasiPendaftaranAdmin />} />
+
+
                 </Routes>
             </div>
         </div>

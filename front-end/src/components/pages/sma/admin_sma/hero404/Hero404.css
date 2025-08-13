@@ -1,0 +1,94 @@
+.hero404-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    background: linear-gradient(135deg, #f9d976, #f39f86);
+    animation: fadeIn 1s ease forwards;
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.hero404-image {
+    width: 180px;
+    max-width: 60%;
+    animation: float 3s ease-in-out infinite;
+    margin-bottom: 20px;
+}
+
+.hero404-container h1 {
+    font-size: 2.8rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+    animation: bounce 1.5s infinite alternate;
+}
+
+.hero404-container p {
+    font-size: 1.2rem;
+    color: #fff;
+    max-width: 400px;
+    margin-bottom: 20px;
+    animation: fadeInText 2s ease forwards;
+}
+
+.hero404-button {
+    background-color: #fff;
+    color: #f76c6c;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hero404-button:hover {
+    background-color: #ffb347;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+/* Animasi */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes fadeInText {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

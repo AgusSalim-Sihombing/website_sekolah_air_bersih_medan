@@ -75,10 +75,11 @@ const Fasilitas = () => {
 
 
     const handleDelete = async (id) => {
-        if (window.confirm("Apakah Anda yakin ingin menghapus dokumentasi ini?")) {
+        if (window.confirm("Apakah Anda yakin ingin menghapus fasilitas ini?")) {
             try {
                 await axios.delete(`http://localhost:3001/api/admin-sma/fasilitas/${id}`);
                 getFasilitas();
+                alert("Fasilitas Berhasil Di Hapus")
             } catch (error) {
                 console.error("Error deleting fasilitas:", error);
             }

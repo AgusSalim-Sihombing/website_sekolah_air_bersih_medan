@@ -16,9 +16,6 @@ const upload = multer({ storage: storage });
 router.post("/login", adminControllers.loginAdmin);
 router.post("/add-admin", adminControllers.addAdmin);
 router.get("/get-admin", adminControllers.getAdmin);
-router.get("/get-admin/photo/:id", adminControllers.getAdminPhoto)
-router.post("/post-photo/:id", upload.single("foto"), adminControllers.uploadAdminPhoto);
-router.delete("/delete-photo/:id", adminControllers.deleteAdminPhoto);
 router.put("/update-admin/:id", adminControllers.updateAdmin);
 router.put("/toggle-status/:id", adminControllers.disableToggleStatusAdmin);
 router.delete("/delete-admin/:id", adminControllers.deleteAdmin);

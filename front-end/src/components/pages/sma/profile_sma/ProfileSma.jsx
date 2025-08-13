@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
-import "../../../../styles/pages/sma/profile_sma/ProfileSma.css";
+import "./ProfileSma.css";
 import { Modal } from "react-bootstrap";
 
 const API_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
@@ -66,10 +66,10 @@ const ProfileSma = () => {
                             <img
                                 src={`data:image/jpeg;base64,${profile.gambar_denah}`}
                                 alt="Denah Sekolah"
-                                className="img-fluid shadow"
-                                style={{ maxWidth: "800px", maxHeight: "500px", borderRadius: "12px", cursor: "zoom-in" }}
+                                className="img-fluid denah-sekolah shadow"
                                 onClick={handleShow}
                             />
+
                         </div>
                     )}
                     <Modal show={showModal} onHide={handleClose} fullscreen="md-down" centered>
@@ -88,11 +88,6 @@ const ProfileSma = () => {
                 </>
             )}
 
-            <div className="text-center mt-4">
-                <a href="/galeri" className="btn btn-outline-primary">
-                    📷 Lihat Galeri Sekolah
-                </a>
-            </div>
         </Container>
     );
 };

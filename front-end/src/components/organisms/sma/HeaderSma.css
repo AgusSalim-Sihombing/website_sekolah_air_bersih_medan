@@ -1,44 +1,53 @@
+/* Warna dan gaya utama navbar */
 .costum-navbar-sma {
     background-color: rgba(3, 29, 68, 1);
-    font-size: 20px;
-
+    font-size: 18px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
 }
 
 .header-sma {
     position: fixed;
     top: 0;
     z-index: 9999;
-    color: white;
     width: 100%;
     display: flex;
     flex-direction: column;
-    /* overflow: hidden; */
+    background-color: rgba(3, 29, 68, 1);
 }
 
-
-
+/* Link & brand */
 .header-sma .navbar-nav .nav-link,
 .header-sma .navbar-brand {
     color: white !important;
+    transition: color 0.2s ease;
 }
 
+.header-sma .navbar-nav .nav-link:hover {
+    color: #FFD700 !important;
+}
 
+/* Dropdown */
 .header-sma .dropdown-item:hover {
     background-color: #FFD700;
     color: white !important;
-
+    transition: background-color 0.2s ease;
 }
 
+/* Toggle button */
 .toogle-sma {
     background-color: white;
-    color: white;
+    border: none;
 }
 
+/* Tombol login */
 .button {
     right: 0;
 }
 
-
+/* Aktif menu */
 .navbar-nav .nav-link.active,
 .navbar-nav .dropdown-item.active {
     font-weight: bold;
@@ -46,55 +55,56 @@
     border-bottom: 2px solid #FFD700;
 }
 
-@media screen and (max-width: 480px) {
+/* ======================================= */
+/* MEDIA QUERY UNTUK MOBILE */
+/* ======================================= */
+@media screen and (max-width: 768px) {
     .costum-navbar-sma {
         font-size: 16px;
-        padding: 10px;
-
-        /* Font lebih kecil di layar kecil */
+        padding: 12px 16px;
     }
 
     .header-sma {
-        flex-direction: column;
         text-align: left;
     }
 
-
-    /* .navbar-nav {
-        display: none;
-        
-        flex-direction: column;
-        width: 100%;
-        background-color: rgba(3, 29, 68, 1);
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        padding: 10px 0;
-    } */
-
-    /* .navbar-nav {
-        display: flex;
-        flex-direction: column;
-        width: 100px;
-        background-color: rgba(3, 29, 68, 1);
-        position: relative;
-        padding: 10px 0;
-        left: 0;
-    } */
-
-    .navbar-nav.active {
-        display: flex;
-        /* Tampilkan menu saat toggle diklik */
-    }
-
+    /* Tampilkan link menu secara vertikal */
     .header-sma .navbar-nav .nav-link {
-        padding: 12px;
+        padding: 12px 16px;
         display: block;
         width: 100%;
     }
 
-    .toogle-sma {
-        display: block;
+    /* Dropdown menu full width */
+    .dropdown-menu {
+        width: 100%;
     }
+
+    /* Perbaiki tombol toggle */
+    .toogle-sma {
+        margin-left: auto;
+    }
+
+    /* Agar dropdown scrollable di mobile */
+    .dropdown-menu.show {
+        max-height: 250px;
+        overflow-y: auto;
+    }
+}
+
+@keyframes fadeDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tambahkan animasi ke navbar */
+.header-sma.animate-show {
+    animation: fadeDown 0.5s ease-in-out;
 }

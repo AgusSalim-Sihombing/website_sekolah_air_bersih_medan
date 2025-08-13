@@ -1,0 +1,20 @@
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.main-wrapper-dashboard-smp {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Minimal tinggi layar penuh */
+}
+
+.main-content-dashboard-smp {
+    flex: 1;
+    /* Area utama mendorong footer ke bawah */
+}

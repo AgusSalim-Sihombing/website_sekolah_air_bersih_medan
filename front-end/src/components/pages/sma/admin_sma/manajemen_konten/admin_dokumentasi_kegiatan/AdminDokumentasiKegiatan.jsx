@@ -43,7 +43,7 @@ const AdminDokumentasiKegiatan = () => {
         if (formData.gambar) {
             formDataToSend.append("gambar", formData.gambar);
         } else {
-            formDataToSend.append("gambarLama", formData.gambarLama); // Kirim gambar lama jika tidak ada perubahan
+            formDataToSend.append("gambarLama", formData.gambarLama);
         }
 
         try {

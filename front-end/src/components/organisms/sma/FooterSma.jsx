@@ -1,70 +1,91 @@
-import "../../../styles/organisms/FooterSma.css";
-import Card from 'react-bootstrap/Card';
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaInstagram, FaFacebook, FaYoutube } from "react-icons/fa";
+import axios from "axios";
+import { Dropdown, DropdownButton } from "react-bootstrap";
 
-const FooterSma = () => {
+
+const API_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL;
+
+const footerSma = () => {
+    const [arsipTahun, setArsipTahun] = useState([]);
+
+    useEffect(() => {
+        const fetchTahun = async () => {
+            try {
+                const res = await axios.get(`${API_URL}/public/arsip-tahun`);
+                setArsipTahun(res.data);
+            } catch (err) {
+                console.error("Gagal mengambil data arsip tahun", err);
+            }
+        };
+        fetchTahun();
+    }, []);
+
+
     return (
-        
-        <footer>
-            <Card.Footer className="body-footer-sma">
+        <footer style={{ backgroundColor: "rgba(3, 29, 68, 1)", color: "white" }} className="pt-4 pb-2 mt-5">
+            <Container>
+                <Row>
+                    {/* Kontak */}
+                    <Col md={4} className="mb-3">
+                        <h5>SMA Advent Air Bersih</h5>
+                        <p><FaMapMarkerAlt /> Jl. Contoh No.123, Medan</p>
+                        <p><FaPhone /> (061) 123456</p>
+                        <p><FaEnvelope /> info@smaairbersih.sch.id</p>
+                    </Col>
 
-                <div className="footer-sma">
-                    <div className="col-md-4">
-                        <h5>Arsip :</h5>
+                    {/* Navigasi */}
+                    <Col md={4} className="mb-3">
+                        <h5>Menu</h5>
                         <ul className="list-unstyled">
-                            <li>Tahun 2014</li>
-                            <li>Tahun 2015</li>
-                            <li>Tahun 2016</li>
-                            <li>Tahun 2017</li>
-                            <li>Tahun 2018</li>
-                            <li>Tahun 2019</li>
+                            <li><a href="/" className="text-white text-decoration-none">Beranda</a></li>
+                            <li><a href="/profil" className="text-white text-decoration-none">Profil Sekolah</a></li>
+                            <li><a href="/galeri" className="text-white text-decoration-none">Galeri</a></li>
+                            <li><a href="/kontak" className="text-white text-decoration-none">Kontak</a></li>
                         </ul>
-                    </div>
 
-                    <div className="col-md-4">
-                        <h5>Unit Lainnya :</h5>
-                        <ul className="list-unstyled">
-                            <li>SMP</li>
-                            <li><a href="/sma">SMA</a></li>
-                            <li>SMK</li>
-                        </ul>
-                    </div>
-                    <div className="col-md-3" >
-                        <table className="table costum-table-sma" >
-                            <tbody className="tbody">
-                                <tr>
-                                    <td >NPSN </td>
-                                    <td>:</td>
-                                    <td>000000</td>
-                                </tr>
-                                <tr>
-                                    <td>No.Tlp </td>
-                                    <td>:</td>
-                                    <td>0800-0000-0000</td>
-                                </tr>
-                                <tr>
-                                    <td>No WA</td>
-                                    <td>:</td>
-                                    <td>0800-0000-0000</td>
-                                </tr>
-                                <tr>
-                                    <td>Email</td>
-                                    <td>:</td>
-                                    <td>abc@gmail.com</td>
-                                </tr>
-                                <tr>
-                                    <td colSpan="4" className="text-center">Jalan Air Bersih Medan</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div className="text-center mt-4">
-                    <p>CopyRight © 2024 - SMAS ADVENT AIR BERSIH MEDAN</p>
-                </div>
-            </Card.Footer>
+                        <h5 className="mt-3">Arsip Alumni</h5>
+                        <div style={{ maxHeight: "150px", overflowY: "clip" }}>
+                            <select
+                                className="form-select"
+                                size={5} // agar tampil seperti dropdown besar dan bisa di-scroll
+                                onChange={(e) => {
+                                    if (e.target.value) window.location.href = `/arsip/${e.target.value}`;
+                                }}
+                            >
+                                <option value="">Pilih Tahun</option>
+                                {arsipTahun.map((tahun) => (
+                                    <option key={tahun.id} value={tahun.id}>
+                                        {tahun.tahun} ({tahun.program_studi})
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                    </Col>
+
+                    {/* Sosial Media */}
+                    <Col md={4} className="mb-3">
+                        <h5>Ikuti Kami</h5>
+                        <p>
+                            <a href="https://facebook.com" className="text-white me-3"><FaFacebook /></a>
+                            <a href="https://instagram.com" className="text-white me-3"><FaInstagram /></a>
+                            <a href="https://youtube.com" className="text-white"><FaYoutube /></a>
+                        </p>
+                    </Col>
+                </Row>
+
+                <hr className="border-top border-light" />
+
+                <Row>
+                    <Col className="text-center">
+                        <p className="mb-0">&copy; {new Date().getFullYear()} SMA Advent Air Bersih. All rights reserved.</p>
+                    </Col>
+                </Row>
+            </Container>
         </footer>
+    );
+};
 
-    )
-}
-
-export default FooterSma;
+export default footerSma;

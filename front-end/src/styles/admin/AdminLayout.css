@@ -57,7 +57,7 @@
 }
 
 .main-content {
-    margin-top: 65px;
+    margin-top: 60px;
     padding: 20px;
     overflow-y: auto;
     transition: margin-left 0.3s ease-in-out;

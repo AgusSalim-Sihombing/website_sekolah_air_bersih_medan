@@ -1,0 +1,33 @@
+.event-card-container {
+  display: flex;
+  justify-content: center;
+}
+
+.event-card {
+  width: 100%;
+  max-width: 100%;
+  min-height: 470px; /* agar tinggi stabil di semua slide */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.event-card img {
+  height: 180px;
+  object-fit: cover;
+}
+
+.event-card .card-body {
+  flex-grow: 1;
+}
+
+.event-card .btn {
+  margin: 10px;
+}
+
+/* Responsif untuk HP kecil */
+@media (max-width: 576px) {
+  .event-card {
+    min-height: 500px;
+  }
+}

@@ -37,7 +37,7 @@ const DataKelasSma = () => {
 
     const getDataSiswaSma = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/admin-sma/siswa-sma/${kelas}`, {
+            const response = await axios.get(`${API_BASE_URL}/admin-sma/admin-siswa-sma/${kelas}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -202,17 +202,22 @@ const DataKelasSma = () => {
                 />
 
             </div>
-            <Table>
+            <Table striped bordered hover>
                 <thead>
-                    <tr className="bg-grey-800">
-                        <th className="border p-2">ID</th>
-                        <th className="border p-4">Nama</th>
-                        <th className="border p-2">Nis</th>
-                        <th className="border p-2">Jenis Kelamin</th>
-                        <th className="border p-2">Kelas</th>
-                        <th className="border p-2">Tanggal Lahir</th>
-                        <th className="border p-2">Alamat</th>
-                        <th className="border p-2">Aksi</th>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama</th>
+                        <th>Jenis Kelamin</th>
+                        <th>NISN</th>
+                        <th>Tempat Lahir</th>
+                        <th>Tanggal Lahir</th>
+                        <th>NIK</th>
+                        <th>Agama</th>
+                        <th>Alamat</th>
+                        <th>Nama Ayah</th>
+                        <th>Nama Ibu</th>
+                        <th>Kelas</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -220,18 +225,25 @@ const DataKelasSma = () => {
                         <tr key={siswa.id} className="text-center">
                             <td className="border p-2">{siswa.id}</td>
                             <td className="border p-4">{siswa.nama}</td>
-                            <td className="border p-2">{siswa.nis}</td>
-                            <td className="border p-2">{siswa.jenis_kelamin}</td>
-                            <td className="border p-2">{siswa.kelas}</td>
-                            <td className="border p-2">{siswa.tanggal_lahir ? format(new Date(siswa.tanggal_lahir), "dd-MMMM-yyyy", { locale: idLocale }) : "-"}</td>
+                            <td className="border p-2">{siswa.jk}</td>
+                            <td className="border p-2">{siswa.nisn}</td>
+                            <td className="border p-2">{siswa.tempat_lahir}</td>
+                            <td className="border p-2">{siswa.tanggal_lahir ? format(new Date(siswa.tanggal_lahir), "dd MMMM yyy", { locale: idLocale }) : "-"}</td>
+                            <td className="border p-2">{siswa.nik}</td>
+                            <td className="border p-2">{siswa.agama}</td>
                             <td className="border p-2">{siswa.alamat}</td>
+                            <td className="border p-2">{siswa.nama_ayah}</td>
+                            <td className="border p-2">{siswa.nama_ibu}</td>
+                            <td className="border p-2">{siswa.kelas}</td>
                             <td className="border p-2">
-                                <div>
+                                <div style={{
+                                    display: "flex"
+                                }}>
                                     <Button variant="primary" className="mx-1" onClick={() => handleEdit(siswa)}>
                                         <Icon.Pen />
                                     </Button>
 
-                                    <Button variant="danger" onClick={() => handleDelete(siswa.id)}>
+                                    <Button variant="danger" onClick={() => handleDelete(siswa.id, siswa.nama)}>
                                         <Icon.Trash />
                                     </Button>
                                 </div>

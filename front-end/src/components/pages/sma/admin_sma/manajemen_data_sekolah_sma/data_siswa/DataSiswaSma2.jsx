@@ -5,7 +5,7 @@ import "./style/DataKelas.css";
 const DataSiswaSMA = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token")
-    const kelasList = ["X_IPA", "X_IPS", "XI_IPA", "XI_IPS", "XII_IPA", "XII_IPS"];
+    const kelasList = ["X_1", "X_2", "XI_IPA", "XII_IPA", "XII_IPS"];
 
     // const handleClick = () => {
     //     navigate("/admin-sma/manajemen-data-sma/data-siswa-sma/X_IPA"); // Arahkan ke halaman data kelas X_IPA
@@ -19,7 +19,6 @@ const DataSiswaSMA = () => {
                     <div
                         key={kelas}
                         className="shadow-sm pilihan-costum"
-
                         style={{
                             width:"100px",
                             height:"100px",

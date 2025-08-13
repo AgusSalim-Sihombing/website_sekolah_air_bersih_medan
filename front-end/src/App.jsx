@@ -6,7 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthProvider } from "./auth/Auth"
 import UserLayout from './layout/yayasan/public_layout/UserLayout';
 import UserHome from './components/pages/yayasan/public_yayasan/UserHome';
-import InformasiPendaftaran from './components/pages/yayasan/public_yayasan/InformasiPendaftaran';
 import ProtectedRoute from './routes/ProtectedRoute';
 import AdminLayout from './layout/yayasan/admin_layout/AdminLayout';
 import Dashboard from './components/pages/yayasan/admin_yayasan/dashboard/DashboardAdmin';
@@ -34,6 +33,17 @@ import DetailDataKelasSma from './components/pages/sma/data_siswa/data_kelas_sma
 import DokumentasiKegiatan from './components/pages/sma/kegiatan_sma/DokumentasiKegiatan';
 import DataGuruTendik from './components/pages/sma/data_guru_tendik/DataGuruTendik';
 import DetailGuruTendik from './components/pages/sma/data_guru_tendik/detail_guru_tendik/DetailGuruTendik';
+import ArsipDetail from './components/pages/ArsipDetail';
+import HalamanStrukturOrganisasi from './components/pages/sma/dashboard_sma/StrukturisasiSma/MobileStrukturisasiSma';
+import InformasiPendaftaran from './components/pages/informasi_pendaftaran/InformasiPendaftaran';
+import LoginAdminSma from './components/pages/sma/LoginAdminSma';
+import LoginSelector from './components/pages/login_selector/LoginSelector';
+import Events from './components/pages/events/Events';
+import DetailEvent from './components/pages/events/EventsDetail';
+import PublicSmpLayout from './layout/smp/public_smp_layout/PublicSmpLayout';
+import LoginAdminUnit from './components/pages/login_all_unit/LoginAdminUnit';
+import Hero404 from './components/pages/sma/admin_sma/hero404/Hero404';
+import DashboardSmp from './components/pages/smp/dashboard_smp/DashboardSmp';
 
 
 
@@ -42,19 +52,16 @@ const App = () => {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+
+          <Route path="/login-admin" element={<LoginSelector />} />
+          <Route path="/login-admin-unit" element={<LoginAdminUnit />} />
+
           <Route path='/' element={<UserLayout />}>
             <Route index element={<UserHome />} />
-            <Route path='informasi-pendaftaran' element={<InformasiPendaftaran />} />
+            <Route path="/arsip/:id" element={<ArsipDetail />} />
           </Route>
 
-          {/* <Route path='/admin/' element={<AdminLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path='dashboard' element={<Dashboard />} />
-            <Route path="user-admin" element={<UserAdmin />} />
-            <Route path="manajemen-konten" element={<ManajemenKonten />} />
-            <Route path="manajemen-data" element={< ManajemenDataSekolah />} />
 
-          </Route> */}
 
           <Route path="/admin-yayasan" element={<ProtectedRoute />}>
             {/* <Route path="dashboard" element={<Dashboard />} />
@@ -80,7 +87,9 @@ const App = () => {
           </Route>
 
 
-
+          <Route path='/smp/' element={<PublicSmpLayout />}>
+            <Route index element={<DashboardSmp />} />
+          </Route>
 
 
           <Route path='/sma/' element={<PublicSmaLayout />}>
@@ -88,10 +97,13 @@ const App = () => {
             <Route path='profile' element={<ProfileSma />} />
             <Route path='kata-sambutan' element={<DetailKataSambutan />} />
             <Route path='fasilitas' element={<Fasilitas />} />
+            <Route path='detail-strukturisasi' element={<HalamanStrukturOrganisasi />} />
             <Route path='acara'>
               <Route path='events'>
-                <Route index element={<EventSma />} />
-                <Route path="detail-events/:id" element={<EventDetailSma />} />
+                {/* <Route index element={<EventSma />} /> */}
+                {/* <Route path="detail-events/:id" element={<EventDetailSma />} /> */}
+                <Route index element={<Events />} />
+                <Route path="detail-events/:id" element={<DetailEvent />} />
               </Route>
 
 
@@ -109,7 +121,14 @@ const App = () => {
               <Route path='data-guru-tendik' element={<DataGuruTendik />} />
               <Route path='data-guru-tendik/:id' element={<DetailGuruTendik />} />
             </Route>
+
+            <Route path='informasi-pendaftaran' element={<InformasiPendaftaran />} />
           </Route>
+
+          <Route path="/halaman-tes-404" element={<Hero404 disableStatistik />} />
+
+
+          <Route path="*" element={<Hero404 />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

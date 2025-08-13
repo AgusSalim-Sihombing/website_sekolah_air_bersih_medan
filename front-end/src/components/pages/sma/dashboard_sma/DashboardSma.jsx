@@ -1,20 +1,21 @@
+import CarouselBerandaSma from "../../../molecules/carousel/sma/CarouselBerandaSma";
 import Events from "../../../molecules/Events";
 import VisiMisiTujuan from "../../../molecules/VisiMisi";
-import CarouselBerandaSma from "./CarouselSma"
 import KataSambutan from "./kata_sambutan/KataSambutan";
-import OrganizationalChart from "./StrukturisasiSma";
+import OrganizationalChart from "./StrukturisasiSma/StrukturisasiSma";
 // import Strukturisasi from "./StrukturisasiSma";
-
+import { Container } from "react-bootstrap";
 
 const DashboardSma = () => {
     return (
         <div>
-            <CarouselBerandaSma/>
-            <KataSambutan/>
-            <VisiMisiTujuan/>
+
+            <CarouselBerandaSma />
+            <KataSambutan />
+            <VisiMisiTujuan />
             {/* <Strukturisasi/> */}
-            <OrganizationalChart/>
-            <Events/>
+            <OrganizationalChart />
+            <Events />
         </div>
     )
 }

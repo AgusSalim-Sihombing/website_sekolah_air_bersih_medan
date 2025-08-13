@@ -2,33 +2,59 @@
     padding: 20px;
 }
 
+.gutend {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
 .gambar-gutend {
     width: 300px;
     height: 400px;
-    background-color: gold;
-    margin-bottom: 30px;
     object-fit: cover;
-
-}
-
-.gutend {
-    display: flex;
+    background-color: gold;
 }
 
 .table-gutend {
-    top: 10px;
-    margin-left: 150px;
     position: relative;
+    margin: 0 auto;
+    max-width: 100%;
 }
 
 .tbody-gutend {
     font-size: 20px;
-    line-height: 3;
+    line-height: 2;
 }
 
 .tbody-gutend td {
     padding: 8px 12px;
-    /* Menambah padding agar lebih rapi */
     border-bottom: 1px solid #ddd;
-    /* Opsional, jika ingin garis pemisah */
+}
+
+/* 🌐 Tambahkan responsif breakpoint */
+@media (max-width: 768px) {
+    .gutend {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .gambar-gutend {
+        width: 90%;
+        height: auto;
+        max-width: 300px;
+    }
+
+    .table-gutend {
+        margin-left: 0;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .tbody-gutend {
+        font-size: 16px;
+    }
 }
