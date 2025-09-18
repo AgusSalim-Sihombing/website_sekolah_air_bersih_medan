@@ -25,7 +25,7 @@ const DataGuruTendik = () => {
 
     const getDataGuru = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/admin-sma/get-data-guru`);
+            const response = await axios.get(`${API_BASE_URL}/public/guru-tendik`);
             setData(response.data);
         } catch (error) {
             console.error("Error fetching data:", error);

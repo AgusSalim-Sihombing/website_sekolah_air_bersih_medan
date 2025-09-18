@@ -50,13 +50,34 @@ const DetailEvent = () => {
                 alt="Flyer Event"
                 style={{ width: "100%", maxHeight: "500px", objectFit: "contain", marginBottom: "20px" }}
             />
-
-            <div className="text-start w-100" style={{ marginTop: "20px" }}>
-                <p><strong>Tanggal:</strong> {event.tanggal ? format(new Date(event.tanggal), "dd MMMM yyyy", { locale: idLocale }) : "-"}</p>
-                <p><strong>Waktu:</strong> {event.waktu || "-"}</p>
-                <p><strong>Lokasi:</strong> {event.lokasi || "-"}</p>
-                <p><strong>Penyelenggara:</strong> {event.penyelenggara || "-"}</p>
-            </div>
+            <table className="event-detail-table mt-3 text-start w-100">
+                <tr>
+                    <td><strong>Tanggal</strong></td>
+                    <td>:</td>
+                    <td>{event.tanggal ? format(new Date(event.tanggal), "dd MMMM yyyy", { locale: idLocale }) : "-"}</td>
+                </tr>
+                <tr>
+                    <td><strong>Waktu</strong></td>
+                    <td>:</td>
+                    <td>{event.waktu || "-"}</td>
+                </tr>
+                <tr>
+                    <td><strong>Lokasi</strong></td>
+                    <td>:</td>
+                    <td>{event.lokasi || "-"}</td>
+                </tr>
+                <tr>
+                    <td><strong>Penyelenggara</strong></td>
+                    <td>:</td>
+                    <td>{event.penyelenggara || "-"}</td>
+                </tr>
+                <tr>
+                    <td><strong>Event Selengkapnya</strong></td>
+                    <td>:</td>
+                    <td><a href={event.link} target="_blank">Klik Disini</a></td>
+                </tr>
+               
+            </table>
 
             <div className="mt-4 text-start w-100">
                 <h5 className="fw-bold mb-3">Deskripsi Kegiatan:</h5>
@@ -67,7 +88,7 @@ const DetailEvent = () => {
                         padding: "15px",
                         borderRadius: "8px",
                         backgroundColor: "#f9f9f9",
-                        textAlign:"justify"
+                        textAlign: "justify"
                     }}
                 />
             </div>

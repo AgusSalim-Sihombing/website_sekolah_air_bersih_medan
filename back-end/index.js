@@ -14,6 +14,7 @@ const adminRoutes = require("./src/routes/admin_routes")
 const adminSmaRoutes = require("./src/routes/sma/sma_route")
 const publicRoutes = require("./src/routes/public/public_route")
 const smpRoutes = require("./src/routes/smp/smp_route")
+const smkRoutes = require("./src/routes/smk/smk_route")
 const http = require("http");
 const db = require("./src/database/database_connection")
 require('dotenv').config();
@@ -129,6 +130,7 @@ app.use("/api/admin-sma", adminSmaRoutes)
 app.use("/api/public", publicRoutes)
 app.use("/api/admin-unit", adminRoutes)
 app.use("/api/smp", smpRoutes)
+app.use("/api/smk", smkRoutes)
 
 server.listen(PORT, () => {
     console.log(`Server berjalan pada http://localhost:${PORT}`)

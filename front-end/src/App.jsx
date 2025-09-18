@@ -36,7 +36,6 @@ import DetailGuruTendik from './components/pages/sma/data_guru_tendik/detail_gur
 import ArsipDetail from './components/pages/ArsipDetail';
 import HalamanStrukturOrganisasi from './components/pages/sma/dashboard_sma/StrukturisasiSma/MobileStrukturisasiSma';
 import InformasiPendaftaran from './components/pages/informasi_pendaftaran/InformasiPendaftaran';
-import LoginAdminSma from './components/pages/sma/LoginAdminSma';
 import LoginSelector from './components/pages/login_selector/LoginSelector';
 import Events from './components/pages/events/Events';
 import DetailEvent from './components/pages/events/EventsDetail';
@@ -44,6 +43,16 @@ import PublicSmpLayout from './layout/smp/public_smp_layout/PublicSmpLayout';
 import LoginAdminUnit from './components/pages/login_all_unit/LoginAdminUnit';
 import Hero404 from './components/pages/sma/admin_sma/hero404/Hero404';
 import DashboardSmp from './components/pages/smp/dashboard_smp/DashboardSmp';
+import DetailKataSambutanSmp from './components/pages/smp/dashboard_smp/kata_sambutan/DetailKataSambutanSmp';
+import PublicSmkLayout from './layout/smk/public_layout/PublicSmkLayout';
+import DashboardSmk from './components/pages/smk/dashboard_smk/DashboardSmk';
+import DetailKataSambutanSmk from './components/pages/smk/dashboard_smk/kata_sambutan/DetailKataSambutanSmk';
+import DashboardAdminSmp from './components/pages/smp/admin_smp/dashboard_admin_smp/DashboardAdminSmp';
+import AdminSmpLayout from './layout/smp/admin_smp_layout/AdminSmpLayout';
+import AdminSmkLayout from './layout/smk/admin_smk_layout/AdminSmkLayout';
+import DashboardAdminSmk from './components/pages/smk/admin_smk/dashboard_admin_smk/DashboardAdminSmk';
+import UserAdminSmp from './components/pages/smp/admin_smp/user_admin/UserAdminSmp';
+import ManajemenKontenSmp from './components/pages/smp/admin_smp/manajemen_konten/ManajemenKontenSmp';
 
 
 
@@ -67,7 +76,7 @@ const App = () => {
             {/* <Route path="dashboard" element={<Dashboard />} />
                 <Route path="user-admin" element={<UserAdmin />} /> */}
             <Route element={<AdminLayout />}>
-              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="dashboard-yayasan" element={<Dashboard />} />
               <Route path="user-admin" element={<UserAdmin />} />
               <Route path="manajemen-konten" element={<ManajemenKonten />} />
               <Route path="manajemen-data" element={< ManajemenDataSekolah />} />
@@ -76,7 +85,6 @@ const App = () => {
           </Route>
 
           <Route path='/admin-sma' element={<ProtectedRoute />}>
-
             <Route element={<AdminSmaLayout />}>
               <Route path='dashboard-sma' element={<DashboardAdminSma />} />
               <Route path='user-admin-sma' element={<UserAdminSma />} />
@@ -89,7 +97,28 @@ const App = () => {
 
           <Route path='/smp/' element={<PublicSmpLayout />}>
             <Route index element={<DashboardSmp />} />
+            <Route path='kata-sambutan' element={<DetailKataSambutanSmp />} />
           </Route>
+
+          <Route path='/admin-smp' element={<ProtectedRoute />}>
+            <Route element={<AdminSmpLayout />}>
+              <Route path='dashboard-smp' element={<DashboardAdminSmp />} />
+               <Route path='user-admin-smp' element={<UserAdminSmp />} />
+               <Route path='manajemen-konten-smp/*' element={<ManajemenKontenSmp />} />
+            </Route>
+          </Route>
+
+          <Route path='/smk/' element={<PublicSmkLayout />}>
+            <Route index element={<DashboardSmk />} />
+            <Route path='kata-sambutan' element={<DetailKataSambutanSmk />} />
+          </Route>
+
+          <Route path='/admin-smk' element={<ProtectedRoute />}>
+            <Route element={<AdminSmkLayout />}>
+              <Route path='dashboard-smk' element={<DashboardAdminSmk />} />
+            </Route>
+          </Route>
+
 
 
           <Route path='/sma/' element={<PublicSmaLayout />}>
@@ -128,7 +157,7 @@ const App = () => {
           <Route path="/halaman-tes-404" element={<Hero404 disableStatistik />} />
 
 
-          <Route path="*" element={<Hero404 />} />
+          <Route path="/forbidden" element={<Hero404 />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

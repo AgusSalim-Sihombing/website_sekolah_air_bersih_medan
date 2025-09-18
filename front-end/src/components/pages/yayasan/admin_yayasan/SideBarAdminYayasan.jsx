@@ -2,8 +2,10 @@
 
 import "../../../../styles/admin/SideBar.css"
 import { useNavigate } from "react-router-dom"
+import React, { useEffect, useState, useRef } from "react";
+import { NavLink, useLocation } from 'react-router-dom';
+import { Toast } from "react-bootstrap";
 
-import React from 'react';
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -12,15 +14,30 @@ import {
   CDBSidebarMenu,
   CDBSidebarMenuItem,
 } from "cdbreact";
-import { NavLink } from 'react-router-dom';
 
 
 const SidebarAdminYayasan = ({ setPageTitle }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastVariant, setToastVariant] = useState("success");
+
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/")
+    localStorage.removeItem("id");
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
+    localStorage.removeItem("unit_sekolah")
+    setToastMessage("Logout berhasil! Mengarahkan ke halaman login admin...");
+    setToastVariant("success");
+    setShowToast(true);
+
+    setTimeout(() => {
+      navigate("/login-admin");
+    }, 1500);
   }
 
   return (
@@ -35,14 +52,19 @@ const SidebarAdminYayasan = ({ setPageTitle }) => {
           overflow: "hidden",
         }}>
         <CDBSidebarHeader>
-          <a href="/admin-yayasan/dashboard" className="text-decoration-none" style={{ color: 'inherit' }}>
+          <a href="/admin-yayasan/dashboard-yayasan" className="text-decoration-none" style={{ color: 'inherit' }}>
             ADMIN PAGES
           </a>
         </CDBSidebarHeader>
 
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu className="cdb-sidebar-menu-item">
-            <NavLink to="/admin-yayasan/dashboard" className="nav-link" onClick={() => setPageTitle("Dashboard")}>
+
+            <NavLink
+              to="/admin-yayasan/dashboard-yayasan"
+              className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+              onClick={() => setPageTitle("Dashboard")}
+            >
               <CDBSidebarMenuItem icon="home">Dashboard</CDBSidebarMenuItem>
             </NavLink>
             <NavLink to="/admin-yayasan/user-admin" className="nav-link" onClick={() => setPageTitle("User Admin")}>

@@ -112,7 +112,10 @@ const checkSuperAdmin = (req, res, next) => {
 // Middleware untuk cek unit sekolah
 const allowUnit = (unit) => {
     return (req, res, next) => {
-        if (req.user.unit_sekolah !== unit && req.user.role !== "superadmin") {
+        // if (req.user.unit_sekolah !== unit && req.user.role !== "superadmin") {
+        //     return res.status(403).json({ message: "Akses ditolak, bukan bagian unit ini" });
+        // }
+        if (req.user.unit_sekolah.toUpperCase() !== unit.toUpperCase() && req.user.role !== "superadmin") {
             return res.status(403).json({ message: "Akses ditolak, bukan bagian unit ini" });
         }
         next();

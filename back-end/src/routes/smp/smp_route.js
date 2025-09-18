@@ -13,6 +13,8 @@ const router = express.Router();
 const { verifyToken, checkSuperAdmin, allowUnit } = require("../../middleware/auth.js")
 const carouselControllers = require("../../controllers/carousel_controller");
 const adminControllers = require("../../controllers/login_admin_unit/admin_unit_controller.js");
+const kataSambutanControllers = require("../../controllers/smp/kata_sambutan_smp.js");
+const scheduleAdminSmp = require("../../controllers/smp/admin_smp/schedule_admin_smp_controller.js");
 
 router.post("/login-admin-smp", adminControllers.loginAdminUnit);
 router.get("/get-admin-smp", verifyToken, allowUnit("SMP"), adminControllers.getAdminUnit);
@@ -21,5 +23,13 @@ router.put("/update-admin-smp/:id", verifyToken, checkSuperAdmin, allowUnit("SMP
 router.put("/toggle-status-admin-smp/:id", verifyToken, allowUnit("SMP"), adminControllers.toggleStatusAdminUnit);
 router.delete("/delete-admin-smp/:id", verifyToken, checkSuperAdmin, allowUnit("SMP"), adminControllers.deleteAdminUnit);
 
+//schedule 
+router.get('/schedule-admin-smp', verifyToken, allowUnit("SMP"), scheduleAdminSmp.getAllSchedule);
+router.get('/schedule-admin-smp/:id', verifyToken, allowUnit("SMP"), scheduleAdminSmp.getScheduleById);
+router.post('/schedule-admin-smp', verifyToken, allowUnit("SMP"), scheduleAdminSmp.createSchedule);
+router.put('/schedule-admin-smp/:id', verifyToken, checkSuperAdmin, allowUnit("SMP"), scheduleAdminSmp.updateSchedule);
+router.delete('/schedule-admin-smp/:id', verifyToken, checkSuperAdmin, allowUnit("SMP"), scheduleAdminSmp.deleteSchedule);
+
+router.get("/get-kata-sambutan-smp", kataSambutanControllers.getKataSambutan);
 
 module.exports = router;

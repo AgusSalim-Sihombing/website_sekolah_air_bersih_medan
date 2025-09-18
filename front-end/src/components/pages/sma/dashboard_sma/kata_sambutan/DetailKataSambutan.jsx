@@ -34,7 +34,7 @@ const DetailKataSambutan = () => {
     <div className="parallax-wrapper">
       <div className="parallax-bg" />
       <div className="content-overlay">
-        <h2 className="title">Kata Sambutan Kepala Sekolah</h2>
+        <h2 className="title">Kata Sambutan Kepala Sekolah SMA</h2>
         <div className="profile-container">
           {data.foto_kepala && (
             <Image src={data.foto_kepala} fluid rounded className="kepsek-img" />

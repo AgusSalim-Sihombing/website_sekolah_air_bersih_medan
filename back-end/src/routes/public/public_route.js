@@ -46,7 +46,7 @@ router.get('/events/:id', eventsController.getEventById);
 router.get('/events/flyer/:id', eventsController.getEventFlyer);
 
 router.post('/events', verifyToken, upload.single("flyer"), eventsController.createEvent);
-router.put('/events/:id', verifyToken, upload.single("flyer"), eventsController.updateEvent);
+router.put('/edit-events/:id', verifyToken, upload.single("flyer"), eventsController.updateEvent);
 router.delete('/events/:id', verifyToken, eventsController.deleteEvent);
 
 

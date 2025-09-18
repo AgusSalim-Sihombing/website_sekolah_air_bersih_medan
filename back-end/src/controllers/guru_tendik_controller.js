@@ -3,11 +3,24 @@ const pool = require("../database/database_connection");
 // Get all guru tendik (ringkasan data)
 const getAllGuruTendik = async (req, res) => {
     try {
-        const [rows] = await pool.execute(
-            "SELECT id, nama, tempat_lahir, tanggal_lahir, gender, jabatan, status, tmt, masa_kerja, mapel_dampu, jumlah_jam, ijazah, jurusan , tamat_tahun FROM guru_tendik ORDER BY nama"
-        );
+        // const [rows] = await pool.execute(
+        //     "SELECT id, nama, tempat_lahir, tanggal_lahir, gender, jabatan, status, tmt, masa_kerja, mapel_dampu, jumlah_jam, ijazah, jurusan , tamat_tahun FROM guru_tendik ORDER BY nama"
+        // );
 
-        res.json(rows);
+        // res.json(rows);
+        const [rows] = await pool.execute("SELECT * FROM guru_tendik ORDER BY nama");
+
+        const data = rows.map(row => ({
+            id: row.id,
+            nama: row.nama,
+            email: row.email,
+            no_hp: row.no_hp,
+            alamat: row.alamat,
+            mata_pelajaran: row.mata_pelajaran,
+            foto: row.foto ? `data:image/jpeg;base64,${row.foto.toString("base64")}` : null
+        }))
+
+        res.json(data);
     } catch (err) {
         res.status(500).json({ message: "Gagal mengambil data", error: err });
     }

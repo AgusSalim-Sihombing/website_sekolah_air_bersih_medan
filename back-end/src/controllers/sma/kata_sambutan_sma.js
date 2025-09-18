@@ -18,7 +18,7 @@ const getKataSambutan = async (req, res) => {
 const createKataSambutan = async (req, res) => {
     try {
         const { nama_kepala_sekolah, sambutan } = req.body;
-        const foto_kepala = req.file?.buffer || null;
+        const foto_kepala = req.file?.buffer || null; 
 
         await db.execute(
             `INSERT INTO kata_sambutan (nama_kepala_sekolah, sambutan, foto_kepala) VALUES (?, ?, ?)`,

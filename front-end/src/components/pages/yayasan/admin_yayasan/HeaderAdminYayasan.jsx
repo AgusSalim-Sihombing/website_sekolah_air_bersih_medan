@@ -13,7 +13,12 @@ const HeaderAdminYayasan = ({ title }) => {
 
 
     useEffect(() => {
-        getUserAdmin();
+        const storedId = localStorage.getItem("id");
+        const storedUser = localStorage.getItem("username");
+        if (storedId && storedUser) {
+            setId(storedId);
+            setUser(storedUser);
+        }
     })
 
     const handleLogout = () => {
@@ -21,21 +26,21 @@ const HeaderAdminYayasan = ({ title }) => {
         navigate("/")
     }
 
-    const getUserAdmin = async () => {
-        try {
-            const response = await axios.get(`${API_BASE_URL}/admin/user-admin`);
-            if (response.data.length > 0) {
-                const data = response.data[0];
-                setUser(data.username)
-                setId(data.id)
-            } else {
-                setUser("")
-            }
-        } catch (error) {
-            console.error("Gagal mengambil data", error)
-            setUser("")
-        }
-    };
+    // const getUserAdmin = async () => {
+    //     try {
+    //         const response = await axios.get(`${API_BASE_URL}/admin/user-admin`);
+    //         if (response.data.length > 0) {
+    //             const data = response.data[0];   
+    //             setUser(data.username)
+    //             setId(data.id)
+    //         } else {
+    //             setUser("")
+    //         }
+    //     } catch (error) {
+    //         console.error("Gagal mengambil data", error)
+    //         setUser("")
+    //     }
+    // };
 
 
     // Fungsi untuk menangani klik di luar dropdown
@@ -72,10 +77,11 @@ const HeaderAdminYayasan = ({ title }) => {
                     <div className="profile-dropdown">
                         <ul>
                             <li><Icon.GearFill /> Setting Profile</li>
-                            <li><div onClick={handleLogout}>
-                                <Icon.BoxArrowRight />
-                                Logout
-                            </div>
+                            <li>
+                                <div onClick={handleLogout} style={{ cursor: "pointer" , gap: "8px", display: "flex", alignItems: "center"}}>
+                                    <Icon.BoxArrowRight />
+                                    Logout
+                                </div>
                             </li>
                         </ul>
                     </div>

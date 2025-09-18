@@ -17,7 +17,7 @@ const KataSambutanSmp = () => {
 
   const fetchSambutan = async () => {
     try {
-      const res = await axios.get(`${API_URL}/admin-sma/get-kata-sambutan-sma`);
+      const res = await axios.get(`${API_URL}/smp/get-kata-sambutan-smp`);
       setNamaKepsek(res.data.nama_kepala_sekolah || "");
       setSambutan(res.data.sambutan || "");
       if (res.data.foto_kepala) {
@@ -45,10 +45,10 @@ const KataSambutanSmp = () => {
             />
           )}
           <h5 className="mt-3">{namaKepsek}</h5>
-          <p className="text-muted">Kepala Sekolah</p>
+          <p className="text-muted">Kepala Sekolah SMP</p>
         </Col>
         <Col md={8}>
-          <h3 className="mb-3">Kata Sambutan Kepala Sekolah</h3>
+          <h3 className="mb-3">Kata Sambutan Kepala Sekolah SMP</h3>
           <div
             dangerouslySetInnerHTML={{
               __html: truncateText(sambutan),
@@ -57,7 +57,7 @@ const KataSambutanSmp = () => {
               textAlign:"justify"
             }}
           ></div>
-          <Button variant="outline-primary" className="mt-3" href="/sma/kata-sambutan">
+          <Button variant="outline-primary" className="mt-3" href="/smp/kata-sambutan">
             Baca Selengkapnya &gt;
           </Button>
         </Col>

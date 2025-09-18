@@ -54,7 +54,7 @@ const SidebarAdminSma = ({ setPageTitle = () => { } }) => {
         }}>
         <CDBSidebarHeader>
           <NavLink to="/admin-sma/dashboard-sma" className="text-decoration-none" style={{ color: 'inherit' }}>
-            ADMIN PAGES
+            ADMIN SMA PAGES
           </NavLink>
         </CDBSidebarHeader>
 

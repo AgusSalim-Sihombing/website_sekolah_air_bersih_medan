@@ -28,7 +28,7 @@ const TableAdminSma = () => {
         confirmPassword: "",
         role: "admin",
         status: "active",
-        unit_sekolah:"SMA"
+        unit_sekolah: "SMA" // Default unit_sekolah
     });
 
     useEffect(() => {
@@ -114,7 +114,8 @@ const TableAdminSma = () => {
             password: "",
             confirmPassword: "",
             role: admin.role,
-            status: admin.status
+            status: admin.status,
+            unit_sekolah: admin.unit_sekolah // Ambil unit_sekolah dari admin yang dipilih
         });
         setShowModal(true);
     };
@@ -133,7 +134,8 @@ const TableAdminSma = () => {
                     username: formData.username,
                     password: formData.password || undefined,
                     role: formData.role,
-                    status: formData.status
+                    status: formData.status,
+                    unit_sekolah: formData.unit_sekolah // WAJIB ambil dari token
                 },
                 {
                     headers: {
@@ -265,6 +267,7 @@ const TableAdminSma = () => {
                         <th>Updated At</th>
                         <th>Role</th>
                         <th>Status</th>
+                        <th>Unit</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -291,6 +294,9 @@ const TableAdminSma = () => {
                                     </span>
                                 )}
                             </td>
+
+                            <td>{item.unit_sekolah}</td>
+                            
                             <td>
                                 {currentAdmin?.role === 'superadmin' ? (
                                     <>
@@ -405,6 +411,20 @@ const TableAdminSma = () => {
                                         <option value="inactive">Nonaktif</option>
                                     </Form.Select>
                                 </Form.Group>
+
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Unit</Form.Label>
+                                    <Form.Select
+                                        name="unit_sekolah"
+                                        value={formData.unit_sekolah}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="SMP">SMP</option>
+                                        <option value="SMA">SMA</option>
+                                        <option value="SMK">SMK</option>
+                                        <option value="YAYASAN">YAYASAN</option>
+                                    </Form.Select>
+                                </Form.Group>
                             </>
                         )}
                     </Form>
@@ -498,6 +518,7 @@ const TableAdminSma = () => {
                                         <option value="SMP">SMP</option>
                                         <option value="SMA">SMA</option>
                                         <option value="SMK">SMK</option>
+                                        <option value="YAYASAN">YAYASAN</option>
                                     </Form.Select>
                                 </Form.Group>
                             </>

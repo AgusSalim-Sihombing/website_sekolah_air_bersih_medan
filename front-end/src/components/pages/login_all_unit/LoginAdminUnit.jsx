@@ -103,7 +103,8 @@ const LoginAdminUnit = () => {
                 setShowToast(true);
 
                 setTimeout(() => {
-                    navigate(`/admin-${unitSekolah}/dashboard-${unitSekolah}`);
+                    const unit = unitSekolah.toLowerCase();
+                    navigate(`/admin-${unit}/dashboard-${unit}`);
                 }, 1500);
             }
         } catch (error) {

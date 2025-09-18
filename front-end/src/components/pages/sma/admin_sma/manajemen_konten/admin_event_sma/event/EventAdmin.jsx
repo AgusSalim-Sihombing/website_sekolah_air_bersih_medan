@@ -21,7 +21,8 @@ const EventAdmin = () => {
         lokasi: "",
         penyelenggara: "",
         status: "draft",
-        flyer: null
+        flyer: null,
+        link: "",
     });
 
     useEffect(() => {
@@ -56,7 +57,7 @@ const EventAdmin = () => {
             }
 
             if (editMode) {
-                await axios.put(`${API_URL}/public/events/${editId}`, form, {
+                await axios.put(`${API_URL}/public/edit-events/${editId}`, form, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
             } else {
@@ -135,6 +136,7 @@ const EventAdmin = () => {
                         <th>Flyer</th>
                         <th>Dibuat</th>
                         <th>Diperbarui</th>
+                        <th>Link Event</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -160,8 +162,10 @@ const EventAdmin = () => {
                             </td>
                             <td>{event.created_at ? event.created_at.slice(0, 19).replace("T", " ") : "-"}</td>
                             <td>{event.updated_at ? event.updated_at.slice(0, 19).replace("T", " ") : "-"}</td>
+                            <td>{event.link}</td>
                             <td>
                                 <Button size="sm" variant="primary" onClick={() => startEdit(event)}>Edit</Button>
+                                
                             </td>
                         </tr>
                     ))}
@@ -249,6 +253,15 @@ const EventAdmin = () => {
                                 name="flyer"
                                 onChange={handleInputChange}
                                 accept="image/*"
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-2">
+                            <Form.Label>Link</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="link"
+                                value={formData.link}
+                                onChange={handleInputChange}
                             />
                         </Form.Group>
 

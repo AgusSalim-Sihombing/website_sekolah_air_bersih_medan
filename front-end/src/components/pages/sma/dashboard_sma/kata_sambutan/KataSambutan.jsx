@@ -98,10 +98,10 @@ const KataSambutan = () => {
             />
           )}
           <h5 className="mt-3">{namaKepsek}</h5>
-          <p className="text-muted">Kepala Sekolah</p>
+          <p className="text-muted">Kepala Sekolah SMA</p>
         </Col>
         <Col md={8}>
-          <h3 className="mb-3">Kata Sambutan Kepala Sekolah</h3>
+          <h3 className="mb-3">Kata Sambutan Kepala Sekolah SMA</h3>
           <div
             dangerouslySetInnerHTML={{
               __html: truncateText(sambutan),

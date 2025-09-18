@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaInstagram, FaFacebook, FaYoutube } from "react-icons/fa";
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaInstagram, FaFacebook, FaYoutube, FaLinkedin, FaTiktok } from "react-icons/fa";
 import axios from "axios";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 
@@ -69,9 +69,10 @@ const footerSma = () => {
                     <Col md={4} className="mb-3">
                         <h5>Ikuti Kami</h5>
                         <p>
-                            <a href="https://facebook.com" className="text-white me-3"><FaFacebook /></a>
-                            <a href="https://instagram.com" className="text-white me-3"><FaInstagram /></a>
-                            <a href="https://youtube.com" className="text-white"><FaYoutube /></a>
+                            <a href="https://www.facebook.com/share/g/1BVkmQZSZf/?mibextid=wwXIfr" className="text-white me-3" title="Facebook PERGURUAN ADVENT AIR BERSIH"><FaFacebook /></a>
+                            <a href="https://www.instagram.com/adventairbersih?igsh=cmhib2FtanNrYm1m" className="text-white me-3" title="Instagram PERGURUAN ADVENT AIR BERSIH"><FaInstagram /></a>
+                            <a href="https://www.tiktok.com/@perguruanadventairbersih?_t=ZS-8zE2Lfyj6Mn&_r=1" className="text-white me-3" title="Tik-Tok PERGURUAN ADVENT AIR BERSIH"><FaTiktok /></a>
+                            <a href="https://www.linkedin.com/in/perguruan-advent-air-bersih-medan-209802375" className="text-white " title="Linkedin PERGURUAN ADVENT AIR BERSIH"><FaLinkedin/></a>
                         </p>
                     </Col>
                 </Row>

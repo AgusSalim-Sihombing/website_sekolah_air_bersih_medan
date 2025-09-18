@@ -4,7 +4,7 @@ const pool = require("../database/database_connection")
 const getAllEvents = async (req, res) => {
     try {
         const [rows] = await pool.execute(`
-            SELECT id, nama_event, deskripsi, tanggal, waktu, lokasi, penyelenggara, status, created_at, updated_at
+            SELECT id, nama_event, deskripsi, tanggal, waktu, lokasi, penyelenggara, status, created_at, updated_at, link
             FROM event
             ORDER BY tanggal DESC
         `);
@@ -34,7 +34,7 @@ const getEventFlyer = async (req, res) => {
         if (rows.length === 0 || !rows[0].flyer) {
             return res.status(404).json({ message: "Flyer tidak ditemukan" });
         }
-        
+
         res.setHeader("Content-Type", "image/jpeg");
         res.send(rows[0].flyer);
     } catch (error) {
@@ -45,7 +45,7 @@ const getEventFlyer = async (req, res) => {
 // Tambah event
 const createEvent = async (req, res) => {
     try {
-        const { nama_event, deskripsi, tanggal, waktu, lokasi, penyelenggara, status } = req.body;
+        const { nama_event, deskripsi, tanggal, waktu, lokasi, penyelenggara, status, link } = req.body;
         const flyer = req.file ? req.file.buffer : null;
 
         if (!nama_event || !deskripsi || !tanggal || !status) {
@@ -53,9 +53,9 @@ const createEvent = async (req, res) => {
         }
 
         await pool.execute(`
-            INSERT INTO event (nama_event, deskripsi, tanggal, waktu, lokasi, penyelenggara, status, flyer, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
-        `, [nama_event, deskripsi, tanggal, waktu, lokasi, penyelenggara, status, flyer]);
+            INSERT INTO event (nama_event, deskripsi, tanggal, waktu, lokasi, penyelenggara, status, flyer, created_at, updated_at, link)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(),?)
+        `, [nama_event, deskripsi, tanggal, waktu, lokasi, penyelenggara, status, flyer, link]);
 
         res.status(201).json({ message: "Event berhasil ditambahkan" });
     } catch (error) {
@@ -67,20 +67,20 @@ const createEvent = async (req, res) => {
 const updateEvent = async (req, res) => {
     try {
         const { id } = req.params;
-        const { nama_event, deskripsi, tanggal, waktu, lokasi, penyelenggara, status } = req.body;
+        const { nama_event, deskripsi, tanggal, waktu, lokasi, penyelenggara, status, link } = req.body;
         const flyer = req.file ? req.file.buffer : null;
 
-        const fields = [nama_event, deskripsi, tanggal, waktu, lokasi, penyelenggara, status, id];
+        const fields = [nama_event, deskripsi, tanggal, waktu, lokasi, penyelenggara, status, link, id];
         let query = `
             UPDATE event
-            SET nama_event = ?, deskripsi = ?, tanggal = ?, waktu = ?, lokasi = ?, penyelenggara = ?, status = ?, updated_at = NOW()
+            SET nama_event = ?, deskripsi = ?, tanggal = ?, waktu = ?, lokasi = ?, penyelenggara = ?, status = ?,link = ?, updated_at = NOW()
             WHERE id = ?
         `;
 
         if (flyer) {
             query = `
                 UPDATE event
-                SET nama_event = ?, deskripsi = ?, tanggal = ?, waktu = ?, lokasi = ?, penyelenggara = ?, status = ?, flyer = ?, updated_at = NOW()
+                SET nama_event = ?, deskripsi = ?, tanggal = ?, waktu = ?, lokasi = ?, penyelenggara = ?, status = ?,link = ?, flyer = ?, updated_at = NOW()
                 WHERE id = ?
             `;
             fields.splice(7, 0, flyer); // sisipkan flyer sebelum id

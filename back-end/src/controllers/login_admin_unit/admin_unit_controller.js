@@ -119,19 +119,19 @@ const getAdminUnit = async (req, res) => {
 const updateAdminUnit = async (req, res) => {
     try {
         const { id } = req.params;
-        const { username, password, role, status } = req.body;
+        const { username, password, role, status, unit_sekolah } = req.body;
 
         if (req.user.id !== parseInt(id) && req.user.role !== 'superadmin') {
             return res.status(403).json({ message: "Akses ditolak" });
         }
 
-        let query = "UPDATE admin_sekolah SET username=?, role=?, status=? WHERE id=?";
-        let values = [username, role, status, id];
-        
+        let query = "UPDATE admin_sekolah SET username=?, role=?, status=?, unit_sekolah=? WHERE id=?";
+        let values = [username, role, status, unit_sekolah, id];
+
         if (password) {
             const hashed = await bcrypt.hash(password, 10);
-            query = "UPDATE admin_sekolah SET username=?, password=?, role=?, status=? WHERE id=?";
-            values = [username, hashed, role, status, id];
+            query = "UPDATE admin_sekolah SET username=?, password=?, role=?, status=?, unit_sekolah=? WHERE id=?";
+            values = [username, hashed, role, status, unit_sekolah, id];
         }
 
         await pool.execute(query, values);

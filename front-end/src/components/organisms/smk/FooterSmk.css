@@ -1,0 +1,13 @@
+.footer-smp {
+    background-color: #111184; /* Biru SMK */
+    color: white;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+.footer-smp ul {
+    padding: 0;
+    list-style: none;
+}
+.footer-smp a:hover {
+    color: #FFD700;
+}
