@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const pool = require("../../database/database_connection");
 const SECRET_KEY = process.env.SECRET_KEY;

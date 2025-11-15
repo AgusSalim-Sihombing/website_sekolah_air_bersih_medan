@@ -29,7 +29,7 @@ const AdminProfileSma = () => {
       setUser(storedUsername);
       setRole(storedRole || "Administrator");
       setEmail(`${storedUsername}@example.com`);
-      setFullName("John Doe");
+      setFullName("");
     }
   }, []);
 

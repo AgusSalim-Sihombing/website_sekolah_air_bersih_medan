@@ -338,8 +338,10 @@ const DataGuru = () => {
                                 {guru.foto ? (<img src={guru.foto} alt={guru.nama} style={{ width: "100px", height: "100px", objectFit: "cover" }} />) : ("Tidak ada Foto")
                                 }
                             </td>
-                            <td className="border p-2">
-                                <div>
+                            <td className="border p-2" >
+                                <div style={
+                                    { display: "flex" }
+                                }>
                                     <Button variant="primary" className="mx-1" onClick={() => handleEdit(guru)}>
                                         <Icon.Pen />
                                     </Button>

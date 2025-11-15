@@ -196,18 +196,20 @@ const GuruTendikAdmin = () => {
                             </td>
                             <td>{item.nama}</td>
                             <td>{item.tempat_lahir}</td>
-                            <td>{item.tanggal_lahir ? format(new Date(item.tanggal_lahir), "dd MMMM yyy", {locale : idLocale}) : "-"}</td>
+                            <td>{item.tanggal_lahir ? format(new Date(item.tanggal_lahir), "dd MMMM yyy", { locale: idLocale }) : "-"}</td>
                             <td>{item.gender}</td>
                             <td>{item.jabatan}</td>
                             <td>{item.status}</td>
-                            <td>{item.tmt ? format(new Date(item.tmt), "dd MMMM yyy", {idLocale : idLocale}) : "-"}</td>
+                            <td>{item.tmt ? format(new Date(item.tmt), "dd MMMM yyy", { idLocale: idLocale }) : "-"}</td>
                             <td>{item.masa_kerja}</td>
                             <td>{item.mapel_dampu}</td>
                             <td>{item.jumlah_jam}</td>
                             <td>{item.ijazah}</td>
                             <td>{item.jurusan}</td>
                             <td>{item.tamat_tahun}</td>
-                            <td>
+                            <td style={
+                                { display: "flex" }
+                            }>
                                 <Button size="sm" variant="primary" onClick={() => startEdit(item)}>Edit</Button>{' '}
                                 <Button size="sm" variant="danger" onClick={() => handleDelete(item.id)}>Hapus</Button>
                             </td>
